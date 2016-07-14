@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        {% block head %}
+        <link rel="stylesheet" href="/static/style.css" />
+        <title> {% block title %}{% endblock %} - Logic</title>
+        {% endblock %}
+    </head>
+
+    <div id="header">
+        {% block header %}
+        <p class="header">Logic</p>
+        {% endblock %}
+    </div>
+
+    <body>
+        <div id="content">{% block content %}{% endblock %}</div>
+
+        <div id="footer">
+            {% block footer %}
+            {# nothing here #}
+            {% endblock %}
+        </div>
+    </body>
+</html>

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %} Login {% endblock %}
+
+{% block content %}
+    {% if error %}
+        <p class="error">ERROR: {{ error }}</p>
+    {% endif %}
+    
+    <form action="/login" method=post>
+        <d1>
+            <dt>Username:
+            <dd><input type=text name=username>
+            <dt>Password:
+            <dd><input type=password name=password>
+            <dd><input type=submit value=Login>
+        </d1>
+    </form>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %} Homepage {% endblock %}
+
+{% block head %} 
+    {{ super() }}
+    <style type="text/css">
+        .important { color: #336699; }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <h1>Home page</h1>
+
+    {% if session["logged_in"] %}
+        <div>You are logged in!</div>
+    {% else %}
+        <div>You are not logged in!</div>
+    {% endif %}
+    
+    <p class="important">
+        Welcome to the homepage.
+    </p>
+{% endblock %}
