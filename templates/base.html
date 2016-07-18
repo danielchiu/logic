@@ -3,18 +3,29 @@
 <html lang="en">
     <head>
         {% block head %}
-        <link rel="stylesheet" href="/static/style.css" />
+        <link rel="stylesheet" href="/static/style.css">
+
         <title> {% block title %}{% endblock %} - Logic</title>
         {% endblock %}
     </head>
 
-    <div id="header">
-        {% block header %}
-        <p class="header">Logic</p>
-        {% endblock %}
-    </div>
-
     <body>
+        <div id="header">
+            <p class="header">Logic</p>
+
+            <nav class="navbar">
+                <a href="/">Home</a>
+                <a href="/games">Current Game</a>
+                <a href="/add">New Game</a>
+
+                {% if session["logged_in"] %}
+                    <a href="/logout">Logout</a>
+                {% else %}
+                    <a href="/login">Login</a>
+                {% endif %}
+            </nav>
+        </div>
+
         <div id="content">{% block content %}{% endblock %}</div>
 
         <div id="footer">
@@ -22,5 +33,8 @@
             {# nothing here #}
             {% endblock %}
         </div>
+
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script type="text/javascript" src="/static/base.js"></script>
     </body>
 </html>
