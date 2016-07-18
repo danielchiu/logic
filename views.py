@@ -1,4 +1,5 @@
 from flask import * # TODO actually look at imports
+from game import *
 
 views = Blueprint("views",__name__)
 
@@ -23,3 +24,8 @@ def login():
 def logout():
     session.pop("logged_in", None)
     return redirect("/")
+
+@views.route("/game")
+def game():
+    master = Game()
+    return render_template("game.html", grid = master.grid())

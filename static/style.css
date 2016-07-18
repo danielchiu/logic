@@ -18,10 +18,21 @@
 }
 .card {
     outline: 1px solid;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+.heart {
+    background-color: red;
+}
+.spade {
+    background-color: black;
 }
 
 .clicked_card {
-    background-color: yellow;
-    color: yellow;
-    outline: 0px solid;
+    outline: 5px solid;
+    outline-color: green;
+    outline-offset: -5px;
 }

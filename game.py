@@ -8,7 +8,7 @@ class Card:
         self.val = val
         self.suit = suit
         self.name = val+suit
-        self.hidden = True
+        self.hidden = False # TODO allow click to toggle 
 
     def __str__(self):
         if self.hidden:
@@ -39,19 +39,29 @@ class Game:
         for i in range(4):
             self.hands.append(Hand(self.deck[i*6:i*6+6]))
 
-        self.turn = random.randInt(1,4)
-
     def __str__(self):
         return '\n'.join(map(str,self.hands))
 
     def flip(self, hand, card):
         self.hands[hand].cards[card].flip()
 
-    
+    def grid(self):
+        res = [None]*64
+        for i in range(6):
+            res[6-i] = self.hands[0].cards[i]
+        for i in range(6):
+            res[8+8*i] = self.hands[1].cards[i]
+        for i in range(6):
+            res[57+i] = self.hands[2].cards[i]
+        for i in range(6):
+            res[55-8*i] = self.hands[3].cards[i]
+        return res
 
+'''
 master = Game()
 print(master)
 while True:
     a,b = map(int,input().split())
     master.flip(a,b)
     print(master)
+'''

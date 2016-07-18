@@ -1,5 +1,20 @@
-<!doctype html>
-<title>Game {{ id }}</title>
-<h1>Current Board</h1>
-<h2>A</h2>
-<h2>B</h2>
+{% extends "base.html" %}
+
+{% block title %} Current Game {% endblock %}
+
+{% block content %}
+    <p></p>
+
+    <div class="grid">
+        {% for card in grid %}
+            {% if card is none %}
+                <div class="car"></div>
+            {% else %}
+                <div class="card {{ "heart" if card.suit=="H" else "spade"  }}">
+                    {{ card.val if not card.hidden }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+{% endblock %}
