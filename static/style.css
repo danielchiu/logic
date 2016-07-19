@@ -7,14 +7,27 @@
     color: black;
 }
 
-.grid {
+.container {
+    width: 1050px;
+    overflow: hidden;
+}
+
+#gameid {
+    width: 1050px;
+    text-align: center;
+}
+
+#grid {
+    height: 600px;
     width: 600px;
+    float: left;
 }
 
 .card, .car {
     width: 75px; 
     height: 75px;
     float: left;
+    border-radius: 10px;
 }
 .card {
     outline: 1px solid;
@@ -32,7 +45,21 @@
 }
 
 .clicked_card {
-    outline: 5px solid;
+    /*outline: 5px solid;
     outline-color: green;
+    outline-offset: -5px;*/
+    box-shadow: 0 0 0 5px green inset;
+}
+
+#log {
+    height: 600px;
+    width: 400px;
+    margin-left: 50px;
+    outline: 5px solid;
     outline-offset: -5px;
+    float: left;
+}
+
+#logtitle {
+    margin-left: 20px;
 }

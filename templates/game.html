@@ -1,20 +1,27 @@
 {% extends "base.html" %}
 
-{% block title %} Current Game {% endblock %}
+{% block title %} Game #{{ id }} {% endblock %}
 
 {% block content %}
-    <p></p>
 
-    <div class="grid">
-        {% for card in grid %}
-            {% if card is none %}
-                <div class="car"></div>
-            {% else %}
-                <div class="card {{ "heart" if card.suit=="H" else "spade"  }}">
-                    {{ card.val if not card.hidden }}
-                </div>
-            {% endif %}
-        {% endfor %}
+    <div class="container">
+        <h1 id="gameid">#{{ id }}</h1>
+        
+        <div id="grid">
+            {% for card in grid %}
+                {% if card is none %}
+                    <div class="car"></div>
+                {% else %}
+                    <div class="card {{ "heart" if card.suit=="H" else "spade"  }}">
+                        {{ card.val if not card.hidden }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+            
+        <div id="log">
+            <h2 id="logtitle">Actions:</h2>            
+        </div>
     </div>
 
 {% endblock %}

@@ -25,7 +25,7 @@ def logout():
     session.pop("logged_in", None)
     return redirect("/")
 
-@views.route("/game")
-def game():
+@views.route("/game/<int:id>")
+def game(id):
     master = Game()
-    return render_template("game.html", grid = master.grid())
+    return render_template("game.html", id = id, grid = master.grid())
