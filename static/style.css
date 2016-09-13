@@ -1,10 +1,32 @@
-.header {
-    color: red;
-    text-size: 300%;
+#header {
+    width: 1050px;
+    overflow: hidden;
 }
-
-.navbar {
-    color: black;
+#logo {
+    margin-left: 50px;
+    float: left;
+}
+#navbar {
+    float: left;
+    list-style-type: none;
+    margin: 0;
+    margin-top: 10px;
+    margin-left: 550px;
+    padding: 0;
+    overflow: hidden;
+}
+li {
+    float: left;
+    background-color: lightgray;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+.navlink {
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    padding: 14px 16px;
+    color: blue;
 }
 
 .container {

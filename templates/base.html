@@ -13,17 +13,18 @@
         <div id="header">
             <h1 id="logo">Logic</h1>
 
-            <nav class="navbar">
-                <a href="/">Home</a>
-                <a href="/games">Game</a>
-                <a href="/add">New Game</a>
+            <ul id="navbar">
+                <li><a class="navlink" href="/">Home</a></li>
+                <li><a class="navlink" href="/games">Game</a></li>
+                <li><a class="navlink" href="/add">New Game</a></li>
 
                 {% if session["logged_in"] %}
-                    <a href="/logout">Logout</a>
+                    <li><a class="navlink" href="/logout">Logout</a></li>
                 {% else %}
-                    <a href="/login">Login</a>
+                    <li><a class="navlink" href="/login">Login</a></li>
+                    <li><a class="navlink" href="/register">Register</a></li>
                 {% endif %}
-            </nav>
+            </ul>
         </div>
 
         <div id="content">{% block content %}{% endblock %}</div>

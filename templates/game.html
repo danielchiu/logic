@@ -13,7 +13,7 @@
                     <div class="car"></div>
                 {% else %}
                     <div class="card {{ "heart" if card.suit=="H" else "spade"  }}">
-                        {{ card.val if not card.hidden }}
+                        {{ card.val if card.hidden }}
                     </div>
                 {% endif %}
             {% endfor %}
