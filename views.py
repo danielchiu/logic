@@ -25,6 +25,15 @@ def logout():
     session.pop("logged_in", None)
     return redirect("/")
 
+@views.route("/register", methods = ["GET", "POST"])
+def register():
+    if request.method == "POST":
+        user = User(request.username)
+        db.add(user)
+        db.session.commit()
+        return redirect("/")
+    return render_template("register.html")
+
 @views.route("/game/<int:id>")
 def game(id):
     master = Game()
