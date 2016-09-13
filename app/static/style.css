@@ -1,0 +1,87 @@
+#header {
+    width: 1050px;
+    overflow: hidden;
+}
+#logo {
+    margin-left: 50px;
+    float: left;
+}
+#navbar {
+    float: left;
+    list-style-type: none;
+    margin: 0;
+    margin-top: 10px;
+    margin-left: 550px;
+    padding: 0;
+    overflow: hidden;
+}
+li {
+    float: left;
+    background-color: lightgray;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+.navlink {
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    padding: 14px 16px;
+    color: blue;
+}
+
+.container {
+    width: 1050px;
+    overflow: hidden;
+}
+
+#gameid {
+    width: 1050px;
+    text-align: center;
+}
+
+#grid {
+    height: 600px;
+    width: 600px;
+    float: left;
+}
+
+.card, .car {
+    width: 75px; 
+    height: 75px;
+    float: left;
+    border-radius: 10px;
+}
+.card {
+    outline: 1px solid;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+.heart {
+    background-color: red;
+}
+.spade {
+    background-color: black;
+}
+
+.clicked_card {
+    /*outline: 5px solid;
+    outline-color: green;
+    outline-offset: -5px;*/
+    box-shadow: 0 0 0 5px green inset;
+}
+
+#log {
+    height: 600px;
+    width: 400px;
+    margin-left: 50px;
+    outline: 5px solid;
+    outline-offset: -5px;
+    float: left;
+}
+
+#logtitle {
+    margin-left: 20px;
+}
