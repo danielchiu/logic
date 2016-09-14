@@ -11,6 +11,9 @@ class User(db.Model):
 
     playing = db.relationship('Game', secondary=games, backref='players')
     
+    def __init__(self, username):
+        self.username = username
+
     def __str___(self):
         return '<User %s>' % self.username
 

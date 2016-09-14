@@ -30,8 +30,8 @@ def logout():
 @views.route("/register", methods = ["GET", "POST"])
 def register():
     if request.method == "POST":
-        user = User(request.username)
-        db.add(user)
+        user = User(request.form["username"])
+        db.session.add(user)
         db.session.commit()
         return redirect("/")
     return render_template("register.html")
