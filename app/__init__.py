@@ -7,9 +7,9 @@ from views import *
 app = Flask(__name__)
 app.register_blueprint(views) # TODO forgot what this does
 
-#app.config.from_object('config') # TODO wat
-#db = SQLAlchemy(app) # TODO wat
+app.config.from_object('config') # TODO wat
+db = SQLAlchemy(app) # TODO wat
 
 app.secret_key = "JILFEfjwioje234fe#$DE("
 
-#db.create_all()
+db.create_all()
