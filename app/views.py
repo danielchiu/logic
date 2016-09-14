@@ -1,7 +1,7 @@
 from flask import * # TODO actually look at imports
 from game import Master
-#from models import User, Game
-#from app import db
+from models import User, Game
+from app import db
 
 views = Blueprint("views",__name__)
 
