@@ -27,7 +27,7 @@ class Hand:
     def __str__(self):
         return ' '.join(map(str,self.cards))
 
-class Game:
+class Master:
     def __init__(self):
         self.deck = []
         for val in values:
@@ -58,7 +58,7 @@ class Game:
         return res
 
 '''
-master = Game()
+master = Master()
 print(master)
 while True:
     a,b = map(int,input().split())

@@ -1,5 +1,7 @@
 from flask import * # TODO actually look at imports
-from game import *
+from game import Master
+#from models import User, Game
+#from app import db
 
 views = Blueprint("views",__name__)
 
@@ -36,5 +38,5 @@ def register():
 
 @views.route("/game/<int:id>")
 def game(id):
-    master = Game()
+    master = Master()
     return render_template("game.html", id = id, grid = master.grid())
