@@ -1,6 +1,5 @@
 from app import app, db
 from app.views import views
-#from app import app
 
 db.create_all()
 
