@@ -18,7 +18,7 @@
                 <li><a class="navlink" href="/games">Game</a></li>
                 <li><a class="navlink" href="/add">New Game</a></li>
 
-                {% if session["logged_in"] %}
+                {% if session["user"] %}
                     <li><a class="navlink" href="/logout">Logout</a></li>
                 {% else %}
                     <li><a class="navlink" href="/login">Login</a></li>

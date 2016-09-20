@@ -12,8 +12,8 @@
 {% block content %}
     <h1>Home page</h1>
 
-    {% if session["logged_in"] %}
-        <div>You are logged in!</div>
+    {% if user %}
+        <div>You are logged in as {{ user }} !</div>
     {% else %}
         <div>You are not logged in!</div>
     {% endif %}
