@@ -43,6 +43,7 @@ def register():
 def newgame():
     if request.method == "POST":
         game = Game(request.form["name"],request.form["p1"],request.form["p2"],request.form["p3"],request.form["p4"])
+        # TODO make sure all the above are valid
         db.session.add(game)
         db.session.commit()
         return redirect("/") # TODO route to game instead

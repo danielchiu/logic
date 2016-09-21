@@ -8,7 +8,7 @@ class Card:
         self.val = val
         self.suit = suit
         self.name = val+suit
-        self.hidden = True if random.randint(1,6)==1 else False #TODO actually do something legit here
+        self.hidden = True if random.randint(1,6)==1 else False # TODO actually do something legit here
 
     def __str__(self):
         if self.hidden:

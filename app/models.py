@@ -7,7 +7,7 @@ games = db.Table('games',
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), index=True, unique=True) # TODO index=?
+    username = db.Column(db.String(20), index=True, unique=True) # TODO what is index
 
     playing = db.relationship('Game', secondary=games, backref='players')
     
@@ -25,7 +25,7 @@ class Game(db.Model):
     p3 = db.Column(db.String, index=True)
     p4 = db.Column(db.String, index=True)
     
-    def __init__(self, name, *players):
+    def __init__(self, name, *players): # TODO this is broken somewhere (in db.session.commit())
         print "HI THERE"
         self.name = name
         self.p1, self.p2, self.p3, self.p4 = players
