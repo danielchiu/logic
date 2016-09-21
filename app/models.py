@@ -19,9 +19,17 @@ class User(db.Model):
 
 class Game(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    # using id as game_id
+    name = db.Column(db.String, index=True)
+    p1 = db.Column(db.String, index=True)
+    p2 = db.Column(db.String, index=True)
+    p3 = db.Column(db.String, index=True)
+    p4 = db.Column(db.String, index=True)
     
+    def __init__(self, name, *players):
+        print "HI THERE"
+        self.name = name
+        self.p1, self.p2, self.p3, self.p4 = players
+        print "HI THERE"
+
     def __str__(self):
-        return '<Game %d>' % self.id
-
-
+        return '<Game %s: %s %s %s %s>' % (self.name, self.p1, self.p2, self.p3, self.p4)

@@ -16,17 +16,11 @@ def homepage():
 def login():
     error = None
     if request.method == "POST":
-        '''if request.form["username"] != "user": # temp username and password for now
-            error = "Invalid username"
-        elif request.form["password"] != "pass":
-            error = "Invalid password"
-        else:
-            session["logged_in"] = True
-            return redirect("/")'''
         user = User.query.filter_by(username=request.form["username"]).first()
         if user is None:
             error = "No such user exists"
         else:
+            # TODO check username for length
             session["user"] = user.username # TODO is there a way to make it whole User class
             return redirect("/")
     return render_template("login.html",error = error)
@@ -45,7 +39,16 @@ def register():
         return redirect("/")
     return render_template("register.html")
 
-@views.route("/game/<int:id>")
-def game(id):
+@views.route("/newgame", methods = ["GET", "POST"])
+def newgame():
+    if request.method == "POST":
+        game = Game(request.form["name"],request.form["p1"],request.form["p2"],request.form["p3"],request.form["p4"])
+        db.session.add(game)
+        db.session.commit()
+        return redirect("/") # TODO route to game instead
+    return render_template("newgame.html")
+
+@views.route("/game/<name>")
+def game(name):
     master = Master()
-    return render_template("game.html", id = id, grid = master.grid())
+    return render_template("game.html", name = name, grid = master.grid())
