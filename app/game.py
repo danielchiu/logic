@@ -28,16 +28,18 @@ class Hand:
         return ' '.join(map(str,self.cards))
 
 class Master:
-    def __init__(self):
-        self.deck = []
+    def __init__(self, hands=None):
+        deck = []
         for val in values:
             for suit in suits:
-                self.deck.append(Card(val,suit))
-        random.shuffle(self.deck)
+                deck.append(Card(val,suit))
+        random.shuffle(deck)
 
         self.hands = []
         for i in range(4):
-            self.hands.append(Hand(self.deck[i*6:i*6+6]))
+            self.hands.append(Hand(deck[i*6:i*6+6]))
+        if hands:
+            self.hands = hands
 
     def __str__(self):
         return '\n'.join(map(str,self.hands))

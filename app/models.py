@@ -24,12 +24,12 @@ class Game(db.Model):
     p2 = db.Column(db.String, index=True)
     p3 = db.Column(db.String, index=True)
     p4 = db.Column(db.String, index=True)
+    hands = db.Column(db.PickleType)
     
-    def __init__(self, name, *players): # TODO this is broken somewhere (in db.session.commit())
-        print "HI THERE"
+    def __init__(self, name, hands, p1, p2, p3, p4):
         self.name = name
-        self.p1, self.p2, self.p3, self.p4 = players
-        print "HI THERE"
+        self.p1, self.p2, self.p3, self.p4 = p1, p2, p3, p4 
+        self.hands = hands 
 
     def __str__(self):
         return '<Game %s: %s %s %s %s>' % (self.name, self.p1, self.p2, self.p3, self.p4)

@@ -42,7 +42,8 @@ def register():
 @views.route("/newgame", methods = ["GET", "POST"])
 def newgame():
     if request.method == "POST":
-        game = Game(request.form["name"],request.form["p1"],request.form["p2"],request.form["p3"],request.form["p4"])
+        game = Game(request.form["name"],Master().hands, \
+                    request.form["p1"],request.form["p2"],request.form["p3"],request.form["p4"])
         # TODO make sure all the above are valid
         db.session.add(game)
         db.session.commit()
@@ -51,5 +52,4 @@ def newgame():
 
 @views.route("/game/<name>")
 def game(name):
-    master = Master()
-    return render_template("game.html", name = name, grid = master.grid())
+    return render_template("game.html", name = name, grid = Master().grid()) # TODO check database instead
