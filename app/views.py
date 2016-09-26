@@ -47,7 +47,7 @@ def newgame():
         # TODO make sure all the above are valid
         db.session.add(game)
         db.session.commit()
-        return redirect("/") # TODO route to game instead
+        return redirect("/game/"+request.form["name"])
     return render_template("newgame.html")
 
 @views.route("/game/<name>")
