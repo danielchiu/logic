@@ -43,7 +43,7 @@ def register():
 def newgame():
     if request.method == "POST":
         game = Game(request.form["name"],Master().hands, \
-                    request.form["p1"],request.form["p2"],request.form["p3"],request.form["p4"])
+                    [request.form["p1"],request.form["p2"],request.form["p3"],request.form["p4"]])
         # TODO make sure all the above are valid
         db.session.add(game)
         db.session.commit()
@@ -52,4 +52,12 @@ def newgame():
 
 @views.route("/game/<name>")
 def game(name):
-    return render_template("game.html", name = name, grid = Master().grid()) # TODO check database instead
+    game = Game.query.filter_by(name=name).first()
+    if game is None:
+        return render_template("game.html", name = name, grid = Master().grid()) # TODO give some error message
+    user = None
+    if "user" in session:
+        user = session["user"]
+    ind = game.index(user)
+    print "accessing player %d" % ind
+    return render_template("game.html", name = name, grid = Master(game.hands).grid())
