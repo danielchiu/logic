@@ -60,4 +60,4 @@ def game(name):
         user = session["user"]
     ind = game.index(user)
     print "accessing player %d" % ind
-    return render_template("game.html", name = name, grid = Master(game.hands).grid())
+    return render_template("game.html", name = name, grid = Master(game.hands,game.players).grid())

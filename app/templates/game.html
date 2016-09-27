@@ -11,7 +11,9 @@
             {% for card in grid %}
                 {% if card is none %}
                     <div class="car"></div>
-                {% else %}
+                {% elif card is string %}
+                    <div class="nameplate {{ card[0] }}">{{ card[1:] }} </div>
+                {% else %} {# STATUS is trying to elif put player name #}
                     <div class="card {{ "heart" if card.suit=="H" else "spade"  }}">
                         {{ card.val if card.hidden }}
                     </div>

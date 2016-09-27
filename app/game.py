@@ -27,8 +27,8 @@ class Hand:
     def __str__(self):
         return ' '.join(map(str,self.cards))
 
-class Master:
-    def __init__(self, hands=None):
+class Master: # TODO can this be merged into the Game class?
+    def __init__(self, hands=None, players=None):
         deck = []
         for val in values:
             for suit in suits:
@@ -41,6 +41,8 @@ class Master:
         if hands:
             self.hands = hands
 
+        self.players = players
+
     def __str__(self):
         return '\n'.join(map(str,self.hands))
 
@@ -51,12 +53,16 @@ class Master:
         res = [None]*64
         for i in range(6):
             res[6-i] = self.hands[0].cards[i]
+        res[13] = 'L'+self.players[0]
         for i in range(6):
             res[8+8*i] = self.hands[1].cards[i]
+        res[17] = 'D'+self.players[1]
         for i in range(6):
             res[57+i] = self.hands[2].cards[i]
+        res[50] = 'R'+self.players[2]
         for i in range(6):
             res[55-8*i] = self.hands[3].cards[i]
+        res[46] = 'U'+self.players[3]
         return res
 
 '''
