@@ -59,5 +59,6 @@ def game(name):
     if "user" in session:
         user = session["user"]
     ind = game.index(user)
-    print "accessing player %d" % ind
+    if ind>=0:
+        game.rotate(ind)
     return render_template("game.html", name = name, grid = Master(game.hands,game.players).grid())

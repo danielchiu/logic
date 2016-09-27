@@ -36,3 +36,7 @@ class Game(db.Model):
             return self.players.index(player)
         except ValueError:
             return -1
+
+    def rotate(self, number):
+        self.hands = self.hands[number:]+self.hands[:number]
+        self.players = self.players[number:]+self.players[:number]

@@ -52,17 +52,17 @@ class Master: # TODO can this be merged into the Game class?
     def grid(self):
         res = [None]*64
         for i in range(6):
-            res[6-i] = self.hands[0].cards[i]
-        res[13] = 'L'+self.players[0]
+            res[57+i] = self.hands[0].cards[i]
+        res[50] = 'R'+self.players[0]
         for i in range(6):
-            res[8+8*i] = self.hands[1].cards[i]
-        res[17] = 'D'+self.players[1]
+            res[55-8*i] = self.hands[1].cards[i]
+        res[46] = 'U'+self.players[1]
         for i in range(6):
-            res[57+i] = self.hands[2].cards[i]
-        res[50] = 'R'+self.players[2]
+            res[6-i] = self.hands[2].cards[i]
+        res[13] = 'L'+self.players[2]
         for i in range(6):
-            res[55-8*i] = self.hands[3].cards[i]
-        res[46] = 'U'+self.players[3]
+            res[8+8*i] = self.hands[3].cards[i]
+        res[17] = 'D'+self.players[3]
         return res
 
 '''
