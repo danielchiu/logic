@@ -1,5 +1,4 @@
 from flask import * # TODO actually look at imports
-from game import Master
 from models import User, Game
 from app import db
 
@@ -42,8 +41,7 @@ def register():
 @views.route("/newgame", methods = ["GET", "POST"])
 def newgame():
     if request.method == "POST":
-        game = Game(request.form["name"],Master().hands, \
-                    [request.form["p1"],request.form["p2"],request.form["p3"],request.form["p4"]])
+        game = Game(request.form["name"],[request.form["p1"],request.form["p2"],request.form["p3"],request.form["p4"]])
         # TODO make sure all the above are valid
         db.session.add(game)
         db.session.commit()
@@ -54,11 +52,8 @@ def newgame():
 def game(name):
     game = Game.query.filter_by(name=name).first()
     if game is None:
-        return render_template("game.html", name = name, grid = Master().grid()) # TODO give some error message
+        return redirect("/") # TODO give some error message
     user = None
     if "user" in session:
         user = session["user"]
-    ind = game.index(user)
-    if ind>=0:
-        game.rotate(ind)
-    return render_template("game.html", name = name, grid = game.grid())
+    return render_template("game.html", name = name, grid = game.grid(user))

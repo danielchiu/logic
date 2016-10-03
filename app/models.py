@@ -1,5 +1,6 @@
 from app import db
-from game import Master 
+from game import Card, Hand, values, suits
+import random
 
 status = db.Table('status',
     db.Column('user_id', db.Integer, db.ForeignKey('game.id')),
@@ -20,14 +21,29 @@ class User(db.Model):
 
 class Game(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, index=True)
+    name = db.Column(db.String, index=True, unique=True)
     hands = db.Column(db.PickleType)
     players = db.Column(db.PickleType)
-    
-    def __init__(self, name, hands, players):
+    current = db.Column(db.Integer)
+    state = db.Column(db.Integer) # 0 means passing, 1 means guessing
+
+    def __init__(self, name, players):
         self.name = name
-        self.hands = hands 
+
+        deck = []
+        for val in values:
+            for suit in suits:
+                deck.append(Card(val,suit))
+        random.shuffle(deck)
+
+        self.hands = []
+        for i in range(4):
+            self.hands.append(Hand(deck[i*6:i*6+6]))
+
         self.players = players
+
+        self.current = random.randint(0,3)
+        self.state = 0
 
     def __str__(self):
         return '<Game %s: %s %s %s %s>' % (self.name, str(self.players))
@@ -38,12 +54,27 @@ class Game(db.Model):
         except ValueError:
             return -1
 
-    def rotate(self, number):
-        self.hands = self.hands[number:]+self.hands[:number]
-        self.players = self.players[number:]+self.players[:number]
+    def grid(self, player):
+        number = self.index(player)
+        hands = self.hands
+        players = self.players
+        if number>=0:
+            hands = hands[number:]+hands[:number]
+            players = players[number:]+players[:number]
 
-    def master(self):
-        return Master(self.hands,self.players)
-
-    def grid(self):
-        return self.master().grid()
+        res = [None]*64
+        for i in range(6):
+            res[57+i] = hands[0].cards[i]
+            if number>=0:
+                res[57+i].flip()
+        res[50] = 'R'+players[0]
+        for i in range(6):
+            res[55-8*i] = hands[1].cards[i]
+        res[46] = 'U'+players[1]
+        for i in range(6):
+            res[6-i] = hands[2].cards[i]
+        res[13] = 'L'+players[2]
+        for i in range(6):
+            res[8+8*i] = hands[3].cards[i]
+        res[17] = 'D'+players[3]
+        return res
