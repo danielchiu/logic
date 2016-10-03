@@ -13,9 +13,9 @@
                     <div class="car"></div>
                 {% elif card is string %}
                     <div class="nameplate {{ card[0] }}">{{ card[1:] }} </div>
-                {% else %} {# STATUS is trying to elif put player name #}
+                {% else %}
                     <div class="card {{ "heart" if card.suit=="H" else "spade"  }}">
-                        {{ card.val if card.hidden }}
+                        {{ card.val if card.flipped }}
                     </div>
                 {% endif %}
             {% endfor %}

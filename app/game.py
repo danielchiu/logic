@@ -8,16 +8,16 @@ class Card:
         self.val = val
         self.suit = suit
         self.name = val+suit
-        self.hidden = True if random.randint(1,6)==1 else False # TODO actually do something legit here
+        self.flipped = True if random.randint(1,6)==1 else False # TODO actually do something legit here
 
     def __str__(self):
-        if self.hidden:
-            return '_'+self.suit
-        else:
+        if self.flipped:
             return self.name
+        else:
+            return '_'+self.suit
 
     def flip(self):
-        self.hidden = False
+        self.flipped = True
 
 class Hand:
     def __init__(self, cards):
@@ -53,6 +53,7 @@ class Master: # TODO can this be merged into the Game class?
         res = [None]*64
         for i in range(6):
             res[57+i] = self.hands[0].cards[i]
+            res[57+i].flipped = True
         res[50] = 'R'+self.players[0]
         for i in range(6):
             res[55-8*i] = self.hands[1].cards[i]
