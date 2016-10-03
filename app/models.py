@@ -1,4 +1,5 @@
 from app import db
+from game import Master 
 
 status = db.Table('status',
     db.Column('user_id', db.Integer, db.ForeignKey('game.id')),
@@ -40,3 +41,9 @@ class Game(db.Model):
     def rotate(self, number):
         self.hands = self.hands[number:]+self.hands[:number]
         self.players = self.players[number:]+self.players[:number]
+
+    def master(self):
+        return Master(self.hands,self.players)
+
+    def grid(self):
+        return self.master().grid()

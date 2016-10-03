@@ -61,4 +61,4 @@ def game(name):
     ind = game.index(user)
     if ind>=0:
         game.rotate(ind)
-    return render_template("game.html", name = name, grid = Master(game.hands,game.players).grid())
+    return render_template("game.html", name = name, grid = game.grid())
