@@ -56,4 +56,6 @@ def game(name):
     user = None
     if "user" in session:
         user = session["user"]
-    return render_template("game.html", name = name, grid = game.grid(user))
+    if game.index(user)>=0:
+        return render_template("game-go.html", name = name, user = user, game = game)
+    return render_template("game-view.html", name = name, user = user, game = game)

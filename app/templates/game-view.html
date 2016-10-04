@@ -6,9 +6,9 @@
 
     <div class="container">
         <h1 id="gamename">{{ name }}</h1>
-        
+
         <div id="grid">
-            {% for card in grid %}
+            {% for card in game.grid(user) %}
                 {% if card is none %}
                     <div class="car"></div>
                 {% elif card is string %}

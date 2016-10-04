@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %} Game {{ name }} {% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <h1 id="gamename">{{ name }}</h1>
+        <h2 id="instruction">{{ "Pass a card" if game.status==0 else "Guess a card" }}</h2> 
+
+        <div id="grid">
+            {% for card in game.grid(user) %}
+                {% if card is none %}
+                    <div class="car"></div>
+                {% elif card is string %}
+                    <div class="nameplate {{ card[0] }}">{{ card[1:] }} </div>
+                {% else %}
+                    <div class="card {{ "heart" if card.suit=="H" else "spade"  }}">
+                        {{ card.val if card.flipped }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+            
+        <div id="log">
+            <h2 id="logtitle">Actions:</h2>            
+        </div>
+    </div>
+
+{% endblock %}
