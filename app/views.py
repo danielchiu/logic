@@ -56,6 +56,6 @@ def game(name):
     user = None
     if "user" in session:
         user = session["user"]
-    if game.index(user)>=0:
+    if game.index(user)==game.current:
         return render_template("game-go.html", name = name, user = user, game = game)
     return render_template("game-view.html", name = name, user = user, game = game)
