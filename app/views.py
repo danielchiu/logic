@@ -58,7 +58,7 @@ def game(name):
         user = session["user"]
     if game.index(user)==game.current:
         if request.method == "POST":
-            
+           pass # figuring out in act.js
         return render_template("game-go.html", name = name, user = user, game = game)
     if request.method == "POST":
         return redirect("/") # TODO give some error message
