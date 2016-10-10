@@ -48,7 +48,7 @@ def newgame():
         return redirect("/game/"+request.form["name"])
     return render_template("newgame.html")
 
-@views.route("/game/<name>")
+@views.route("/game/<name>", methods = ["GET", "POST"])
 def game(name):
     game = Game.query.filter_by(name=name).first()
     if game is None:
@@ -57,5 +57,9 @@ def game(name):
     if "user" in session:
         user = session["user"]
     if game.index(user)==game.current:
+        if request.method == "POST":
+            
         return render_template("game-go.html", name = name, user = user, game = game)
+    if request.method == "POST":
+        return redirect("/") # TODO give some error message
     return render_template("game-view.html", name = name, user = user, game = game)
