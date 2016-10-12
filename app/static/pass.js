@@ -1,4 +1,4 @@
-$("#act").click(function() {
+$("#pass").click(function() {
     console.log("clicked");
     var which;
     for (var i=57;i<=62;i++) {

@@ -6,7 +6,7 @@
 
     <div class="container">
         <h1 id="gamename">{{ name }}</h1>
-        <h2 id="instruction">{{ "Pass a card" if game.status==0 else "Guess a card" }}</h2> 
+        <h2 id="instruction">Guess a card</h2> 
 
         <div id="grid">
             {% for ind in range(64) %}
@@ -27,10 +27,10 @@
             <h2 id="logtitle">Actions:</h2>            
         </div>
     </div>
-    <input type="submit" id="act" value=Submit>
+    <input type="submit" id="guess" value=Guess>
 
 {% endblock %}
 
 {% block scripts %}
-    <script type="text/javascript" src="/static/act.js"></script>
+    <script type="text/javascript" src="/static/guess.js"></script>
 {% endblock %}

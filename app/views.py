@@ -60,7 +60,10 @@ def game(name):
         if game.state==0:
             if request.method == "POST":
                 print request.form["card"]
-                pass # figuring out in pass.js
+                game.state = 1
+                game.current = (game.current+2)%4 # TODO doesn't change pickletypes?
+                db.session.commit()
+                return render_template("game-view.html", name = name, user = user, game = game)
             return render_template("game-pass.html", name = name, user = user, game = game)
         if game.state==1:
             return render_template("game-guess.html", name = name, user = user, game = game)
