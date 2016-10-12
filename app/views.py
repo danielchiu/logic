@@ -57,10 +57,13 @@ def game(name):
     if "user" in session:
         user = session["user"]
     if game.index(user)==game.current:
-        if request.method == "POST":
-            print request.form["card"]
-            pass # figuring out in act.js
-        return render_template("game-go.html", name = name, user = user, game = game)
+        if game.state==0:
+            if request.method == "POST":
+                print request.form["card"]
+                pass # figuring out in pass.js
+            return render_template("game-pass.html", name = name, user = user, game = game)
+        if game.state==1:
+            return render_template("game-guess.html", name = name, user = user, game = game)
     if request.method == "POST":
         return redirect("/") # TODO give some error message
     return render_template("game-view.html", name = name, user = user, game = game)
