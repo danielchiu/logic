@@ -62,10 +62,16 @@ def game(name):
     user = None
     if "user" in session:
         user = session["user"]
-    if game.state==5:
+    if game.state==4:
         return render_template("game-over.html", name = name, user = user, game = game)
     ind = game.index(user)
     if ind == game.current:
+        if request.method == "POST" and request.form["declare"]:
+            game = refresh(game)
+            game.state = 3
+            db.session.add(game)
+            db.session.commit()
+            return redirect("/game/"+name)
         if game.state==0:
             if request.method == "POST":
                 which = int(request.form["card"])
@@ -119,7 +125,7 @@ def game(name):
                 if success:
                     game.hands[(ind+player)%4].cards[which].flipped = True
                 else:
-                    game.state = 5
+                    game.state = 4
                     game.players = [game.players[(ind+1)%4],game.players[(ind+3)%4]]
                 db.session.add(game)
                 db.session.commit()
@@ -131,12 +137,12 @@ def game(name):
                         done = False
             if done:
                 game = refresh(game)
-                game.state = 5
+                game.state = 4
                 game.players = [game.players[ind],game.players[(ind+2)%4]]
                 db.session.add(game)
                 db.session.commit()
                 return redirect("/game/"+name)
-            return render_template("game-declare.html", name = name, user = user, game = game)
+            return render_template("game-call.html", name = name, user = user, game = game)
     if request.method == "POST":
         return redirect("/") # TODO give some error message
     return render_template("game-base.html", name = name, user = user, game = game)
