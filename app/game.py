@@ -9,15 +9,13 @@ class Card:
         self.suit = suit
         self.name = val+suit
         self.flipped = True if random.randint(1,6)==1 else False # TODO actually do something legit here
+        self.secret = False
 
     def __str__(self):
         if self.flipped:
             return self.name
         else:
             return '_'+self.suit
-
-    def flip(self):
-        self.flipped = True
 
 class Hand:
     def __init__(self, cards):

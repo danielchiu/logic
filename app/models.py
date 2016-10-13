@@ -66,13 +66,15 @@ class Game(db.Model):
         for i in range(6):
             res[57+i] = hands[0].cards[i]
             if number>=0:
-                res[57+i].flip()
+                res[57+i].flipped = True
         res[50] = 'R'+players[0]
         for i in range(6):
             res[55-8*i] = hands[1].cards[i]
         res[46] = 'U'+players[1]
         for i in range(6):
             res[6-i] = hands[2].cards[i]
+            if number>=0 and res[6-i].secret:
+                res[6-i].flipped = True
         res[13] = 'L'+players[2]
         for i in range(6):
             res[8+8*i] = hands[3].cards[i]

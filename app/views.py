@@ -62,7 +62,9 @@ def game(name):
                 print request.form["card"]
                 game.state = 1
                 game.current = (game.current+2)%4 # TODO doesn't change pickletypes?
+                game.hands[game.index(user)].cards[int(request.form["card"])].secret = True
                 db.session.commit()
+                print game.index(user), int(request.form["card"]), game.hands[game.index(user)].cards[int(request.form["card"])].secret
                 return render_template("game-view.html", name = name, user = user, game = game)
             return render_template("game-pass.html", name = name, user = user, game = game)
         if game.state==1:
