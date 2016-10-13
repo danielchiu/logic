@@ -1,0 +1,13 @@
+{% extends "game-base.html" %}
+
+{% block game_above %}
+    <h2 id="instruction">Reveal a card</h2> 
+{% endblock %}
+
+{% block game_below %}
+    <input type="submit" id="reveal" value=Reveal>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="/static/reveal.js"></script>
+{% endblock %}

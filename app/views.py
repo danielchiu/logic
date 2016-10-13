@@ -79,14 +79,34 @@ def game(name):
             if request.method == "POST":
                 player = int(request.form["card"][0])
                 which = int(request.form["card"][1])
+                value = request.form["card"][2]
+                game = refresh(game)
+                success = False
+                if game.hands[(ind+player)%4].cards[which].val == value:
+                    success = True
+                if success:
+                    game.state = 0
+                    game.current = (game.current+3)%4
+                    game.hands[(ind+player)%4].cards[which].flipped = True
+                else:
+                    game.state = 2
+                db.session.add(game)
+                db.session.commit()
+                if success:
+                    return render_template("game-base.html", name = name, user = user, game = game)
+                return render_template("game-reveal.html", name = name, user = user, game = game)
+            return render_template("game-guess.html", name = name, user = user, game = game)
+        if game.state == 2:
+            if request.method == "POST":
+                which = int(request.form["card"])
                 game = refresh(game)
                 game.state = 0
                 game.current = (game.current+3)%4
-                game.hands[(ind+player)%4].cards[which].flipped = True
+                game.hands[ind].cards[which].flipped = True
                 db.session.add(game)
                 db.session.commit()
                 return render_template("game-base.html", name = name, user = user, game = game)
-            return render_template("game-guess.html", name = name, user = user, game = game)
+            return render_template("game-reveal.html", name = name, user = user, game = game)
     if request.method == "POST":
         return redirect("/") # TODO give some error message
     return render_template("game-base.html", name = name, user = user, game = game)
