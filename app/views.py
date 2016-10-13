@@ -65,10 +65,10 @@ def game(name):
                 game.hands[game.index(user)].cards[int(request.form["card"])].secret = True
                 db.session.commit()
                 print game.index(user), int(request.form["card"]), game.hands[game.index(user)].cards[int(request.form["card"])].secret
-                return render_template("game-view.html", name = name, user = user, game = game)
+                return render_template("game-base.html", name = name, user = user, game = game)
             return render_template("game-pass.html", name = name, user = user, game = game)
         if game.state==1:
             return render_template("game-guess.html", name = name, user = user, game = game)
     if request.method == "POST":
         return redirect("/") # TODO give some error message
-    return render_template("game-view.html", name = name, user = user, game = game)
+    return render_template("game-base.html", name = name, user = user, game = game)

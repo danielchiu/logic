@@ -1,34 +1,11 @@
-{% extends "base.html" %}
+{% extends "game-base.html" %}
 
-{% block title %} Game {{ name }} {% endblock %}
+{% block game_above %}
+    <h2 id="instruction">Guess a card</h2> 
+{% endblock %}
 
-{% block content %}
-
-    <div class="container">
-        <h1 id="gamename">{{ name }}</h1>
-        <h2 id="instruction">Guess a card</h2> 
-
-        <div id="grid">
-            {% for ind in range(64) %}
-                {% set card = game.grid(user)[ind] %}
-                {% if card is none %}
-                    <div class="car"></div>
-                {% elif card is string %}
-                    <div class="nameplate {{ card[0] }}">{{ card[1:] }} </div>
-                {% else %}
-                    <div class="card {{ "heart" if card.suit=="H" else "spade"  }} ind{{ ind }} {{ "secret" if card.secret }}">
-                        {{ card.val if card.flipped }}
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-            
-        <div id="log">
-            <h2 id="logtitle">Actions:</h2>            
-        </div>
-    </div>
+{% block game_below %}
     <input type="submit" id="guess" value=Guess>
-
 {% endblock %}
 
 {% block scripts %}
