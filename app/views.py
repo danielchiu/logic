@@ -59,12 +59,14 @@ def game(name):
     if game.index(user)==game.current:
         if game.state==0:
             if request.method == "POST":
-                print request.form["card"]
-                game.state = 1
-                game.current = (game.current+2)%4 # TODO doesn't change pickletypes?
-                game.hands[game.index(user)].cards[int(request.form["card"])].secret = True
+                db.session.delete(game)
                 db.session.commit()
-                print game.index(user), int(request.form["card"]), game.hands[game.index(user)].cards[int(request.form["card"])].secret
+                game = Game(game.name, game.players, game.hands, game.current, game.state) # TODO really hacky way to get around the pickletype issue
+                game.state = 1
+                game.current = (game.current+2)%4
+                game.hands[game.index(user)].cards[int(request.form["card"])].secret = True
+                db.session.add(game)
+                db.session.commit()
                 return render_template("game-base.html", name = name, user = user, game = game)
             return render_template("game-pass.html", name = name, user = user, game = game)
         if game.state==1:

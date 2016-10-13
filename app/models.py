@@ -27,23 +27,29 @@ class Game(db.Model):
     current = db.Column(db.Integer)
     state = db.Column(db.Integer) # 0 means passing, 1 means guessing
 
-    def __init__(self, name, players):
+    def __init__(self, name, players, hands = None, current = None, state = None):
         self.name = name
-
-        deck = []
-        for val in values:
-            for suit in suits:
-                deck.append(Card(val,suit))
-        random.shuffle(deck)
-
-        self.hands = []
-        for i in range(4):
-            self.hands.append(Hand(deck[i*6:i*6+6]))
 
         self.players = players
 
-        self.current = random.randint(0,3)
-        self.state = 0
+        self.hands = hands
+        if hands==None:
+            deck = []
+            for val in values:
+                for suit in suits:
+                    deck.append(Card(val,suit))
+            random.shuffle(deck)
+
+            self.hands = []
+            for i in range(4):
+                self.hands.append(Hand(deck[i*6:i*6+6]))
+
+        self.current = current
+        if self.current==None:
+            self.current = random.randint(0,3)
+        self.state = state
+        if self.state==None:
+            self.state = 0
 
     def __str__(self):
         return '<Game %s: %s %s %s %s>' % (self.name, str(self.players))
