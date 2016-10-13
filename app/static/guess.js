@@ -1,11 +1,19 @@
 $("#guess").click(function() {
     console.log("clicked");
     var which;
-    for (var i=57;i<=62;i++) {
-        var card = $(".ind"+i.toString());
-        if (card.hasClass("clicked_card")) {
-            which = i-57;
-            console.log("card "+(i-57).toString());
+    var player;
+    for (var i=55;i>=15;i-=8) {
+        var card = $(".ind"+i);
+        if (card.hasClass("clicked_card")) { // TODO make sure only one
+            which = (55-i)/8;
+            player = 1;
+        }
+    }
+    for (var i=8;i<=48;i+=8) {
+        var card = $(".ind"+i);
+        if (card.hasClass("clicked_card")) { // TODO make sure only one
+            which = (i-8)/8;
+            player = 3;
         }
     }
     var form = $("<form></form>");
@@ -15,7 +23,7 @@ $("#guess").click(function() {
     var field = $("<input></input>");
     field.attr("type","hidden");
     field.attr("name","card");
-    field.attr("value",which);
+    field.attr("value",player.toString()+which);
     form.append(field);
 
     $(document.body).append(form);

@@ -56,7 +56,7 @@ def game(name):
     user = None
     if "user" in session:
         user = session["user"]
-    if game.index(user)==game.current:
+    if game.index(user) == game.current:
         if game.state==0:
             if request.method == "POST":
                 db.session.delete(game)
@@ -69,7 +69,9 @@ def game(name):
                 db.session.commit()
                 return render_template("game-base.html", name = name, user = user, game = game)
             return render_template("game-pass.html", name = name, user = user, game = game)
-        if game.state==1:
+        if game.state == 1:
+            if request.method == "POST":
+                print request.form["card"]
             return render_template("game-guess.html", name = name, user = user, game = game)
     if request.method == "POST":
         return redirect("/") # TODO give some error message

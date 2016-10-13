@@ -33,7 +33,7 @@ class Game(db.Model):
         self.players = players
 
         self.hands = hands
-        if hands==None:
+        if hands == None:
             deck = []
             for val in values:
                 for suit in suits:
@@ -45,10 +45,10 @@ class Game(db.Model):
                 self.hands.append(Hand(deck[i*6:i*6+6]))
 
         self.current = current
-        if self.current==None:
+        if self.current == None:
             self.current = random.randint(0,3)
         self.state = state
-        if self.state==None:
+        if self.state == None:
             self.state = 0
 
     def __str__(self):
@@ -64,14 +64,14 @@ class Game(db.Model):
         number = self.index(player)
         hands = self.hands
         players = self.players
-        if number>=0:
+        if number >= 0:
             hands = hands[number:]+hands[:number]
             players = players[number:]+players[:number]
 
         res = [None]*64
         for i in range(6):
             res[57+i] = hands[0].cards[i]
-            if number>=0:
+            if number >= 0:
                 res[57+i].flipped = True
         res[50] = 'R'+players[0]
         for i in range(6):
@@ -79,7 +79,7 @@ class Game(db.Model):
         res[46] = 'U'+players[1]
         for i in range(6):
             res[6-i] = hands[2].cards[i]
-            if number>=0 and res[6-i].secret:
+            if number >= 0 and res[6-i].secret:
                 res[6-i].flipped = True
         res[13] = 'L'+players[2]
         for i in range(6):
