@@ -1,0 +1,14 @@
+{% extends "game-base.html" %}
+
+{% block game_above %}
+    <h2 id="instruction">Call every card</h2> 
+{% endblock %}
+
+{% block game_below %}
+    <input type="text" id="value" maxlength="1">
+    <input type="submit" id="call" value=Call>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="/static/declare.js"></script>
+{% endblock %}

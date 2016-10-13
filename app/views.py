@@ -62,6 +62,8 @@ def game(name):
     user = None
     if "user" in session:
         user = session["user"]
+    if game.state==5:
+        return render_template("game-over.html", name = name, user = user, game = game)
     ind = game.index(user)
     if ind == game.current:
         if game.state==0:
@@ -73,7 +75,7 @@ def game(name):
                 game.hands[ind].cards[which].secret = True
                 db.session.add(game)
                 db.session.commit()
-                return render_template("game-base.html", name = name, user = user, game = game)
+                return redirect("/game/"+name)
             return render_template("game-pass.html", name = name, user = user, game = game)
         if game.state == 1:
             if request.method == "POST":
@@ -92,9 +94,7 @@ def game(name):
                     game.state = 2
                 db.session.add(game)
                 db.session.commit()
-                if success:
-                    return render_template("game-base.html", name = name, user = user, game = game)
-                return render_template("game-reveal.html", name = name, user = user, game = game)
+                return redirect("/game/"+name)
             return render_template("game-guess.html", name = name, user = user, game = game)
         if game.state == 2:
             if request.method == "POST":
@@ -105,8 +105,38 @@ def game(name):
                 game.hands[ind].cards[which].flipped = True
                 db.session.add(game)
                 db.session.commit()
-                return render_template("game-base.html", name = name, user = user, game = game)
+                return redirect("/game/"+name)
             return render_template("game-reveal.html", name = name, user = user, game = game)
+        if game.state == 3:
+            if request.method == "POST":
+                player = int(request.form["card"][0])
+                which = int(request.form["card"][1])
+                value = request.form["card"][2]
+                game = refresh(game)
+                success = False
+                if game.hands[(ind+player)%4].cards[which].val == value:
+                    success = True
+                if success:
+                    game.hands[(ind+player)%4].cards[which].flipped = True
+                else:
+                    game.state = 5
+                    game.players = [game.players[(ind+1)%4],game.players[(ind+3)%4]]
+                db.session.add(game)
+                db.session.commit()
+                return redirect("/game/"+name)
+            done = True
+            for i in range(4):
+                for j in range(6):
+                    if not game.hands[i].cards[j].flipped:
+                        done = False
+            if done:
+                game = refresh(game)
+                game.state = 5
+                game.players = [game.players[ind],game.players[(ind+2)%4]]
+                db.session.add(game)
+                db.session.commit()
+                return redirect("/game/"+name)
+            return render_template("game-declare.html", name = name, user = user, game = game)
     if request.method == "POST":
         return redirect("/") # TODO give some error message
     return render_template("game-base.html", name = name, user = user, game = game)
