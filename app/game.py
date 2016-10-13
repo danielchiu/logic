@@ -8,7 +8,7 @@ class Card:
         self.val = val
         self.suit = suit
         self.name = val+suit
-        self.flipped = True if random.randint(1,6)==1 else False # TODO actually do something legit here
+        self.flipped = False 
         self.secret = False
 
     def __str__(self):

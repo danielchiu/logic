@@ -48,6 +48,12 @@ def newgame():
         return redirect("/game/"+request.form["name"])
     return render_template("newgame.html")
 
+def refresh(game):
+    db.session.delete(game)
+    db.session.commit()
+    return Game(game.name, game.players, game.hands, game.current, game.state) # TODO really hacky way to get around the pickletype issue
+
+
 @views.route("/game/<name>", methods = ["GET", "POST"])
 def game(name):
     game = Game.query.filter_by(name=name).first()
@@ -56,22 +62,30 @@ def game(name):
     user = None
     if "user" in session:
         user = session["user"]
-    if game.index(user) == game.current:
+    ind = game.index(user)
+    if ind == game.current:
         if game.state==0:
             if request.method == "POST":
-                db.session.delete(game)
-                db.session.commit()
-                game = Game(game.name, game.players, game.hands, game.current, game.state) # TODO really hacky way to get around the pickletype issue
+                which = int(request.form["card"])
+                game = refresh(game)
                 game.state = 1
                 game.current = (game.current+2)%4
-                game.hands[game.index(user)].cards[int(request.form["card"])].secret = True
+                game.hands[ind].cards[which].secret = True
                 db.session.add(game)
                 db.session.commit()
                 return render_template("game-base.html", name = name, user = user, game = game)
             return render_template("game-pass.html", name = name, user = user, game = game)
         if game.state == 1:
             if request.method == "POST":
-                print request.form["card"]
+                player = int(request.form["card"][0])
+                which = int(request.form["card"][1])
+                game = refresh(game)
+                game.state = 0
+                game.current = (game.current+3)%4
+                game.hands[(ind+player)%4].cards[which].flipped = True
+                db.session.add(game)
+                db.session.commit()
+                return render_template("game-base.html", name = name, user = user, game = game)
             return render_template("game-guess.html", name = name, user = user, game = game)
     if request.method == "POST":
         return redirect("/") # TODO give some error message
