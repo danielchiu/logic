@@ -6,8 +6,8 @@ $("#declare").click(function() {
     
     var field = $("<input></input>");
     field.attr("type","hidden");
-    field.attr("name","declare");
-    field.attr("value",true);
+    field.attr("name","card");
+    field.attr("value","declare");
     form.append(field);
 
     $(document.body).append(form);

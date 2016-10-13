@@ -65,13 +65,14 @@ def game(name):
     if game.state==4:
         return render_template("game-over.html", name = name, user = user, game = game)
     ind = game.index(user)
+    if request.method == "POST" and request.form["card"]=="declare":
+        game = refresh(game)
+        game.state = 3
+        game.current = ind
+        db.session.add(game)
+        db.session.commit()
+        return redirect("/game/"+name)
     if ind == game.current:
-        if request.method == "POST" and request.form["declare"]:
-            game = refresh(game)
-            game.state = 3
-            db.session.add(game)
-            db.session.commit()
-            return redirect("/game/"+name)
         if game.state==0:
             if request.method == "POST":
                 which = int(request.form["card"])
@@ -115,9 +116,11 @@ def game(name):
             return render_template("game-reveal.html", name = name, user = user, game = game)
         if game.state == 3:
             if request.method == "POST":
+                print "HI"
                 player = int(request.form["card"][0])
                 which = int(request.form["card"][1])
                 value = request.form["card"][2]
+                print "HI"
                 game = refresh(game)
                 success = False
                 if game.hands[(ind+player)%4].cards[which].val == value:
@@ -129,6 +132,7 @@ def game(name):
                     game.players = [game.players[(ind+1)%4],game.players[(ind+3)%4]]
                 db.session.add(game)
                 db.session.commit()
+                print "HI"
                 return redirect("/game/"+name)
             done = True
             for i in range(4):
