@@ -27,7 +27,11 @@
             <h2 id="logtitle">Actions:</h2>            
         </div>
 
-        {% block game_below %} {% endblock %}
+        {% block game_below %}
+            {%  if user %}
+                <input type="submit" id="declare" value="Declare">
+            {% endif %}
+        {% endblock %}
     </div>
 
 {% endblock %}
