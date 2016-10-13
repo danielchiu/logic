@@ -116,11 +116,9 @@ def game(name):
             return render_template("game-reveal.html", name = name, user = user, game = game)
         if game.state == 3:
             if request.method == "POST":
-                print "HI"
                 player = int(request.form["card"][0])
                 which = int(request.form["card"][1])
                 value = request.form["card"][2]
-                print "HI"
                 game = refresh(game)
                 success = False
                 if game.hands[(ind+player)%4].cards[which].val == value:
@@ -129,10 +127,11 @@ def game(name):
                     game.hands[(ind+player)%4].cards[which].flipped = True
                 else:
                     game.state = 4
-                    game.players = [game.players[(ind+1)%4],game.players[(ind+3)%4]]
+                    print game.players
+                    game.players+=[game.players[(ind+1)%4],game.players[(ind+3)%4]]
+                    print game.players
                 db.session.add(game)
                 db.session.commit()
-                print "HI"
                 return redirect("/game/"+name)
             done = True
             for i in range(4):
@@ -142,7 +141,7 @@ def game(name):
             if done:
                 game = refresh(game)
                 game.state = 4
-                game.players = [game.players[ind],game.players[(ind+2)%4]]
+                game.players+=[game.players[ind],game.players[(ind+2)%4]]
                 db.session.add(game)
                 db.session.commit()
                 return redirect("/game/"+name)

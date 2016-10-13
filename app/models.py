@@ -63,10 +63,11 @@ class Game(db.Model):
     def grid(self, player):
         number = self.index(player)
         hands = self.hands
-        players = self.players
+        players = self.players[:4]
         if number >= 0:
             hands = hands[number:]+hands[:number]
             players = players[number:]+players[:number]
+        players+=self.players[4:]
 
         res = [None]*64
         for i in range(6):

@@ -120,7 +120,7 @@ li {
     margin-left: 20px;
 }
 
-input[type=text] {
+input[type=text]#value {
     display: block;
     text-decoration: none;
     text-align: center;
