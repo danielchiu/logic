@@ -8,6 +8,7 @@ class Card:
         self.val = val
         self.suit = suit
         self.name = val+suit
+        self.private = False
         self.flipped = False 
         self.secret = False
 

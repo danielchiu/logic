@@ -1,3 +1,7 @@
+body {
+    /* background-color: lightgrey; */
+}
+
 #header {
     width: 1050px;
     overflow: hidden;
@@ -46,19 +50,36 @@ li {
 }
 
 .card, .car, .nameplate {
-    width: 75px; 
-    height: 75px;
+    width: 65px; 
+    height: 65px;
+    margin: 5px;
     float: left;
     border-radius: 10px;
 }
 .card {
-    outline: 1px solid;
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 30px;
 }
+
+.public {
+    box-shadow: 0 0 0 5px cyan;
+}
+.secret {
+    box-shadow: 0 0 0 5px darkgoldenrod;
+}
+.clicked_card {
+    box-shadow: 0 0 0 5px green inset;
+}
+.public.clicked_card {
+    box-shadow: 0 0 0 5px cyan, 0 0 0 5px green inset;
+}
+.secret.clicked_card {
+    box-shadow: 0 0 0 5px darkgoldenrod, 0 0 0 5px green inset;
+}
+
 .nameplate {
     display: flex;
     align-items: flex-end;
@@ -84,17 +105,6 @@ li {
 }
 .spade {
     background-color: black;
-}
-
-.secret {
-    box-shadow: 0 0 0 5px darkgoldenrod inset;
-}
-
-.clicked_card {
-    /*outline: 5px solid;
-    outline-color: green;
-    outline-offset: -5px;*/
-    box-shadow: 0 0 0 5px green inset;
 }
 
 #log {

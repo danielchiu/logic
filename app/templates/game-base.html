@@ -16,8 +16,8 @@
                 {% elif card is string %}
                     <div class="nameplate {{ card[0] }}">{{ card[1:] }} </div>
                 {% else %}
-                    <div class="card {{ "heart" if card.suit=="H" else "spade"  }} ind{{ ind }} {{ "secret" if card.secret }}">
-                        {{ card.val if card.flipped }}
+                <div class="card {{ "heart" if card.suit=="H" else "spade"  }} ind{{ ind }} {{ "secret" if card.secret }} {{ "public" if card.flipped }}">
+                        {{ card.val if card.flipped or card.private }}
                     </div>
                 {% endif %}
             {% endfor %}
