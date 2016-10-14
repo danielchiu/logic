@@ -51,8 +51,7 @@ def newgame():
 def refresh(game):
     db.session.delete(game)
     db.session.commit()
-    return Game(game.name, game.players, game.hands, game.current, game.state) # TODO really hacky way to get around the pickletype issue
-
+    return Game(game.name, game.players, game.hands, game.log, game.current, game.state) # TODO really hacky way to get around the pickletype issue
 
 @views.route("/game/<name>", methods = ["GET", "POST"])
 def game(name):
@@ -69,6 +68,7 @@ def game(name):
         game = refresh(game)
         game.state = 3
         game.current = ind
+        game.log.append(user+" declared!")
         db.session.add(game)
         db.session.commit()
         return redirect("/game/"+name)
@@ -80,6 +80,7 @@ def game(name):
                 game.state = 1
                 game.current = (game.current+2)%4
                 game.hands[ind].cards[which].secret = True
+                game.log.append(user+" passed card "+str(which))
                 db.session.add(game)
                 db.session.commit()
                 return redirect("/game/"+name)
@@ -97,8 +98,10 @@ def game(name):
                     game.state = 0
                     game.current = (game.current+3)%4
                     game.hands[(ind+player)%4].cards[which].flipped = True
+                    game.log.append(user+" correctly guessed "+game.players[(ind+player)%4]+"'s card "+str(which))
                 else:
                     game.state = 2
+                    game.log.append(user+" incorrectly guessed "+game.players[(ind+player)%4]+"'s card "+str(which))
                 db.session.add(game)
                 db.session.commit()
                 return redirect("/game/"+name)
@@ -110,6 +113,7 @@ def game(name):
                 game.state = 0
                 game.current = (game.current+3)%4
                 game.hands[ind].cards[which].flipped = True
+                game.log.append(user+" revealed card "+str(which))
                 db.session.add(game)
                 db.session.commit()
                 return redirect("/game/"+name)
@@ -125,11 +129,13 @@ def game(name):
                     success = True
                 if success:
                     game.hands[(ind+player)%4].cards[which].flipped = True
+                    game.log.append(user+" correctly guessed "+game.players[(ind+player)%4]+"'s card "+str(which))
                 else:
                     game.state = 4
-                    print game.players
                     game.players+=[game.players[(ind+1)%4],game.players[(ind+3)%4]]
-                    print game.players
+                    game.log.append(user+" incorrectly guessed "+game.players[(ind+player)%4]+"'s card "+str(which))
+                    game.log.append(user+" made a mistake while declaring!")
+                    game.log.append(game.players[(ind+1)%4]+" and "+game.players[(ind+3)%4]+" win!")
                 db.session.add(game)
                 db.session.commit()
                 return redirect("/game/"+name)
@@ -142,6 +148,8 @@ def game(name):
                 game = refresh(game)
                 game.state = 4
                 game.players+=[game.players[ind],game.players[(ind+2)%4]]
+                game.log.append(user+" has successfully named every card!")
+                game.log.append(user+" and "+game.players[(ind+2)%4]+" win!")
                 db.session.add(game)
                 db.session.commit()
                 return redirect("/game/"+name)

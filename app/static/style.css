@@ -117,10 +117,14 @@ li {
     outline: 5px solid;
     outline-offset: -5px;
     float: left;
+    overflow: auto;
 }
-
 #logtitle {
     margin-left: 20px;
+}
+.action {
+    margin-left: 20px;
+    margin-bottom: 10px;
 }
 
 input[type=text]#value {

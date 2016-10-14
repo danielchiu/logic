@@ -24,10 +24,11 @@ class Game(db.Model):
     name = db.Column(db.String, index=True, unique=True)
     hands = db.Column(db.PickleType)
     players = db.Column(db.PickleType)
+    log = db.Column(db.PickleType)
     current = db.Column(db.Integer)
     state = db.Column(db.Integer) # 0 means passing, 1 means guessing
 
-    def __init__(self, name, players, hands = None, current = None, state = None):
+    def __init__(self, name, players, hands = None, log = [], current = random.randint(0,3), state = 0):
         self.name = name
 
         self.players = players
@@ -44,12 +45,9 @@ class Game(db.Model):
             for i in range(4):
                 self.hands.append(Hand(deck[i*6:i*6+6]))
 
+        self.log = log
         self.current = current
-        if self.current == None:
-            self.current = random.randint(0,3)
         self.state = state
-        if self.state == None:
-            self.state = 0
 
     def __str__(self):
         return '<Game %s: %s %s %s %s>' % (self.name, str(self.players))

@@ -25,6 +25,9 @@
             
         <div id="log">
             <h2 id="logtitle">Actions:</h2>            
+            {% for action in game.log %}
+                <div class="action">{{ action }}</div>
+            {% endfor %}
         </div>
 
         {% block game_below %}
