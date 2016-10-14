@@ -3,6 +3,24 @@
 {% block game_above %}
     <h2 id="instruction">GAME OVER - WINNERS: {{ game.players[4] }} and {{ game.players[5] }}</h2> 
 {% endblock %}
+        
+{% block grid %}
+<div id="grid">
+    {% for ind in range(64) %}
+        {% set card = game.grid(user)[ind] %}
+        {% if card is none %}
+            <div class="car"></div>
+        {% elif card is string %}
+            <div class="nameplate {{ card[0] }} {{ "current" if game.players[game.current]==card[1:] }}">{{ card[1:] }} </div>
+        {% else %}
+            <div class="card {{ "heart" if card.suit=="H" else "spade"  }} ind{{ ind }} {{ "secret" if card.secret }} {{ "public" if card.flipped }}
+                        {{ "endshow" if not card.flipped and not card.private }}">
+                {{ card.val }}
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}
 
 {% block game_below %}
 {% endblock %}

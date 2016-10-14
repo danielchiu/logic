@@ -80,6 +80,20 @@ li {
     box-shadow: 0 0 0 5px darkgoldenrod, 0 0 0 5px green inset;
 }
 
+.endshow {
+    color: transparent;
+}
+.endshow:hover {
+    color: white;
+}
+
+.heart {
+    background-color: red;
+}
+.spade {
+    background-color: black;
+}
+
 .nameplate {
     display: flex;
     align-items: flex-end;
@@ -101,13 +115,6 @@ li {
 }
 .D {
     transform: rotate(90deg)
-}
-
-.heart {
-    background-color: red;
-}
-.spade {
-    background-color: black;
 }
 
 #log {

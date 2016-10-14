@@ -101,7 +101,7 @@ def game(name):
                     game.log.append(user+" correctly guessed "+game.players[(ind+player)%4]+"'s card "+str(which))
                 else:
                     game.state = 2
-                    game.log.append(user+" incorrectly guessed "+game.players[(ind+player)%4]+"'s card "+str(which))
+                    game.log.append(user+" incorrectly guessed "+game.players[(ind+player)%4]+"'s card "+str(which)+" as "+value)
                 db.session.add(game)
                 db.session.commit()
                 return redirect("/game/"+name)
@@ -133,7 +133,7 @@ def game(name):
                 else:
                     game.state = 4
                     game.players+=[game.players[(ind+1)%4],game.players[(ind+3)%4]]
-                    game.log.append(user+" incorrectly guessed "+game.players[(ind+player)%4]+"'s card "+str(which))
+                    game.log.append(user+" incorrectly guessed "+game.players[(ind+player)%4]+"'s card "+str(which)+" as "+value)
                     game.log.append(user+" made a mistake while declaring!")
                     game.log.append(game.players[(ind+1)%4]+" and "+game.players[(ind+3)%4]+" win!")
                 db.session.add(game)

@@ -8,6 +8,7 @@
         <h1 id="gamename">{{ name }}</h1>
         {% block game_above %} {% endblock %}
 
+        {% block grid %}
         <div id="grid">
             {% for ind in range(64) %}
                 {% set card = game.grid(user)[ind] %}
@@ -16,12 +17,13 @@
                 {% elif card is string %}
                     <div class="nameplate {{ card[0] }} {{ "current" if game.players[game.current]==card[1:] }}">{{ card[1:] }} </div>
                 {% else %}
-                <div class="card {{ "heart" if card.suit=="H" else "spade"  }} ind{{ ind }} {{ "secret" if card.secret }} {{ "public" if card.flipped }}">
+                    <div class="card {{ "heart" if card.suit=="H" else "spade"  }} ind{{ ind }} {{ "secret" if card.secret }} {{ "public" if card.flipped }}">
                         {{ card.val if card.flipped or card.private }}
                     </div>
                 {% endif %}
             {% endfor %}
         </div>
+        {% endblock %}
             
         <div id="log">
             <h2 id="logtitle">Actions:</h2>            
