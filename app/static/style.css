@@ -64,20 +64,26 @@ li {
     font-size: 30px;
 }
 
+.secret {
+    box-shadow: 0 0 0 5px darkgoldenrod;
+}
 .public {
     box-shadow: 0 0 0 5px cyan;
 }
-.secret {
-    box-shadow: 0 0 0 5px darkgoldenrod;
+.secret.public {
+    box-shadow: 0 0 0 3px darkgoldenrod, 0 0 0 5px cyan;
 }
 .clicked_card {
     box-shadow: 0 0 0 5px green inset;
 }
+.secret.clicked_card {
+    box-shadow: 0 0 0 5px darkgoldenrod, 0 0 0 5px green inset;
+}
 .public.clicked_card {
     box-shadow: 0 0 0 5px cyan, 0 0 0 5px green inset;
 }
-.secret.clicked_card {
-    box-shadow: 0 0 0 5px darkgoldenrod, 0 0 0 5px green inset;
+.secret.public.clicked_card {
+    box-shadow: 0 0 0 3px darkgoldenrod, 0 0 0 5px cyan, 0 0 0 5px green inset;
 }
 
 .endshow {
