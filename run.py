@@ -5,4 +5,4 @@ db.create_all()
 
 app.register_blueprint(views) # TODO forgot what this does
 
-app.run(debug=True)
+app.run(host="0.0.0.0", port=8000)
