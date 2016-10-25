@@ -21,13 +21,13 @@ def login():
         else:
             # TODO check username for length
             session["user"] = user.username # TODO is there a way to make it whole User class
-            return redirect("/")
+            return redirect(url_for("views.homepage"))
     return render_template("login.html",error = error)
 
 @views.route("/logout")
 def logout():
     session.pop("user", None)
-    return redirect("/")
+    return redirect(url_for("views.homepage"))
 
 @views.route("/register", methods = ["GET", "POST"])
 def register():
@@ -35,7 +35,7 @@ def register():
         user = User(request.form["username"])
         db.session.add(user)
         db.session.commit()
-        return redirect("/")
+        return redirect(url_for("views.homepage"))
     return render_template("register.html")
 
 @views.route("/newgame", methods = ["GET", "POST"])
@@ -45,7 +45,7 @@ def newgame():
         # TODO make sure all the above are valid
         db.session.add(game)
         db.session.commit()
-        return redirect("/game/"+request.form["name"])
+        return redirect(url_for("views.game",name = request.form["name"]))
     return render_template("newgame.html")
 
 def refresh(game):
@@ -57,7 +57,7 @@ def refresh(game):
 def game(name):
     game = Game.query.filter_by(name=name).first()
     if game is None:
-        return redirect("/") # TODO give some error message
+        return redirect(url_for("views.homepage")) # TODO give some error message
     user = None
     if "user" in session:
         user = session["user"]
@@ -71,7 +71,7 @@ def game(name):
         game.log.append(user+" declared!")
         db.session.add(game)
         db.session.commit()
-        return redirect("/game/"+name)
+        return redirect(url_for("views.game",name = name))
     if ind == game.current:
         if game.state==0:
             if request.method == "POST":
@@ -83,7 +83,7 @@ def game(name):
                 game.log.append(user+" passed card "+str(which))
                 db.session.add(game)
                 db.session.commit()
-                return redirect("/game/"+name)
+                return redirect(url_for("views.game",name = name))
             return render_template("game-pass.html", name = name, user = user, game = game)
         if game.state == 1:
             if request.method == "POST":
@@ -104,7 +104,7 @@ def game(name):
                     game.log.append(user+" incorrectly guessed "+game.players[(ind+player)%4]+"'s card "+str(which)+" as "+value)
                 db.session.add(game)
                 db.session.commit()
-                return redirect("/game/"+name)
+                return redirect(url_for("views.game",name = name))
             return render_template("game-guess.html", name = name, user = user, game = game)
         if game.state == 2:
             if request.method == "POST":
@@ -116,7 +116,7 @@ def game(name):
                 game.log.append(user+" revealed card "+str(which))
                 db.session.add(game)
                 db.session.commit()
-                return redirect("/game/"+name)
+                return redirect(url_for("views.game",name = name))
             return render_template("game-reveal.html", name = name, user = user, game = game)
         if game.state == 3:
             if request.method == "POST":
@@ -138,7 +138,7 @@ def game(name):
                     game.log.append(game.players[(ind+1)%4]+" and "+game.players[(ind+3)%4]+" win!")
                 db.session.add(game)
                 db.session.commit()
-                return redirect("/game/"+name)
+                return redirect(url_for("views.game",name = name))
             done = True
             for i in range(4):
                 for j in range(6):
@@ -152,8 +152,8 @@ def game(name):
                 game.log.append(user+" and "+game.players[(ind+2)%4]+" win!")
                 db.session.add(game)
                 db.session.commit()
-                return redirect("/game/"+name)
+                return redirect(url_for("views.game",name = name))
             return render_template("game-call.html", name = name, user = user, game = game)
     if request.method == "POST":
-        return redirect("/") # TODO give some error message
+        return redirect(url_for("views.homepage")) # TODO give some error message
     return render_template("game-base.html", name = name, user = user, game = game)

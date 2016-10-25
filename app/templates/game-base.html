@@ -33,7 +33,7 @@
         </div>
 
         {% block game_below %}
-            {%  if user %}
+            {%  if game.index(user)>=0 %}
                 <input type="submit" id="declare" value="Declare">
             {% endif %}
         {% endblock %}
