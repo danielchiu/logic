@@ -10,7 +10,7 @@ $("#pass").click(function() {
     }
     var form = $("<form></form>");
     form.attr("method","post");
-    form.attr("action","/game/"+$("#gamename").text());
+    form.attr("action","{{ url_for(\"game\", name = "+$("#gamename").text()+") }}");
     
     var field = $("<input></input>");
     field.attr("type","hidden");
