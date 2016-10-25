@@ -3,7 +3,7 @@
 <html lang="en">
     <head>
         {% block head %}
-        <link rel="stylesheet" href="/static/style.css">
+        <link rel="stylesheet" href={{ url_for("static", filename = "style.css") }}>
 
         <title> {% block title %}{% endblock %} - Logic</title>
         {% endblock %}
@@ -14,15 +14,15 @@
             <h1 id="logo">Logic</h1>
 
             <ul id="navbar">
-                <li><a class="navlink" href="/">Home</a></li>
-                <li><a class="navlink" href="/games">Game</a></li>
-                <li><a class="navlink" href="/newgame">New Game</a></li>
+                <li><a class="navlink" href={{ url_for("views.homepage") }}>Home</a></li>
+                {# <li><a class="navlink" href={{ url_for("views.games") }}>Games</a></li> #}
+                <li><a class="navlink" href={{ url_for("views.newgame") }}>New Game</a></li>
 
                 {% if session["user"] %}
-                    <li><a class="navlink" href="/logout">Logout</a></li>
+                    <li><a class="navlink" href={{ url_for("views.logout") }}>Logout</a></li>
                 {% else %}
-                    <li><a class="navlink" href="/login">Login</a></li>
-                    <li><a class="navlink" href="/register">Register</a></li>
+                    <li><a class="navlink" href={{ url_for("views.login") }}>Login</a></li>
+                    <li><a class="navlink" href={{ url_for("views.register") }}>Register</a></li>
                 {% endif %}
             </ul>
         </div>
@@ -36,7 +36,7 @@
         </div>
 
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-        <script type="text/javascript" src="/static/base.js"></script>
+        <script type="text/javascript" src={{ url_for("static", filename = "base.js") }}></script>
         {% block scripts %}
         {% endblock %}
     </body>

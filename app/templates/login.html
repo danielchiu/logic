@@ -7,7 +7,7 @@
         <p class="error">ERROR: {{ error }}</p>
     {% endif %}
     
-    <form action="/login" method=post>
+    <form action={{ url_for("views.login") }} method=post>
         <d1>
             <dt>Username:
             <dd><input type=text name=username>
