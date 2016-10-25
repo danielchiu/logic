@@ -11,5 +11,5 @@
 
 {% block scripts %}
     {{ super() }}
-    <script type="text/javascript" src={{ url_for("static", filename = "pass.js") }}></script>
+    <script type="text/javascript" src="{{ url_for("static", filename = "pass.js") }}"></script>
 {% endblock %}
