@@ -1,11 +1,14 @@
 from flask import * # TODO actually look at imports
 from models import User, Game
 from app import db
+import logging
 
 views = Blueprint("views",__name__)
+logging.basicConfig(filename = "/home/chiud/logic/debug/error.log")
 
 @views.route("/")
 def homepage():
+    logging.error("this is an error")
     user = None
     if "user" in session:
         user = session["user"]
