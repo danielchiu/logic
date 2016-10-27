@@ -4,7 +4,10 @@ from app import db
 import logging
 
 views = Blueprint("views",__name__)
-logging.basicConfig(filename = "/home/chiud/logic/debug/error.log")
+try:
+    logging.basicConfig(filename = "/home/chiud/logic/debug/error.log")
+except IOError:
+    pass
 
 @views.route("/")
 def homepage():
@@ -71,6 +74,8 @@ def game(name):
         game = refresh(game)
         game.state = 3
         game.current = ind
+        for i in range(6):
+            game.hands[ind].cards[i].flipped = True
         game.log.append(user+" declared!")
         db.session.add(game)
         db.session.commit()
