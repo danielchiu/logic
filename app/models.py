@@ -16,7 +16,7 @@ class User(db.Model):
     def __init__(self, username):
         self.username = username
 
-    def __str___(self):
+    def __str__(self):
         return '<User %s>' % self.username
 
 class Game(db.Model):
