@@ -1,8 +1,6 @@
 random notes:
 
->> export FLASK_DEBUG=1
-
-to set debug mode
+app.run(debug = True) => set debug mode
 
 remember to ctrl-shift-R to reset cache
 
