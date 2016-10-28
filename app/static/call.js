@@ -1,5 +1,4 @@
 $("#call").click(function() {
-    console.log("clicked");
     var which;
     var player;
     for (var i=55;i>=15;i-=8) {

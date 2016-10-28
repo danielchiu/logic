@@ -3,9 +3,9 @@
 <html lang="en">
     <head>
         {% block head %}
-        <link rel="stylesheet" href="{{ url_for("static", filename = "style.css") }}">
+            <link rel="stylesheet" href="{{ url_for("static", filename = "style.css") }}">
 
-        <title> {% block title %}{% endblock %} - Logic</title>
+            <title> {% block title %}{% endblock %} - Logic</title>
         {% endblock %}
     </head>
 
@@ -31,13 +31,12 @@
 
         <div id="footer">
             {% block footer %}
-            {# nothing here #}
+                {# nothing here #}
             {% endblock %}
         </div>
 
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
         <script type="text/javascript" src="{{ url_for("static", filename = "base.js") }}"></script>
-        {% block scripts %}
-        {% endblock %}
+        {% block scripts %}{% endblock %}
     </body>
 </html>

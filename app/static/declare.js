@@ -1,5 +1,4 @@
 $("#declare").click(function() {
-    console.log("clicked");
     var form = $("<form></form>");
     form.attr("method","post");
     

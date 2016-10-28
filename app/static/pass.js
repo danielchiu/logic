@@ -1,5 +1,4 @@
 $("#pass").click(function() {
-    console.log("clicked");
     var which;
     for (var i=57;i<=62;i++) {
         var card = $(".ind"+i);
