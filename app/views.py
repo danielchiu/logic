@@ -115,7 +115,7 @@ def game(name):
                 game = refresh(game)
                 game.state = 1
                 game.current = (game.current+2)%4
-                game.hands[ind].cards[which].secret = True
+                game.hands[ind].cards[which-1].secret = True
                 game.log.append(user+" passed card "+str(which))
                 db.session.add(game)
                 db.session.commit()
@@ -128,12 +128,12 @@ def game(name):
                 value = request.form["card"][2]
                 game = refresh(game)
                 success = False
-                if game.hands[(ind+player)%4].cards[which].val == value:
+                if game.hands[(ind+player)%4].cards[which-1].val == value:
                     success = True
                 if success:
                     game.state = 0
                     game.current = (game.current+3)%4
-                    game.hands[(ind+player)%4].cards[which].flipped = True
+                    game.hands[(ind+player)%4].cards[which-1].flipped = True
                     game.log.append(user+" correctly guessed "+game.players[(ind+player)%4]+"'s card "+str(which))
                 else:
                     game.state = 2
@@ -148,7 +148,7 @@ def game(name):
                 game = refresh(game)
                 game.state = 0
                 game.current = (game.current+3)%4
-                game.hands[ind].cards[which].flipped = True
+                game.hands[ind].cards[which-1].flipped = True
                 game.log.append(user+" revealed card "+str(which))
                 db.session.add(game)
                 db.session.commit()
@@ -161,10 +161,10 @@ def game(name):
                 value = request.form["card"][2]
                 game = refresh(game)
                 success = False
-                if game.hands[(ind+player)%4].cards[which].val == value:
+                if game.hands[(ind+player)%4].cards[which-1].val == value:
                     success = True
                 if success:
-                    game.hands[(ind+player)%4].cards[which].flipped = True
+                    game.hands[(ind+player)%4].cards[which-1].flipped = True
                     game.log.append(user+" correctly guessed "+game.players[(ind+player)%4]+"'s card "+str(which))
                 else:
                     game.state = 4

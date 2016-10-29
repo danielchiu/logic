@@ -1,12 +1,11 @@
 $("#pass").click(function() {
-    var which;
-    for (var i=57;i<=62;i++) {
-        var card = $(".ind"+i);
-        if (card.hasClass("clicked_card")) { // TODO make sure only one
-            which = i-57;
-            console.log("card "+(i-57));
-        }
+    var ind = select();
+    if (!ind || !south(ind)) {
+        return;
     }
+
+    var which = south(ind);
+
     var form = $("<form></form>");
     form.attr("method","post");
     

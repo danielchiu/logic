@@ -1,27 +1,23 @@
 $("#call").click(function() {
-    var which;
-    var player;
-    for (var i=55;i>=15;i-=8) {
-        var card = $(".ind"+i);
-        if (card.hasClass("clicked_card")) { // TODO make sure only one
-            which = (55-i)/8;
-            player = 1;
-        }
+    var ind = select();
+    if (!ind || south(ind) || getcard(ind).hasClass("public")) {
+        return;
     }
-    for (var i=6;i>=1;i--) {
-        var card = $(".ind"+i);
-        if (card.hasClass("clicked_card")) { // TODO make sure only one
-            which = 6-i;
-            player = 2;
-        }
+
+    var which, player;
+    if (east(ind)) {
+        which = east(ind);
+        player = 1;
     }
-    for (var i=8;i<=48;i+=8) {
-        var card = $(".ind"+i);
-        if (card.hasClass("clicked_card")) { // TODO make sure only one
-            which = (i-8)/8;
-            player = 3;
-        }
+    if (north(ind)) {
+        which = north(ind);
+        player = 2;
     }
+    if (west(ind)) {
+        which = west(ind);
+        player = 3;
+    }
+
     var value = $("#value").val();
     
     var form = $("<form></form>");
