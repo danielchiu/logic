@@ -28,7 +28,7 @@ class Game(db.Model):
     current = db.Column(db.Integer)
     state = db.Column(db.Integer) # 0 means passing, 1 means guessing
 
-    def __init__(self, name, players, hands = None, log = [], current = random.randint(0,3), state = 0):
+    def __init__(self, name, players, hands = None, log = [], current = random.randint(0,3), state = -15): # TODO maybe just add a field
         self.name = name
 
         self.players = players

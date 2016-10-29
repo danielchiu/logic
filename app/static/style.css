@@ -93,6 +93,9 @@ li {
     color: white;
 }
 
+.unknown {
+    background-color: grey;
+}
 .heart {
     background-color: red;
 }

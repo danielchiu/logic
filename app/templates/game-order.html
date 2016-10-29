@@ -1,0 +1,36 @@
+{% extends "game-base.html" %}
+
+{% block game_above %}
+    {% if not done %}
+        <h2 id="instruction">Order your cards</h2> 
+    {% endif %}
+{% endblock %}
+
+{% block grid %}
+<div id="grid">
+    {% for ind in range(64) %}
+        {% set card = game.grid(user)[ind] %}
+        {% if card is none %}
+            <div class="car"></div>
+        {% elif card is string %}
+            <div class="nameplate {{ card[0] }}">{{ card[1:] }} </div>
+        {% else %}
+            <div class="card {{ "unknown" if not card.private else "heart" if card.suit=="H" else "spade"  }} ind{{ ind }}">
+                {{ card.val if card.private else "?" }}
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}
+    
+{% block game_below %}
+    {% if not done %}    
+        <input type="submit" id="order" value=Order>
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+    {% if not done %}
+        <script type="text/javascript" src="{{ url_for("static", filename = "order.js") }}"></script>
+    {% endif %}
+{% endblock %}

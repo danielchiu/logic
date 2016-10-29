@@ -11,7 +11,7 @@ except IOError:
 
 @views.route("/")
 def homepage():
-    logging.error("this is an error")
+    # logging.error("this is an error")
     user = None
     if "user" in session:
         user = session["user"]
@@ -41,7 +41,7 @@ def register():
     if request.method == "POST":
         user = User.query.filter_by(username=request.form["username"]).first()
         if user is not None:
-            error = "The user %s already exists" % user.username
+            error = "The user \"%s\" already exists" % user.username
         else:
             user = User(request.form["username"])
             db.session.add(user)
@@ -55,7 +55,7 @@ def newgame():
     if request.method == "POST":
         game = Game.query.filter_by(name=request.form["name"]).first()
         if game is not None:
-            error = "The game %s already exists" % game.name
+            error = "The game \"%s\" already exists" % game.name
         else:
             game = Game(request.form["name"],[request.form["p1"],request.form["p2"],request.form["p3"],request.form["p4"]])
             # TODO make sure all the above are valid
@@ -77,9 +77,27 @@ def game(name):
     user = None
     if "user" in session:
         user = session["user"]
+    ind = game.index(user)
+
     if game.state==4:
         return render_template("game-over.html", name = name, user = user, game = game)
-    ind = game.index(user)
+    if game.state<0:
+        if request.method == "POST":
+            swapped = request.form["swapped"]
+            game = refresh(game)
+            for val in swapped:
+                for i in range(6):
+                    if game.hands[ind].cards[i].val == val:
+                        game.hands[ind].cards[i], game.hands[ind].cards[i+1] = game.hands[ind].cards[i+1], game.hands[ind].cards[i]
+                        break
+            game.state+=(1<<ind)
+            game.log.append(user+" has finished ordering cards")
+            db.session.add(game)
+            db.session.commit()
+            return redirect(url_for("views.game", name = name))
+        done = (ind==-1 or ((-game.state)&(1<<ind))==0)
+        return render_template("game-order.html", name = name, user = user, game = game, done = done)
+
     if request.method == "POST" and request.form["card"]=="declare":
         game = refresh(game)
         game.state = 3
@@ -101,7 +119,7 @@ def game(name):
                 game.log.append(user+" passed card "+str(which))
                 db.session.add(game)
                 db.session.commit()
-                return redirect(url_for("views.game",name = name))
+                return redirect(url_for("views.game", name = name))
             return render_template("game-pass.html", name = name, user = user, game = game)
         if game.state == 1:
             if request.method == "POST":
@@ -122,7 +140,7 @@ def game(name):
                     game.log.append(user+" incorrectly guessed "+game.players[(ind+player)%4]+"'s card "+str(which)+" as "+value)
                 db.session.add(game)
                 db.session.commit()
-                return redirect(url_for("views.game",name = name))
+                return redirect(url_for("views.game", name = name))
             return render_template("game-guess.html", name = name, user = user, game = game)
         if game.state == 2:
             if request.method == "POST":
@@ -134,7 +152,7 @@ def game(name):
                 game.log.append(user+" revealed card "+str(which))
                 db.session.add(game)
                 db.session.commit()
-                return redirect(url_for("views.game",name = name))
+                return redirect(url_for("views.game", name = name))
             return render_template("game-reveal.html", name = name, user = user, game = game)
         if game.state == 3:
             if request.method == "POST":
@@ -156,7 +174,7 @@ def game(name):
                     game.log.append(game.players[(ind+1)%4]+" and "+game.players[(ind+3)%4]+" win!")
                 db.session.add(game)
                 db.session.commit()
-                return redirect(url_for("views.game",name = name))
+                return redirect(url_for("views.game", name = name))
             done = True
             for i in range(4):
                 for j in range(6):
@@ -170,7 +188,7 @@ def game(name):
                 game.log.append(user+" and "+game.players[(ind+2)%4]+" win!")
                 db.session.add(game)
                 db.session.commit()
-                return redirect(url_for("views.game",name = name))
+                return redirect(url_for("views.game", name = name))
             return render_template("game-call.html", name = name, user = user, game = game)
     if request.method == "POST":
         return redirect(url_for("views.homepage")) # TODO give some error message
