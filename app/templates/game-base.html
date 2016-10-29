@@ -27,7 +27,7 @@
             
         <div id="log">
             <h2 id="logtitle">Actions:</h2>            
-            {% for action in game.log %}
+            {% for action in game.log[::-1] %}
                 <div class="action">{{ action }}</div>
             {% endfor %}
         </div>
