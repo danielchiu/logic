@@ -23,7 +23,7 @@ def login():
     if request.method == "POST":
         user = User.query.filter_by(username=request.form["username"]).first()
         if user is None:
-            error = "No such user exists"
+            error = "No such user \"%s\" exists" % request.form["username"]
         else:
             # TODO check username for length
             session["user"] = user.username # TODO is there a way to make it whole User class
@@ -37,22 +37,32 @@ def logout():
 
 @views.route("/register", methods = ["GET", "POST"])
 def register():
+    error = None
     if request.method == "POST":
-        user = User(request.form["username"])
-        db.session.add(user)
-        db.session.commit()
-        return redirect(url_for("views.homepage"))
-    return render_template("register.html")
+        user = User.query.filter_by(username=request.form["username"]).first()
+        if user is not None:
+            error = "The user %s already exists" % user.username
+        else:
+            user = User(request.form["username"])
+            db.session.add(user)
+            db.session.commit()
+            return redirect(url_for("views.homepage"))
+    return render_template("register.html", error = error)
 
 @views.route("/newgame", methods = ["GET", "POST"])
 def newgame():
+    error = None
     if request.method == "POST":
-        game = Game(request.form["name"],[request.form["p1"],request.form["p2"],request.form["p3"],request.form["p4"]])
-        # TODO make sure all the above are valid
-        db.session.add(game)
-        db.session.commit()
-        return redirect(url_for("views.game",name = request.form["name"]))
-    return render_template("newgame.html")
+        game = Game.query.filter_by(name=request.form["name"]).first()
+        if game is not None:
+            error = "The game %s already exists" % game.name
+        else:
+            game = Game(request.form["name"],[request.form["p1"],request.form["p2"],request.form["p3"],request.form["p4"]])
+            # TODO make sure all the above are valid
+            db.session.add(game)
+            db.session.commit()
+            return redirect(url_for("views.game", name = request.form["name"]))
+    return render_template("newgame.html", error = error)
 
 def refresh(game):
     db.session.delete(game)
