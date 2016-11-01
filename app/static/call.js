@@ -29,6 +29,8 @@ $("#call").click(function() {
     field.attr("value",player.toString()+which+value);
     form.append(field);
 
+    form.append(getLogLen());
+
     $(document.body).append(form);
     form.submit();
 });

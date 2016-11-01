@@ -79,6 +79,10 @@ def game(name):
         user = session["user"]
     ind = game.index(user)
 
+    if request.method == "POST":
+        if int(request.form["loglen"]) != len(game.log):
+            return redirect(url_for("views.game", name = name))
+
     if game.state==4:
         return render_template("game-over.html", name = name, user = user, game = game)
     if game.state<0:

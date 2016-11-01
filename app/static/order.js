@@ -26,6 +26,14 @@ $(".card").click(function() {
     }
 });
 
+function getLogLen() {
+    var field = $("<input></input>");
+    field.attr("type","hidden");
+    field.attr("name","loglen");
+    field.attr("value",$("#log").children().length-1);
+    return field;
+}
+
 $("#order").click(function() {
     var form = $("<form></form>");
     form.attr("method","post");
@@ -35,6 +43,8 @@ $("#order").click(function() {
     field.attr("name","swapped");
     field.attr("value",swapped);
     form.append(field);
+
+    form.append(getLogLen());
 
     $(document.body).append(form);
     form.submit();

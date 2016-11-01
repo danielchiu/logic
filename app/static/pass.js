@@ -15,6 +15,8 @@ $("#pass").click(function() {
     field.attr("value",which);
     form.append(field);
 
+    form.append(getLogLen());
+
     $(document.body).append(form);
     form.submit();
 });

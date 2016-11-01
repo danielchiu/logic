@@ -8,6 +8,8 @@ $("#declare").click(function() {
     field.attr("value","declare");
     form.append(field);
 
+    form.append(getLogLen());
+
     $(document.body).append(form);
     form.submit();
 });

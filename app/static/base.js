@@ -62,3 +62,11 @@ function getWest() {
     }
     return res;
 }
+
+function getLogLen() {
+    var field = $("<input></input>");
+    field.attr("type","hidden");
+    field.attr("name","loglen");
+    field.attr("value",$("#log").children().length-1);
+    return field;
+}
