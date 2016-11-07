@@ -70,3 +70,9 @@ function getLogLen() {
     field.attr("value",$("#log").children().length-1);
     return field;
 }
+
+function validate(num) {
+    if (num=='A' || num=='T' || num=='J' || num=='Q') return true;
+    if ("2"<=num && num<="9") return true;
+    return false;
+}

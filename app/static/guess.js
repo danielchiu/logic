@@ -18,6 +18,7 @@ $("#guess").click(function() {
     }
 
     var value = $("#value").val();
+    if (!validate(value)) return;
     
     var form = $("<form></form>");
     form.attr("method","post");
