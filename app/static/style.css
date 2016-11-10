@@ -3,7 +3,7 @@ body {
 }
 
 #header {
-    width: 1050px;
+    width: 1550px;
     overflow: hidden;
 }
 #logo {
@@ -36,6 +36,7 @@ li {
 .container {
     width: 1050px;
     overflow: hidden;
+    margin: auto;
 }
 
 #gamename {
