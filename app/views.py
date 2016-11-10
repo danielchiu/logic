@@ -15,7 +15,7 @@ def homepage():
     user = None
     if "user" in session:
         user = session["user"]
-    return render_template("homepage.html",user=user)
+    return render_template("homepage.html", user = user)
 
 @views.route("/login", methods = ["GET", "POST"])
 def login():
@@ -28,7 +28,7 @@ def login():
             # TODO check username for length
             session["user"] = user.username # TODO is there a way to make it whole User class
             return redirect(url_for("views.homepage"))
-    return render_template("login.html",error = error)
+    return render_template("login.html", error = error)
 
 @views.route("/logout")
 def logout():
@@ -49,6 +49,19 @@ def register():
             return redirect(url_for("views.homepage"))
     return render_template("register.html", error = error)
 
+def refresh(game):
+    db.session.delete(game)
+    db.session.commit()
+    return Game(game.name, game.players, game.hands, game.log, game.current, game.state) # TODO really hacky way to get around the pickletype issue
+def insert(game):
+    db.session.add(game)
+    for player in game.players:
+        user = User.query.filter_by(username=player).first()
+        if user is None:
+            pass # TODO this shouldn't happen once users must exist
+        game.users.append(user)
+    db.session.commit()
+
 @views.route("/newgame", methods = ["GET", "POST"])
 def newgame():
     error = None
@@ -59,15 +72,15 @@ def newgame():
         else:
             game = Game(request.form["name"],[request.form["p1"],request.form["p2"],request.form["p3"],request.form["p4"]])
             # TODO make sure all the above are valid
-            db.session.add(game)
-            db.session.commit()
+            insert(game)
             return redirect(url_for("views.game", name = request.form["name"]))
     return render_template("newgame.html", error = error)
 
-def refresh(game):
-    db.session.delete(game)
-    db.session.commit()
-    return Game(game.name, game.players, game.hands, game.log, game.current, game.state) # TODO really hacky way to get around the pickletype issue
+@views.route("/games")
+def games():
+    user = session["user"]
+    games = User.query.filter_by(username=user).first().games
+    return render_template("games.html", user = user, games = games)
 
 @views.route("/game/<name>", methods = ["GET", "POST"])
 def game(name):
@@ -96,8 +109,7 @@ def game(name):
                         break
             game.state+=(1<<ind)
             game.log.append(user+" has finished ordering cards")
-            db.session.add(game)
-            db.session.commit()
+            insert(game)
             return redirect(url_for("views.game", name = name))
         done = (ind==-1 or ((-game.state)&(1<<ind))==0)
         return render_template("game-order.html", name = name, user = user, game = game, done = done)
@@ -109,8 +121,7 @@ def game(name):
         for i in range(6):
             game.hands[ind].cards[i].flipped = True
         game.log.append(user+" declared!")
-        db.session.add(game)
-        db.session.commit()
+        insert(game)
         return redirect(url_for("views.game",name = name))
     if ind == game.current:
         if game.state==0:
@@ -121,8 +132,7 @@ def game(name):
                 game.current = (game.current+2)%4
                 game.hands[ind].cards[which-1].secret = True
                 game.log.append(user+" passed card "+str(which))
-                db.session.add(game)
-                db.session.commit()
+                insert(game)
                 return redirect(url_for("views.game", name = name))
             return render_template("game-pass.html", name = name, user = user, game = game)
         if game.state == 1:
@@ -142,8 +152,7 @@ def game(name):
                 else:
                     game.state = 2
                     game.log.append(user+" incorrectly guessed "+game.players[(ind+player)%4]+"'s card "+str(which)+" as "+value)
-                db.session.add(game)
-                db.session.commit()
+                insert(game)
                 return redirect(url_for("views.game", name = name))
             return render_template("game-guess.html", name = name, user = user, game = game)
         if game.state == 2:
@@ -154,8 +163,7 @@ def game(name):
                 game.current = (game.current+3)%4
                 game.hands[ind].cards[which-1].flipped = True
                 game.log.append(user+" revealed card "+str(which))
-                db.session.add(game)
-                db.session.commit()
+                insert(game)
                 return redirect(url_for("views.game", name = name))
             return render_template("game-reveal.html", name = name, user = user, game = game)
         if game.state == 3:
@@ -176,8 +184,7 @@ def game(name):
                     game.log.append(user+" incorrectly guessed "+game.players[(ind+player)%4]+"'s card "+str(which)+" as "+value)
                     game.log.append(user+" made a mistake while declaring!")
                     game.log.append(game.players[(ind+1)%4]+" and "+game.players[(ind+3)%4]+" win!")
-                db.session.add(game)
-                db.session.commit()
+                insert(game)
                 return redirect(url_for("views.game", name = name))
             done = True
             for i in range(4):
@@ -190,8 +197,7 @@ def game(name):
                 game.players+=[game.players[ind],game.players[(ind+2)%4]]
                 game.log.append(user+" has successfully named every card!")
                 game.log.append(user+" and "+game.players[(ind+2)%4]+" win!")
-                db.session.add(game)
-                db.session.commit()
+                insert(game)
                 return redirect(url_for("views.game", name = name))
             return render_template("game-call.html", name = name, user = user, game = game)
     if request.method == "POST":

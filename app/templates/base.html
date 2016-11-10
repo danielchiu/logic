@@ -15,10 +15,10 @@
 
             <ul id="navbar">
                 <li><a class="navlink" href="{{ url_for("views.homepage") }}">Home</a></li>
-                {# <li><a class="navlink" href="{{ url_for("views.games") }}">Games</a></li> #}
                 <li><a class="navlink" href="{{ url_for("views.newgame") }}">New Game</a></li>
 
                 {% if session["user"] %}
+                    <li><a class="navlink" href="{{ url_for("views.games") }}">Games</a></li>
                     <li><a class="navlink" href="{{ url_for("views.logout") }}">Logout</a></li>
                 {% else %}
                     <li><a class="navlink" href="{{ url_for("views.login") }}">Login</a></li>
