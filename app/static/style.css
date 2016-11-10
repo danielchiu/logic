@@ -34,10 +34,10 @@ body {
     color: blue;
 }
 
-#games {
+.gamelist {
     list-style-type: none;
 }
-#games li {
+.gamelist li {
     background-color: lightgray;
     border-radius: 5px;
     margin-top: 20px;
