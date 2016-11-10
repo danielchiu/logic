@@ -59,7 +59,8 @@ def insert(game):
         user = User.query.filter_by(username=player).first()
         if user is None:
             pass # TODO this shouldn't happen once users must exist
-        game.users.append(user)
+        else:
+            game.users.append(user)
     db.session.commit()
 
 @views.route("/newgame", methods = ["GET", "POST"])
@@ -80,7 +81,11 @@ def newgame():
 def games():
     user = session["user"]
     games = User.query.filter_by(username=user).first().games
-    return render_template("games.html", user = user, games = games)
+    completed = [x for x in games if x.state==4]
+    games = [x for x in games if not x.state==4]
+    myturn = [x for x in games if (x.index(user)==x.current and x.state>=0) or ((-x.state)&(1<<x.index(user)))>0]
+    games = [x for x in games if not ((x.index(user)==x.current and x.state>=0) or ((-x.state)&(1<<x.index(user)))>0)]
+    return render_template("games.html", user = user, myturn = myturn, games = games, completed = completed)
 
 @views.route("/game/<name>", methods = ["GET", "POST"])
 def game(name):
