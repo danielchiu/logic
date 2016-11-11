@@ -87,6 +87,106 @@ def games():
     games = [x for x in games if not ((x.index(user)==x.current and x.state>=0) or ((-x.state)&(1<<x.index(user)))>0)]
     return render_template("games.html", user = user, myturn = myturn, games = games, completed = completed)
 
+def gameOrder(name, game, user, ind):
+    if request.method == "POST":
+        swapped = request.form["swapped"]
+        game = refresh(game)
+        for val in swapped:
+            for i in range(6):
+                if game.hands[ind].cards[i].val == val:
+                    game.hands[ind].cards[i], game.hands[ind].cards[i+1] = game.hands[ind].cards[i+1], game.hands[ind].cards[i]
+                    break
+        game.state+=(1<<ind)
+        game.log.append(user+" has finished ordering cards")
+        insert(game)
+        return redirect(url_for("views.game", name = name))
+    done = (ind==-1 or ((-game.state)&(1<<ind))==0)
+    return render_template("game-order.html", name = name, user = user, game = game, done = done)
+
+def gamePass(name, game, user, ind):
+    if request.method == "POST":
+        which = int(request.form["index"])
+        game = refresh(game)
+        game.state = 1
+        game.current = (game.current+2)%4
+        game.hands[ind].cards[which-1].secret = True
+        game.log.append(user+" passed card "+str(which))
+        insert(game)
+        return redirect(url_for("views.game", name = name))
+    return render_template("game-pass.html", name = name, user = user, game = game)
+
+def gameGuess(name, game, user, ind):
+    if request.method == "POST":
+        player = int(request.form["player"])
+        which = int(request.form["index"])
+        value = request.form["value"]
+        game = refresh(game)
+        success = False
+        if game.hands[(ind+player)%4].cards[which-1].val == value:
+            success = True
+        if success:
+            game.state = 0
+            game.current = (game.current+3)%4
+            game.hands[(ind+player)%4].cards[which-1].flipped = True
+            game.log.append(user+" correctly guessed "+game.players[(ind+player)%4]+"'s card "+str(which))
+        else:
+            game.state = 2
+            game.log.append(user+" incorrectly guessed "+game.players[(ind+player)%4]+"'s card "+str(which)+" as "+value)
+        insert(game)
+        return redirect(url_for("views.game", name = name))
+    return render_template("game-guess.html", name = name, user = user, game = game)
+
+def gameReveal(name, game, user, ind):
+    if request.method == "POST":
+        which = int(request.form["index"])
+        game = refresh(game)
+        game.state = 0
+        game.current = (game.current+3)%4
+        game.hands[ind].cards[which-1].flipped = True
+        game.log.append(user+" revealed card "+str(which))
+        insert(game)
+        return redirect(url_for("views.game", name = name))
+    return render_template("game-reveal.html", name = name, user = user, game = game)
+
+def gameCall(name, game, user, ind):
+    if request.method == "POST":
+        player = int(request.form["player"])
+        which = int(request.form["index"])
+        value = request.form["value"]
+        game = refresh(game)
+        success = False
+        if game.hands[(ind+player)%4].cards[which-1].val == value:
+            success = True
+        if success:
+            game.hands[(ind+player)%4].cards[which-1].flipped = True
+            game.log.append(user+" correctly guessed "+game.players[(ind+player)%4]+"'s card "+str(which))
+        else:
+            game.state = 4
+            game.players+=[game.players[(ind+1)%4],game.players[(ind+3)%4]]
+            game.log.append(user+" incorrectly guessed "+game.players[(ind+player)%4]+"'s card "+str(which)+" as "+value)
+            game.log.append(user+" made a mistake while declaring!")
+            game.log.append(game.players[(ind+1)%4]+" and "+game.players[(ind+3)%4]+" win!")
+        insert(game)
+        return redirect(url_for("views.game", name = name))
+    done = True
+    for i in range(4):
+        for j in range(6):
+            if not game.hands[i].cards[j].flipped:
+                done = False
+    if done:
+        game = refresh(game)
+        game.state = 4
+        game.players+=[game.players[ind],game.players[(ind+2)%4]]
+        game.log.append(user+" has successfully named every card!")
+        game.log.append(user+" and "+game.players[(ind+2)%4]+" win!")
+        insert(game)
+        return redirect(url_for("views.game", name = name))
+    return render_template("game-call.html", name = name, user = user, game = game)
+
+def gameOver(name, game, user, ind):
+    return render_template("game-over.html", name = name, user = user, game = game)
+
+
 @views.route("/game/<name>", methods = ["GET", "POST"])
 def game(name):
     game = Game.query.filter_by(name=name).first()
@@ -102,24 +202,11 @@ def game(name):
             return redirect(url_for("views.game", name = name))
 
     if game.state==4:
-        return render_template("game-over.html", name = name, user = user, game = game)
+        return gameOver(name, game, user, ind)
     if game.state<0:
-        if request.method == "POST":
-            swapped = request.form["swapped"]
-            game = refresh(game)
-            for val in swapped:
-                for i in range(6):
-                    if game.hands[ind].cards[i].val == val:
-                        game.hands[ind].cards[i], game.hands[ind].cards[i+1] = game.hands[ind].cards[i+1], game.hands[ind].cards[i]
-                        break
-            game.state+=(1<<ind)
-            game.log.append(user+" has finished ordering cards")
-            insert(game)
-            return redirect(url_for("views.game", name = name))
-        done = (ind==-1 or ((-game.state)&(1<<ind))==0)
-        return render_template("game-order.html", name = name, user = user, game = game, done = done)
+        return gameOrder(name, game, user, ind)
 
-    if request.method == "POST" and request.form["card"]=="declare":
+    if request.method == "POST" and request.form["type"]=="declare":
         game = refresh(game)
         game.state = 3
         game.current = ind
@@ -129,82 +216,15 @@ def game(name):
         insert(game)
         return redirect(url_for("views.game",name = name))
     if ind == game.current:
-        if game.state==0:
-            if request.method == "POST":
-                which = int(request.form["card"])
-                game = refresh(game)
-                game.state = 1
-                game.current = (game.current+2)%4
-                game.hands[ind].cards[which-1].secret = True
-                game.log.append(user+" passed card "+str(which))
-                insert(game)
-                return redirect(url_for("views.game", name = name))
-            return render_template("game-pass.html", name = name, user = user, game = game)
+        if game.state == 0:
+            return gamePass(name, game, user, ind)
         if game.state == 1:
-            if request.method == "POST":
-                player = int(request.form["card"][0])
-                which = int(request.form["card"][1])
-                value = request.form["card"][2]
-                game = refresh(game)
-                success = False
-                if game.hands[(ind+player)%4].cards[which-1].val == value:
-                    success = True
-                if success:
-                    game.state = 0
-                    game.current = (game.current+3)%4
-                    game.hands[(ind+player)%4].cards[which-1].flipped = True
-                    game.log.append(user+" correctly guessed "+game.players[(ind+player)%4]+"'s card "+str(which))
-                else:
-                    game.state = 2
-                    game.log.append(user+" incorrectly guessed "+game.players[(ind+player)%4]+"'s card "+str(which)+" as "+value)
-                insert(game)
-                return redirect(url_for("views.game", name = name))
-            return render_template("game-guess.html", name = name, user = user, game = game)
+            return gameGuess(name, game, user, ind)
         if game.state == 2:
-            if request.method == "POST":
-                which = int(request.form["card"])
-                game = refresh(game)
-                game.state = 0
-                game.current = (game.current+3)%4
-                game.hands[ind].cards[which-1].flipped = True
-                game.log.append(user+" revealed card "+str(which))
-                insert(game)
-                return redirect(url_for("views.game", name = name))
-            return render_template("game-reveal.html", name = name, user = user, game = game)
+            return gameReveal(name, game, user, ind)
         if game.state == 3:
-            if request.method == "POST":
-                player = int(request.form["card"][0])
-                which = int(request.form["card"][1])
-                value = request.form["card"][2]
-                game = refresh(game)
-                success = False
-                if game.hands[(ind+player)%4].cards[which-1].val == value:
-                    success = True
-                if success:
-                    game.hands[(ind+player)%4].cards[which-1].flipped = True
-                    game.log.append(user+" correctly guessed "+game.players[(ind+player)%4]+"'s card "+str(which))
-                else:
-                    game.state = 4
-                    game.players+=[game.players[(ind+1)%4],game.players[(ind+3)%4]]
-                    game.log.append(user+" incorrectly guessed "+game.players[(ind+player)%4]+"'s card "+str(which)+" as "+value)
-                    game.log.append(user+" made a mistake while declaring!")
-                    game.log.append(game.players[(ind+1)%4]+" and "+game.players[(ind+3)%4]+" win!")
-                insert(game)
-                return redirect(url_for("views.game", name = name))
-            done = True
-            for i in range(4):
-                for j in range(6):
-                    if not game.hands[i].cards[j].flipped:
-                        done = False
-            if done:
-                game = refresh(game)
-                game.state = 4
-                game.players+=[game.players[ind],game.players[(ind+2)%4]]
-                game.log.append(user+" has successfully named every card!")
-                game.log.append(user+" and "+game.players[(ind+2)%4]+" win!")
-                insert(game)
-                return redirect(url_for("views.game", name = name))
-            return render_template("game-call.html", name = name, user = user, game = game)
+            return gameCall(name, game, user, ind)
+
     if request.method == "POST":
         return redirect(url_for("views.homepage")) # TODO give some error message
     return render_template("game-base.html", name = name, user = user, game = game)

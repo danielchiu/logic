@@ -63,12 +63,16 @@ function getWest() {
     return res;
 }
 
-function getLogLen() {
+function makeField(from, to) {
     var field = $("<input></input>");
     field.attr("type","hidden");
-    field.attr("name","loglen");
-    field.attr("value",$("#log").children().length-1);
+    field.attr("name",from.toString());
+    field.attr("value",to.toString());
     return field;
+}
+
+function getLogLen() {
+    return makeField("loglen",$("#log").children().length-1);
 }
 
 function validate(num) {

@@ -8,12 +8,9 @@ $("#pass").click(function() {
 
     var form = $("<form></form>");
     form.attr("method","post");
+    form.append(makeField("type","pass"));
     
-    var field = $("<input></input>");
-    field.attr("type","hidden");
-    field.attr("name","card");
-    field.attr("value",which);
-    form.append(field);
+    form.append(makeField("index",which));
 
     form.append(getLogLen());
 

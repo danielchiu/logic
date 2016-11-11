@@ -23,12 +23,11 @@ $("#call").click(function() {
     
     var form = $("<form></form>");
     form.attr("method","post");
+    form.append(makeField("type","call"));
     
-    var field = $("<input></input>");
-    field.attr("type","hidden");
-    field.attr("name","card");
-    field.attr("value",player.toString()+which+value);
-    form.append(field);
+    form.append(makeField("player",player));
+    form.append(makeField("index",which));
+    form.append(makeField("value",value));
 
     form.append(getLogLen());
 

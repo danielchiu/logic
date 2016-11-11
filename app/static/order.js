@@ -26,23 +26,24 @@ $(".card").click(function() {
     }
 });
 
-function getLogLen() {
+function makeField(from, to) {
     var field = $("<input></input>");
     field.attr("type","hidden");
-    field.attr("name","loglen");
-    field.attr("value",$("#log").children().length-1);
+    field.attr("name",from.toString());
+    field.attr("value",to.toString());
     return field;
+}
+
+function getLogLen() {
+    return makeField("loglen",$("#log").children().length-1);
 }
 
 $("#order").click(function() {
     var form = $("<form></form>");
     form.attr("method","post");
+    form.append(makeField("type","order"));
     
-    var field = $("<input></input>");
-    field.attr("type","hidden");
-    field.attr("name","swapped");
-    field.attr("value",swapped);
-    form.append(field);
+    form.append(makeField("swapped",swapped));
 
     form.append(getLogLen());
 
