@@ -33,10 +33,10 @@
         </div>
 
         {% block game_below %}
-            {%  if game.index(user)>=0 %}
+            {%  if game.index(user)>=0 and game.state<3 %}
                 <input type="submit" name="declare" id="declare" value="Declare">
-                {# PUT CHAT HERE #}
             {% endif %}
+            {# PUT CHAT HERE #}
         {% endblock %}
     </div>
 
