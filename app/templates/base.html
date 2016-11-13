@@ -27,12 +27,12 @@
             </ul>
         </div>
 
-        <div id="content">{% block content %}{% endblock %}</div>
+        <div id="content"><div id="reload_content">
+            {% block content %}{% endblock %}
+        </div></div>
 
         <div id="footer">
-            {% block footer %}
-                {# nothing here #}
-            {% endblock %}
+            {% block footer %}{% endblock %}
         </div>
 
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>

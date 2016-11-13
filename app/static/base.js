@@ -1,6 +1,19 @@
-$(".card").click(function() {
-    $(this).toggleClass('clicked_card')
+$(document).ready(function() {
+    setInterval(function() {
+        $.get(location.href, function(data) {
+            var curLen = $("#log").children().length-1;
+            var newLen = $(data).find("#log").children().length-1;
+            if (newLen>curLen) {
+                $("#content").html($(data).find("#reload_content").html());
+            }
+        });
+    }, 5000);
 });
+
+function clickCard() {
+    $(this).toggleClass("clicked_card");
+}
+$("#content").on("click", ".card", clickCard);
 
 function south(num) {
     if (57<=num && num<=62) return num-56;

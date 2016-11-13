@@ -1,4 +1,4 @@
-$("#call").click(function() {
+$("#content").on("click", "#call", function() {
     var ind = select();
     if (!ind || south(ind) || getcard(ind).hasClass("public")) {
         return;

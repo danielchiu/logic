@@ -1,4 +1,4 @@
-$("#guess").click(function() {
+$("#content").on("click", "#guess", function() {
     var ind = select();
     if (!ind || south(ind) || north(ind)) {
         return;

@@ -1,6 +1,7 @@
 var swapped = "";
 
-$(".card").click(function() {
+$("#content").off("click", ".card", clickCard);
+$("#content").on("click", ".card", function() {
     if ($(this).hasClass("unknown")) return;
     var card;
     for (var i=57;i<=62;i++) {
@@ -26,19 +27,7 @@ $(".card").click(function() {
     }
 });
 
-function makeField(from, to) {
-    var field = $("<input></input>");
-    field.attr("type","hidden");
-    field.attr("name",from.toString());
-    field.attr("value",to.toString());
-    return field;
-}
-
-function getLogLen() {
-    return makeField("loglen",$("#log").children().length-1);
-}
-
-$("#order").click(function() {
+$("#content").on("click", "#order", function() {
     var form = $("<form></form>");
     form.attr("method","post");
     form.append(makeField("type","order"));

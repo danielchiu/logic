@@ -30,6 +30,7 @@
 {% endblock %}
 
 {% block scripts %}
+    {{ super() }}
     {% if not done %}
         <script type="text/javascript" src="{{ url_for("static", filename = "order.js") }}"></script>
     {% endif %}

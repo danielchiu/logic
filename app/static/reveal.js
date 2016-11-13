@@ -1,4 +1,4 @@
-$("#reveal").click(function() {
+$("#content").on("click", "#reveal", function() {
     var ind = select();
     if (!ind || !south(ind)) {
         return;
