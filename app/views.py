@@ -83,8 +83,8 @@ def games():
     games = User.query.filter_by(username=user).first().games
     completed = [x for x in games if x.state==4]
     games = [x for x in games if not x.state==4]
-    myturn = [x for x in games if (x.index(user)==x.current and x.state>=0) or ((-x.state)&(1<<x.index(user)))>0]
-    games = [x for x in games if not ((x.index(user)==x.current and x.state>=0) or ((-x.state)&(1<<x.index(user)))>0)]
+    myturn = [x for x in games if (x.index(user)==x.current and x.state>=0) or (x.state<0 and ((-x.state)&(1<<x.index(user)))>0)]
+    games = [x for x in games if not ((x.index(user)==x.current and x.state>=0) or (x.state<0 and ((-x.state)&(1<<x.index(user)))>0))]
     return render_template("games.html", user = user, myturn = myturn, games = games, completed = completed)
 
 def gameOrder(name, game, user, ind):
