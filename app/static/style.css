@@ -68,14 +68,14 @@ body {
     float: left;
 }
 
-.card, .car, .nameplate {
+.card, .ocard, .car, .nameplate {
     width: 65px; 
     height: 65px;
     margin: 5px;
     float: left;
     border-radius: 10px;
 }
-.card {
+.card, .ocard {
     color: white;
     display: flex;
     align-items: center;

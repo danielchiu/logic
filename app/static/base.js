@@ -10,10 +10,9 @@ $(document).ready(function() {
     }, 5000);
 });
 
-function clickCard() {
+$("#content").on("click", ".card", function() {
     $(this).toggleClass("clicked_card");
-}
-$("#content").on("click", ".card", clickCard);
+});
 
 function south(num) {
     if (57<=num && num<=62) return num-56;

@@ -1,7 +1,6 @@
 var swapped = "";
 
-$("#content").off("click", ".card", clickCard);
-$("#content").on("click", ".card", function() {
+$("#content").on("click", ".ocard", function() {
     if ($(this).hasClass("unknown")) return;
     var card;
     for (var i=57;i<=62;i++) {

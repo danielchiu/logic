@@ -43,4 +43,10 @@
 {% block scripts %}
     <script type="text/javascript" src="{{ url_for("static", filename = "base.js") }}"></script>
     <script type="text/javascript" src="{{ url_for("static", filename = "declare.js") }}"></script>
+
+    <script type="text/javascript" src="{{ url_for("static", filename = "call.js") }}"></script> {# TODO is there a way to reload scripts too? #}
+    <script type="text/javascript" src="{{ url_for("static", filename = "guess.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename = "order.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename = "pass.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename = "reveal.js") }}"></script>
 {% endblock %}

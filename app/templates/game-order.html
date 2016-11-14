@@ -15,7 +15,7 @@
         {% elif card is string %}
             <div class="nameplate {{ card[0] }}">{{ card[1:] }} </div>
         {% else %}
-            <div class="card {{ "unknown" if not card.private else "heart" if card.suit=="H" else "spade"  }} ind{{ ind }}">
+            <div class="{{ "card" if done else "ocard" }} {{ "unknown" if not card.private else "heart" if card.suit=="H" else "spade"  }} ind{{ ind }}">
                 {{ card.val if card.private else "?" }}
             </div>
         {% endif %}
@@ -31,7 +31,7 @@
 
 {% block scripts %}
     {{ super() }}
-    {% if not done %}
+    {#{% if not done %}
         <script type="text/javascript" src="{{ url_for("static", filename = "order.js") }}"></script>
-    {% endif %}
+    {% endif %}#}
 {% endblock %}
