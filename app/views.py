@@ -21,7 +21,7 @@ def homepage():
 def login():
     error = None
     if request.method == "POST":
-        user = User.query.filter_by(username=request.form["username"]).first()
+        user = User.query.filter_by(username = request.form["username"]).first()
         if user is None:
             error = "No such user \"%s\" exists" % request.form["username"]
         else:
@@ -39,7 +39,7 @@ def logout():
 def register():
     error = None
     if request.method == "POST":
-        user = User.query.filter_by(username=request.form["username"]).first()
+        user = User.query.filter_by(username = request.form["username"]).first()
         if user is not None:
             error = "The user \"%s\" already exists" % user.username
         else:
@@ -56,9 +56,9 @@ def refresh(game):
 def insert(game):
     db.session.add(game)
     for player in game.players:
-        user = User.query.filter_by(username=player).first()
+        user = User.query.filter_by(username = player).first()
         if user is None:
-            pass # TODO this shouldn't happen once users must exist
+            pass # TODO will only happen with old games that don't have 4 registered users as players 
         else:
             game.users.append(user)
     db.session.commit()
@@ -67,20 +67,27 @@ def insert(game):
 def newgame():
     error = None
     if request.method == "POST":
-        game = Game.query.filter_by(name=request.form["name"]).first()
+        game = Game.query.filter_by(name = request.form["name"]).first()
         if game is not None:
             error = "The game \"%s\" already exists" % game.name
         else:
-            game = Game(request.form["name"],[request.form["p1"],request.form["p2"],request.form["p3"],request.form["p4"]])
-            # TODO make sure all the above are valid
-            insert(game)
-            return redirect(url_for("views.game", name = request.form["name"]))
+            players = [request.form["p1"],request.form["p2"],request.form["p3"],request.form["p4"]]
+            if len(set(players))!=4:
+                error = "The game needs four distinct players"
+            for player in players:
+                user = User.query.filter_by(username = player).first()
+                if user is None:
+                    error = "The user \"%s\" doesn't exist" % player
+            if not error:
+                game = Game(request.form["name"],players)
+                insert(game)
+                return redirect(url_for("views.game", name = request.form["name"]))
     return render_template("newgame.html", error = error)
 
 @views.route("/games")
 def games():
     user = session["user"]
-    games = User.query.filter_by(username=user).first().games
+    games = User.query.filter_by(username = user).first().games
     completed = [x for x in games if x.state==4]
     games = [x for x in games if not x.state==4]
     myturn = [x for x in games if (x.index(user)==x.current and x.state>=0) or (x.state<0 and ((-x.state)&(1<<x.index(user)))>0)]
@@ -189,7 +196,7 @@ def gameOver(name, game, user, ind):
 
 @views.route("/game/<name>", methods = ["GET", "POST"])
 def game(name):
-    game = Game.query.filter_by(name=name).first()
+    game = Game.query.filter_by(name = name).first()
     if game is None:
         return redirect(url_for("views.homepage")) # TODO give some error message
     user = None
