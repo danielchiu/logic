@@ -94,6 +94,9 @@ def games():
     games = [x for x in games if not ((x.index(user)==x.current and x.state>=0) or (x.state<0 and ((-x.state)&(1<<x.index(user)))>0))]
     return render_template("games.html", user = user, myturn = myturn, games = games, completed = completed)
 
+def gameBase(name, game, user, ind):
+    return render_template("game-base.html", name = name, user = user, game = game)
+
 def gameOrder(name, game, user, ind):
     if request.method == "POST":
         swapped = request.form["swapped"]
@@ -222,6 +225,7 @@ def game(name):
         game.log.append(user+" declared!")
         insert(game)
         return redirect(url_for("views.game",name = name))
+
     if ind == game.current:
         if game.state == 0:
             return gamePass(name, game, user, ind)
@@ -234,4 +238,16 @@ def game(name):
 
     if request.method == "POST":
         return redirect(url_for("views.homepage")) # TODO give some error message
-    return render_template("game-base.html", name = name, user = user, game = game)
+
+    return gameBase(name, game, user, ind)
+
+@views.route("/spec/<name>", methods = ["GET", "POST"])
+def spec(name):
+    game = Game.query.filter_by(name = name).first()
+    if game is None:
+        return redirect(url_for("views.homepage")) # TODO give some error message
+    if game.state==4:
+        return gameOver(name, game, None, -1)
+    if game.state<0:
+        return gameOrder(name, game, None, -1)
+    return gameBase(name, game, None, -1)
