@@ -1,5 +1,5 @@
 body {
-    /* background-color: lightgrey; */
+    /* background-color: red; */
 }
 
 #header {
@@ -22,7 +22,7 @@ body {
 }
 #navbar li {
     float: left;
-    background-color: lightgray;
+    background-color: green;
     border-radius: 5px;
     margin-right: 10px;
 }
