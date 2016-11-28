@@ -13,6 +13,9 @@ body {
     float: left;
     font-size: 28px;
 }
+img {
+    margin-top: 7px;
+}
 
 #navbar {
     float: left;
@@ -177,24 +180,28 @@ input[type=text]#value {
     display: block;
     text-decoration: none;
     text-align: center;
-    padding: 14px 16px;
+    padding: 16px 18px;
     float: left;
-    background-color: lightgray;
+    background-color: gainsboro;
     border-radius: 5px;
     margin-right: 10px;
     width: 2em;
+    font-size: 18px;
 }
 
 input[type=submit] {
-    display: block;
+    display: inline-block;
     text-decoration: none;
     text-align: center;
     padding: 14px 16px;
-    color: blue;
+    color: white;
     float: left;
-    background-color: lightgray;
+    border: none;
+    background-color: royalblue;
     border-radius: 5px;
+    margin-top: 5px;
     margin-right: 10px;
+    font-size: 14px;
 }
 #declare {
     float: none;

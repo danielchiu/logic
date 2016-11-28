@@ -4,7 +4,7 @@
     <head>
         {% block head %}
             <link rel="stylesheet" href="{{ url_for("static", filename = "style.css") }}">
-
+            <link rel="shortcut icon" href="{{ url_for("static", filename = "favicon.ico") }}">
             <title>{% block title %}{% endblock %} - Logic</title>
         {% endblock %}
     </head>
@@ -12,7 +12,9 @@
     <body>
         <div id="header">
             <h1 id="logo">Logic</h1>
-
+            <a id="logo">
+                <img src="{{ url_for("static", filename = "favicon.ico") }}" alt = "logo" style="width:60px;height:60px">
+            </a>
             <ul id="navbar">
                 <li><a class="navlink" href="{{ url_for("views.homepage") }}">Home</a></li>
                 <li><a class="navlink" href="{{ url_for("views.newgame") }}">New Game</a></li>
