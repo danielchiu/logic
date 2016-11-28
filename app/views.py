@@ -86,7 +86,13 @@ def newgame():
 
 @views.route("/games")
 def games():
-    user = session["user"]
+    user = None
+    if "user" in session:
+        user = session["user"]
+
+    if user is None:
+        return redirect(url_for("views.homepage")) # TODO give some error message
+
     games = User.query.filter_by(username = user).first().games
     completed = [x for x in games if x.state==4]
     games = [x for x in games if not x.state==4]
