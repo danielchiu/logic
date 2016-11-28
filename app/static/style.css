@@ -41,24 +41,25 @@ body {
     list-style-type: none;
 }
 .gamelist li {
-    background-color: lightgray;
     border-radius: 5px;
     margin-top: 20px;
     width: 400px;
 }
-.gamelist a[target=green]{
-    background-color: darkgreen;
-}
-.gamelist a[target=yellow]{
-    background-color: goldenrod;
-}
-
-.gamelink {
+.game_active, .game_current, .game_complete {
     display: block;
     text-decoration: none;
     text-align: center;
     padding: 14px 16px;
     color: white;
+}
+.game_active {
+    background-color: darkgreen;
+}
+.game_current {
+    background-color: goldenrod;
+}
+.game_complete{
+    background-color: silver;
 }
 
 .container {
