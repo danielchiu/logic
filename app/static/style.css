@@ -1,28 +1,31 @@
 body {
-    /* background-color: red; */
+    background-color: white;
+    font: normal 14px Verdana, Geneva, sans-serif;
 }
 
 #header {
-    width: 1050px;
+    background-color: whitesmoke;
+    width: 1250px;
     overflow: hidden;
 }
 #logo {
     margin-left: 50px;
     float: left;
+    font-size: 28px;
 }
 
 #navbar {
     float: left;
     list-style-type: none;
     margin: 0;
-    margin-top: 10px;
+    margin-top: 16px;
     margin-left: 550px;
     padding: 0;
     overflow: hidden;
 }
 #navbar li {
     float: left;
-    background-color: lightgray;
+    background-color: royalblue;
     border-radius: 5px;
     margin-right: 10px;
 }
@@ -30,8 +33,8 @@ body {
     display: block;
     text-decoration: none;
     text-align: center;
-    padding: 14px 16px;
-    color: blue;
+    padding: 10px 12px;
+    color: white;
 }
 
 .gamelist {
@@ -43,12 +46,19 @@ body {
     margin-top: 20px;
     width: 400px;
 }
+.gamelist a[target=green]{
+    background-color: darkgreen;
+}
+.gamelist a[target=yellow]{
+    background-color: goldenrod;
+}
+
 .gamelink {
     display: block;
     text-decoration: none;
     text-align: center;
     padding: 14px 16px;
-    color: blue;
+    color: white;
 }
 
 .container {
