@@ -41,11 +41,11 @@ body {
     list-style-type: none;
 }
 .gamelist li {
-    border-radius: 5px;
     margin-top: 20px;
     width: 400px;
 }
 .game_active, .game_current, .game_complete {
+    border-radius: 5px;
     display: block;
     text-decoration: none;
     text-align: center;
