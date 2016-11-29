@@ -18,11 +18,10 @@ img {
 }
 
 #navbar {
-    float: left;
+    float: right;
     list-style-type: none;
     margin: 0;
     margin-top: 16px;
-    margin-left: 550px;
     padding: 0;
     overflow: hidden;
 }
