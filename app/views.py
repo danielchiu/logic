@@ -9,8 +9,15 @@ try:
 except IOError:
     pass
 
+def updateDatabase():
+    for game in Game.query.all():
+        game = refresh(game)
+        game.chat = []
+        insert(game)
+
 @views.route("/")
 def homepage():
+    # updateDatabase()
     # logging.error("this is an error")
     user = None
     if "user" in session:
@@ -52,7 +59,7 @@ def register():
 def refresh(game):
     db.session.delete(game)
     db.session.commit()
-    return Game(game.name, game.players, game.hands, game.log, game.current, game.state) # TODO really hacky way to get around the pickletype issue
+    return Game(game.name, game.players, game.hands, game.log, game.current, game.state, game.chat) # TODO really hacky way to get around the pickletype issue
 def insert(game):
     db.session.add(game)
     for player in game.players:

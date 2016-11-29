@@ -159,7 +159,7 @@ img {
     transform: rotate(90deg)
 }
 
-#log {
+#log, #chat {
     height: 600px;
     width: 400px;
     margin-left: 50px;
@@ -168,10 +168,13 @@ img {
     float: left;
     overflow: auto;
 }
-#logtitle {
+#chat {
+    display: none;
+}
+#logtitle, #chattitle {
     margin-left: 20px;
 }
-.action {
+.action, #message {
     margin-left: 20px;
     margin-bottom: 10px;
 }
