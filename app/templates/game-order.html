@@ -7,7 +7,6 @@
 {% endblock %}
 
 {% block grid %}
-<div id="grid">
     {% for ind in range(64) %}
         {% set card = game.grid(user)[ind] %}
         {% if card is none %}
@@ -20,7 +19,6 @@
             </div>
         {% endif %}
     {% endfor %}
-</div>
 {% endblock %}
     
 {% block game_below %}

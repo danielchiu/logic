@@ -1,11 +1,13 @@
 $(document).ready(function() {
     setInterval(function() {
         $.get(location.href, function(data) {
-            var curLen = $("#log").children().length-1;
-            var newLen = $(data).find("#log").children().length-1;
+            var curLen = $("#logtitle ~ div").length;
+            var newLen = $(data).find("#logtitle ~ div").length;
             if (newLen>curLen) {
-                $("#content").html($(data).find("#reload_content").html());
+                $("#grid").html($(data).find("#reload_grid").html());
+                $("#log").html($(data).find("#reload_log").html());
             }
+            $("#chat").html($(data).find("#reload_chat").html());
         });
     }, 5000);
 });
@@ -84,7 +86,7 @@ function makeField(from, to) {
 }
 
 function getLogLen() {
-    return makeField("loglen",$("#log").children().length-1);
+    return makeField("loglen",$("#logtitle ~ div").length);
 }
 
 function validate(num) {

@@ -7,8 +7,8 @@
         <h1 id="gamename">{{ name }}</h1>
         {% block game_above %} {% endblock %}
 
-        {% block grid %}
-            <div id="grid">
+        <div id="grid"><div id="reload_grid">
+            {% block grid %}
                 {% for ind in range(64) %}
                     {% set card = game.grid(user)[ind] %}
                     {% if card is none %}
@@ -21,15 +21,22 @@
                         </div>
                     {% endif %}
                 {% endfor %}
-            </div>
-        {% endblock %}
+            {% endblock %}
+        </div></div>
             
-        <div id="log">
-            <h2 id="logtitle">Actions:</h2>            
+        <div id="log"><div id="reload_log">
+            <h2 id="logtitle">Actions:</h2>
             {% for action in game.log[::-1] %}
                 <div class="action">{{ action }}</div>
             {% endfor %}
-        </div>
+        </div></div>
+
+        <div id="chat"><div id="reload_chat">
+            <h2 id="chattitle">Chat:</h2>
+            {% for message in game.chat[::-1] %}
+                <div class="message">{{ message }}</div>
+            {% endfor %}
+        </div></div>
 
         {% block game_below %}
             {%  if game.index(user)>=0 and game.state<3 %}

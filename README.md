@@ -16,3 +16,11 @@ things to keep in mind:
 2. logging works now
 3. when do we need to restart apache
    internal caching
+
+process to add column to database:
+1. copy app.db to app.db.bak (or something) in case of a later mistake
+2. > sqlite3 app.db
+3. > alter table Game add column chat BLOB;
+   (replace Game with the model name, replace chat with column name, replace BLOB with the type)
+4. done, so just update code (in particular Game constructor if necessary)
+5. if the column can't be None, run updateDatabase() to change all existing entries
