@@ -10,11 +10,9 @@ body {
 }
 #logo {
     margin-left: 25px;
+    margin-top: 7px;
     float: left;
     font-size: 28px;
-}
-img {
-    margin-top: 7px;
 }
 
 #navbar {
