@@ -1,14 +1,11 @@
-body {
+#body {
     background-color: white;
     font: normal 14px Verdana, Geneva, sans-serif;
 }
 
 #header {
     background-color: whitesmoke;
-<<<<<<< HEAD
     min-width: 1200px;
-=======
->>>>>>> 20840b7dd8aa13002752e5ce08cfe0f90273ca00
     width: 100%;
     overflow: hidden;
 }
@@ -25,10 +22,7 @@ body {
     margin: 0;
     margin-right: 15px;
     margin-top: 16px;
-<<<<<<< HEAD
     margin-right: 7.5%;
-=======
->>>>>>> 20840b7dd8aa13002752e5ce08cfe0f90273ca00
     padding: 0;
     overflow: hidden;
 }
