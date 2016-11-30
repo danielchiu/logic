@@ -5,8 +5,8 @@ body {
 
 #header {
     background-color: whitesmoke;
-    min-width: 1200px;
     width: 100%;
+    min-width: 1050px;
     overflow: hidden;
 }
 #logo {
@@ -22,7 +22,6 @@ body {
     margin: 0;
     margin-right: 15px;
     margin-top: 16px;
-    margin-right: 7.5%;
     padding: 0;
     overflow: hidden;
 }
