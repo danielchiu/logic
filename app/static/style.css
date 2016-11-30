@@ -5,7 +5,7 @@ body {
 
 #header {
     background-color: whitesmoke;
-    width: 1250px;
+    width: 100%;
     overflow: hidden;
 }
 #logo {
@@ -19,8 +19,8 @@ body {
     float: right;
     list-style-type: none;
     margin: 0;
+    margin-right: 15px;
     margin-top: 16px;
-    margin-right: 91px;
     padding: 0;
     overflow: hidden;
 }
@@ -223,6 +223,7 @@ input[type=submit] {
     font-size: 14px;
 }
 #declare {
+    display: block;
     position: absolute;
     margin-top: 605px;
     margin-left: 525px;
