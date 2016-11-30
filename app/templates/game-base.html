@@ -5,7 +5,10 @@
 {% block content %}
     <div class="container">
         <h1 id="gamename">{{ name }}</h1>
-        {% block game_above %} {% endblock %}
+
+        <div id="above"><div id="reload_above">
+            {% block game_above %} {% endblock %}
+        </div></div>
 
         <div id="grid"><div id="reload_grid">
             {% block grid %}
@@ -43,12 +46,14 @@
             {% endif %}
         </div>
 
-        {% block game_below %}
-            {%  if game.index(user)>=0 and game.state<3 %}
-                <input type="submit" name="declare" id="declare" value="Declare">
-            {% endif %}
-            {# PUT CHAT HERE #}
-        {% endblock %}
+        <div id="below"><div id="reload_below">
+            {% block game_below %}
+                {%  if game.index(user)>=0 and game.state<3 %}
+                    <input type="submit" name="declare" id="declare" value="Declare">
+                {% endif %}
+                {# PUT CHAT HERE #}
+            {% endblock %}
+        </div></div>
     </div>
 {% endblock %}
 

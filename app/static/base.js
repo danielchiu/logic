@@ -10,6 +10,8 @@ $(document).ready(function() {
             if (newLen>curLen) {
                 $("#grid").html($(data).find("#reload_grid").html());
                 $("#log").html($(data).find("#reload_log").html());
+                $("#above").html($(data).find("#reload_above").html());
+                $("#below").html($(data).find("#reload_below").html());
             }
         });
     }, 5000);
