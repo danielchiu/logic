@@ -15,6 +15,7 @@
                 <img src="{{ url_for("static", filename = "logiclogo.png") }}" alt="logo link to hompage" style="width:172px;height:60px">
             </a>
             <ul id="navbar">
+                <li><a class="navlink" href="{{ url_for("views.homepage") }}">Home</a></li>
                 {% if session["user"] %}
                     <li><a class="navlink" href="{{ url_for("views.newgame") }}">New Game</a></li>
                     <li><a class="navlink" href="{{ url_for("views.games") }}">Games</a></li>

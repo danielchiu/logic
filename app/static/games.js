@@ -1,5 +1,5 @@
 $(document).ready(function() {
     setInterval(function() {
-        $("#content").load(location.href+" #reload_content");
+        $("#gamelist").load(location.href+" #reload_gamelist");
     }, 5000);
 });
