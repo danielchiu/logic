@@ -1,3 +1,7 @@
+$("#content").on("click", ".card", function() {
+    $(this).toggleClass("clicked_card");
+});
+
 $(document).ready(function() {
     setInterval(function() {
         $.get(location.href, function(data) {
@@ -7,13 +11,54 @@ $(document).ready(function() {
                 $("#grid").html($(data).find("#reload_grid").html());
                 $("#log").html($(data).find("#reload_log").html());
             }
-            $("#chat").html($(data).find("#reload_chat").html());
         });
     }, 5000);
 });
 
-$("#content").on("click", ".card", function() {
-    $(this).toggleClass("clicked_card");
+$("#log").click(function() {
+    $("#log").css("display", "none");
+    $("#chat").css("display", "inline");
+});
+$("#chatbox").click(function() {
+    $("#chat").css("display", "none");
+    $("#log").css("display", "inline");
+});
+
+var countdown = 8;
+var current = 8;
+
+$(document).ready(function() {
+    setInterval(function() {
+        current-=1;
+        if (current == 0) {
+            $.get(location.href, function(data) {
+                var curLen = $("#chattitle ~ div").length;
+                var newLen = $(data).find("#chattitle ~ div").length;
+                if (newLen>curLen) {
+                    $("#chatbox").html($(data).find("#reload_chatbox").html());
+                    countdown = 1;
+                } else if (countdown<8) {
+                    countdown*=2;
+                }
+            });
+            current = countdown;
+        }
+    }, 500);
+});
+
+$("#chatline").keypress(function(event) {
+    if (event.keyCode == 13) {
+        var request = new XMLHttpRequest();
+        
+        request.open("POST", "?message="+$("#chatline").val());
+        request.send();
+
+        $("#chatline").val("");
+        $.get(location.href, function(data) {
+            $("#chatbox").html($(data).find("#reload_chatbox").html());
+        });
+        countdown = 1;
+    }
 });
 
 function south(num) {

@@ -168,15 +168,24 @@ img {
     float: left;
     overflow: auto;
 }
-#chat {
-    display: none;
-}
 #logtitle, #chattitle {
     margin-left: 20px;
 }
-.action, #message {
+.action, .message {
     margin-left: 20px;
     margin-bottom: 10px;
+}
+
+#chat {
+    display: none;
+}
+#chatbox {
+    height: 510px;
+    overflow: auto;
+}
+#chatline {
+    margin-left: 20px;
+    width: 320px;
 }
 
 dl {

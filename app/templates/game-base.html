@@ -31,12 +31,17 @@
             {% endfor %}
         </div></div>
 
-        <div id="chat"><div id="reload_chat">
-            <h2 id="chattitle">Chat:</h2>
-            {% for message in game.chat[::-1] %}
-                <div class="message">{{ message }}</div>
-            {% endfor %}
-        </div></div>
+        <div id="chat">
+            <div id="chatbox"><div id="reload_chatbox">
+                <h2 id="chattitle">Chat:</h2>
+                {% for message in game.chat[::-1] %}
+                    <div class="message">{{ message }}</div>
+                {% endfor %}
+            </div></div>
+            {% if user %}
+                <input id="chatline" type=text name="message">
+            {% endif %}
+        </div>
 
         {% block game_below %}
             {%  if game.index(user)>=0 and game.state<3 %}

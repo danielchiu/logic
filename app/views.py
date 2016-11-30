@@ -209,6 +209,14 @@ def gameCall(name, game, user, ind):
 def gameOver(name, game, user, ind):
     return render_template("game-over.html", name = name, user = user, game = game)
 
+def gamechat(name, game, user):
+    if user is None:
+        return redirect(url_for("views.homepage")) # TODO give some error message
+
+    game = refresh(game)
+    game.chat.append(user+": "+request.args.get("message"))
+    insert(game)
+    return redirect(url_for("views.homepage")) # TODO is there a way to do this without any return value
 
 @views.route("/game/<name>", methods = ["GET", "POST"])
 def game(name):
@@ -219,6 +227,9 @@ def game(name):
     if "user" in session:
         user = session["user"]
     ind = game.index(user)
+
+    if request.method == "POST" and "type" not in request.form:
+        return gamechat(name, game, user)
 
     if request.method == "POST":
         if int(request.form["loglen"]) != len(game.log):
