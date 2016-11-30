@@ -165,7 +165,6 @@ body {
     outline: 5px solid;
     outline-offset: -5px;
     float: left;
-    overflow: auto;
 }
 #logtitle, #chattitle {
     margin-left: 20px;
@@ -179,7 +178,11 @@ body {
     display: none;
 }
 #chatbox {
-    height: 550px;
+    height: 490px;
+    overflow: auto;
+}
+#logbox {
+    height: 520px;
     overflow: auto;
 }
 #chatline {

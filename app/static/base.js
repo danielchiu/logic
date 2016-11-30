@@ -1,52 +1,60 @@
-$("#content").on("click", ".card", function() {
-    $(this).toggleClass("clicked_card");
+// defaults scrollbars to bottom
+$(document).ready(function() {
+    $("#logbox").scrollTop($("#logbox")[0].scrollHeight);
 });
 
 // autoreloads the game and log
 $(document).ready(function() {
     setInterval(function() {
         $.get(location.href, function(data) {
-            var curLen = $("#logtitle ~ div").length;
-            var newLen = $(data).find("#logtitle ~ div").length;
+            var curLen = $(".action").length;
+            var newLen = $(data).find(".action").length;
             if (newLen>curLen) {
                 $("#grid").html($(data).find("#reload_grid").html());
-                $("#log").html($(data).find("#reload_log").html());
+                $("#logbox").html($(data).find("#reload_logbox").html());
                 $("#above").html($(data).find("#reload_above").html());
                 $("#below").html($(data).find("#reload_below").html());
+                $("#logbox").scrollTop($("#logbox")[0].scrollHeight);
             }
         });
     }, 5000);
 });
 
 // toggles between log and chat
-$("#log").click(function() {
+$("#logbox").click(function() {
     $("#log").css("display", "none");
     $("#chat").css("display", "inline");
+    $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
 });
 $("#chatbox").click(function() {
     $("#chat").css("display", "none");
     $("#log").css("display", "inline");
+    $("#logbox").scrollTop($("#logbox")[0].scrollHeight);
 });
 
 // autoreloads chat on an increasing time delay
+function reloadchat(data) {
+    var bottom = ($("#chatbox").scrollTop()+$("#chatbox").height()==$("#chatbox")[0].scrollHeight);
+    $.get(location.href, function(data) {
+        var curLen = $(".message").length;
+        var newLen = $(data).find(".message").length;
+        if (newLen>curLen) {
+            $("#chatbox").html($(data).find("#reload_chatbox").html());
+            if (bottom) $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+            return true;
+        }
+        return false;
+    });
+}
+
 var countdown = 8;
 var current = 8;
 $(document).ready(function() {
     setInterval(function() {
         current-=1;
-        if (current == 0) {
-            $.get(location.href, function(data) {
-                var curLen = $("#chattitle ~ div").length;
-                var newLen = $(data).find("#chattitle ~ div").length;
-                if (newLen>curLen) {
-                    $("#chatbox").html($(data).find("#reload_chatbox").html());
-                    countdown = 1;
-                } else if (countdown<8) {
-                    countdown*=2;
-                }
-            });
-            current = countdown;
-        }
+        if (reloadchat()) countdown = 1;
+        else if (countdown<8) countdown*=2;
+        if (current == 0) current = countdown;
     }, 500);
 });
 
@@ -59,12 +67,19 @@ $("#chatline").keypress(function(event) {
         request.send();
 
         $("#chatline").val("");
-        $.get(location.href, function(data) {
-            $("#chatbox").html($(data).find("#reload_chatbox").html());
-        });
+        $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+        reloadchat();
         countdown = 1;
     }
 });
+
+/* helper functions */
+
+// clicks cards
+$("#content").on("click", ".card", function() {
+    $(this).toggleClass("clicked_card");
+});
+
 
 // finds the index of a 64-based id in a hand
 function south(num) {
