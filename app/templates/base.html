@@ -11,15 +11,12 @@
 
     <body>
         <div id="header">
-            <a id="logo">
-                <img src="{{ url_for("static", filename = "favicon.ico") }}" alt = "logo" style="width:60px;height:60px">
+            <a id="logo" href="{{ url_for("views.homepage") }}">
+                <img src="{{ url_for("static", filename = "logiclogo.png") }}" alt="logo link to hompage" style="width:172px;height:60px">
             </a>
-            <h1 id="logo">Logic</h1>
             <ul id="navbar">
-                <li><a class="navlink" href="{{ url_for("views.homepage") }}">Home</a></li>
-                <li><a class="navlink" href="{{ url_for("views.newgame") }}">New Game</a></li>
-
                 {% if session["user"] %}
+                    <li><a class="navlink" href="{{ url_for("views.newgame") }}">New Game</a></li>
                     <li><a class="navlink" href="{{ url_for("views.games") }}">Games</a></li>
                     <li><a class="navlink" href="{{ url_for("views.logout") }}">Logout</a></li>
                 {% else %}
