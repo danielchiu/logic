@@ -2,6 +2,7 @@ $("#content").on("click", ".card", function() {
     $(this).toggleClass("clicked_card");
 });
 
+// autoreloads the game and log
 $(document).ready(function() {
     setInterval(function() {
         $.get(location.href, function(data) {
@@ -17,6 +18,7 @@ $(document).ready(function() {
     }, 5000);
 });
 
+// toggles between log and chat
 $("#log").click(function() {
     $("#log").css("display", "none");
     $("#chat").css("display", "inline");
@@ -26,9 +28,9 @@ $("#chatbox").click(function() {
     $("#log").css("display", "inline");
 });
 
+// autoreloads chat on an increasing time delay
 var countdown = 8;
 var current = 8;
-
 $(document).ready(function() {
     setInterval(function() {
         current-=1;
@@ -48,6 +50,7 @@ $(document).ready(function() {
     }, 500);
 });
 
+// handles the chat input with the enter key
 $("#chatline").keypress(function(event) {
     if (event.keyCode == 13) {
         var request = new XMLHttpRequest();
@@ -63,6 +66,7 @@ $("#chatline").keypress(function(event) {
     }
 });
 
+// finds the index of a 64-based id in a hand
 function south(num) {
     if (57<=num && num<=62) return num-56;
     return false;
@@ -80,6 +84,7 @@ function west(num) {
     return false;
 }
 
+// uses jquery to find card elements
 function getcard(ind) {
     return $(".ind"+ind);
 }
@@ -95,6 +100,7 @@ function select() {
     return getind($(".clicked_card"));
 }
 
+// finds the number of revealed cards (for corner case with all cards revealed)
 function getSouth() {
     var res = 0;
     for (var i=0;i<64;i++) {
@@ -136,6 +142,7 @@ function getLogLen() {
     return makeField("loglen",$("#logtitle ~ div").length);
 }
 
+// makes sure an input is a valid possible card
 function validate(num) {
     if (num=='A' || num=='T' || num=='J' || num=='Q') return true;
     if ("2"<=num && num<="9") return true;

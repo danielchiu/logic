@@ -1,3 +1,4 @@
+// handles reordering cards by clicking on an equal
 var swapped = "";
 
 $("#content").on("click", ".ocard", function() {

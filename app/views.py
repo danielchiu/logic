@@ -9,6 +9,7 @@ try:
 except IOError:
     pass
 
+# use after ALTER'ing the database to fix entries
 def updateDatabase():
     for game in Game.query.all():
         game = refresh(game)
@@ -56,10 +57,14 @@ def register():
             return redirect(url_for("views.homepage"))
     return render_template("register.html", error = error)
 
+# removes a game from the database and returns it so it can be modified
+# needed because otherwise changes two classes down cannot be tracked
 def refresh(game):
     db.session.delete(game)
     db.session.commit()
     return Game(game.name, game.players, game.hands, game.log, game.current, game.state, game.chat) # TODO really hacky way to get around the pickletype issue
+
+# inserts a game into the database and adds the game to each user's gamelist
 def insert(game):
     db.session.add(game)
     for player in game.players:
@@ -100,6 +105,7 @@ def games():
     if user is None:
         return redirect(url_for("views.homepage")) # TODO give some error message
 
+    # determines which games are active, current, and completed
     games = User.query.filter_by(username = user).first().games
     completed = [x for x in games if x.state==4]
     games = [x for x in games if not x.state==4]
@@ -209,6 +215,7 @@ def gameCall(name, game, user, ind):
 def gameOver(name, game, user, ind):
     return render_template("game-over.html", name = name, user = user, game = game)
 
+# view to handle a chat message, not actually visible
 def gamechat(name, game, user):
     if user is None:
         return redirect(url_for("views.homepage")) # TODO give some error message
@@ -218,6 +225,7 @@ def gamechat(name, game, user):
     insert(game)
     return redirect(url_for("views.homepage")) # TODO is there a way to do this without any return value
 
+# handles viewing a game (in all states), and chatting
 @views.route("/game/<name>", methods = ["GET", "POST"])
 def game(name):
     game = Game.query.filter_by(name = name).first()
@@ -231,6 +239,7 @@ def game(name):
     if request.method == "POST" and "type" not in request.form:
         return gamechat(name, game, user)
 
+    # if someone has performed an action since the user loaded the page
     if request.method == "POST":
         if int(request.form["loglen"]) != len(game.log):
             return redirect(url_for("views.game", name = name))
@@ -260,11 +269,13 @@ def game(name):
         if game.state == 3:
             return gameCall(name, game, user, ind)
 
+    # if it isn't the user's turn
     if request.method == "POST":
         return redirect(url_for("views.homepage")) # TODO give some error message
 
     return gameBase(name, game, user, ind)
 
+# currently unaccessible view to look at a game as if logged out
 @views.route("/spec/<name>", methods = ["GET", "POST"])
 def spec(name):
     game = Game.query.filter_by(name = name).first()

@@ -3,6 +3,12 @@ import random
 values = ['A','2','3','4','5','6','7','8','9','T','J','Q']
 suits = ['H','S']
 
+''' 
+class for a card in a player's hand 
+    private = visible to self
+    flipped = visible to everyone
+    secret = visible to self and partner
+'''
 class Card:
     def __init__(self, val, suit):
         self.val = val
@@ -18,6 +24,10 @@ class Card:
         else:
             return '_'+self.suit
 
+'''
+class for a player's hand
+sorts cards by value, breaking ties by original order (stable)
+'''
 class Hand:
     def __init__(self, cards):
         self.cards = cards

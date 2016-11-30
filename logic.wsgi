@@ -1,6 +1,8 @@
 #!/usr/bin/python
+# setup for web server
 import sys
 
+# directory path
 sys.path.insert(0, "/home/chiud/logic")
 
 from app import app as application
