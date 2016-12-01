@@ -25,6 +25,13 @@ def homepage():
         user = session["user"]
     return render_template("homepage.html", user = user)
 
+@views.route("/rules")
+def rules():
+    user = None
+    if "user" in session:
+        user = session["user"]
+    return render_template("rules.html", user=user)
+
 @views.route("/login", methods = ["GET", "POST"])
 def login():
     error = None

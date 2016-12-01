@@ -56,6 +56,8 @@ $(document).ready(function() {
         if (reloadchat()) countdown = 1;
         else if (countdown<8) countdown*=2;
         if (current == 0) current = countdown;
+        if ($("#chatbox")[0].scrollHeight - $("#chatbox")[0].scrollTop <= $("#chatbox")[0].clientHeight + 50)
+           $("$chatbox").scrollTop($("#chatbox")[0].scrollHeight);
     }, 500);
 });
 

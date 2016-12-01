@@ -16,6 +16,7 @@
             </a>
             <ul id="navbar">
                 <li><a class="navlink" href="{{ url_for("views.homepage") }}">Home</a></li>
+                <li><a class="navlink" href="{{ url_for("views.rules") }}">Rules</a></li>
                 {% if session["user"] %}
                     <li><a class="navlink" href="{{ url_for("views.newgame") }}">New Game</a></li>
                     <li><a class="navlink" href="{{ url_for("views.games") }}">Games</a></li>

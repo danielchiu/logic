@@ -167,7 +167,7 @@ body {
     float: left;
 }
 #logbox, #chatbox {
-    width: 397px;
+    width: 395px;
     overflow: auto;
 }
 #logtitle, #chattitle {
