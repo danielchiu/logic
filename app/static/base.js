@@ -47,10 +47,16 @@ function reloadchat(data) {
         }
         return false;
     });
+
+    // change times to client local time
+    // TODO with latency this also takes a little bit to update
+    $(".message").each(function() {
+        $(this).attr("title", (new Date(this.title)).toString());
+    });
 }
 
-var countdown = 8;
-var current = 8;
+var countdown = 1;
+var current = 1;
 $(document).ready(function() {
     setInterval(function() {
         current-=1;
@@ -77,11 +83,6 @@ $("#chatline").keypress(function(event) {
         reloadchat();
         countdown = 1;
     }
-});
-
-// converts all the GMT times to client local time
-$(document).ready(function() {
-    $(".message").
 });
 
 // clicks cards (only one at a time)
