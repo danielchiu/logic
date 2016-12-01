@@ -166,6 +166,10 @@ body {
     outline-offset: -5px;
     float: left;
 }
+#logbox, #chatbox {
+    width: 397px;
+    overflow: auto;
+}
 #logtitle, #chattitle {
     margin-left: 20px;
 }
@@ -178,13 +182,11 @@ body {
 #chat {
     display: none;
 }
-#chatbox {
-    height: 490px;
-    overflow: auto;
-}
 #logbox {
     height: 520px;
-    overflow: auto;
+}
+#chatbox {
+    height: 490px;
 }
 #chatline {
     margin-left: 20px;
