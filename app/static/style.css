@@ -152,7 +152,7 @@ body {
     transform: rotate(270deg)
 }
 .L {
-    transform: rotate(180deg)
+    transform: translateY(-40px)
 }
 .D {
     transform: rotate(90deg)
