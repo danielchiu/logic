@@ -5,6 +5,7 @@ $("#content").on("click", "#declare", function() {
     var form = $("<form></form>");
     form.attr("method","post");
     form.append(makeField("type","declare"));
+    form.append(makeField("time",(new Date()).toString()));
 
     form.append(getLogLen());
 

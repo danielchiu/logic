@@ -3,6 +3,20 @@ $(document).ready(function() {
     $("#logbox").scrollTop($("#logbox")[0].scrollHeight);
 });
 
+// change times to client local time
+// TODO with latency this also takes a little bit to update
+function fixTimes() {
+    $(".action").each(function() {
+        $(this).attr("title", (new Date(this.title)).toString());
+    });
+    $(".message").each(function() {
+        $(this).attr("title", (new Date(this.title)).toString());
+    });
+}
+$(document).ready(function() {
+    fixTimes();
+});
+
 // autoreloads the game and log
 $(document).ready(function() {
     setInterval(function() {
@@ -15,6 +29,7 @@ $(document).ready(function() {
                 $("#above").html($(data).find("#reload_above").html());
                 $("#below").html($(data).find("#reload_below").html());
                 $("#logbox").scrollTop($("#logbox")[0].scrollHeight);
+                fixTimes();
             }
         });
     }, 5000);
@@ -43,15 +58,10 @@ function reloadchat(data) {
         if (newLen>curLen) {
             $("#chatbox").html($(data).find("#reload_chatbox").html());
             if (bottom) $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+            fixTimes();
             return true;
         }
         return false;
-    });
-
-    // change times to client local time
-    // TODO with latency this also takes a little bit to update
-    $(".message").each(function() {
-        $(this).attr("title", (new Date(this.title)).toString());
     });
 }
 

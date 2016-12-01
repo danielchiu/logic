@@ -10,10 +10,12 @@ except IOError:
     pass
 
 # use after ALTER'ing the database to fix entries
+# or after changing what a database column stores
 def updateDatabase():
     for game in Game.query.all():
         game = refresh(game)
         game.chat = [[x, "12/1/2016 12:00:00 PM UTC"] for x in game.chat]
+        game.log = [[x, "12/1/2016 12:00:00 PM UTC"] for x in game.log]
         insert(game)
 
 @views.route("/")
@@ -133,7 +135,7 @@ def gameOrder(name, game, user, ind):
                     game.hands[ind].cards[i], game.hands[ind].cards[i+1] = game.hands[ind].cards[i+1], game.hands[ind].cards[i]
                     break
         game.state+=(1<<ind)
-        game.log.append(user+" has finished ordering cards")
+        game.log.append([user+" has finished ordering cards", request.form["time"]]);
         insert(game)
         return redirect(url_for("views.game", name = name))
     done = (ind==-1 or ((-game.state)&(1<<ind))==0)
@@ -146,7 +148,7 @@ def gamePass(name, game, user, ind):
         game.state = 1
         game.current = (game.current+2)%4
         game.hands[ind].cards[which-1].secret = True
-        game.log.append(user+" passed card "+str(which))
+        game.log.append([user+" passed card "+str(which), request.form["time"]]);
         insert(game)
         return redirect(url_for("views.game", name = name))
     return render_template("game-pass.html", name = name, user = user, game = game)
@@ -164,10 +166,10 @@ def gameGuess(name, game, user, ind):
             game.state = 0
             game.current = (game.current+3)%4
             game.hands[(ind+player)%4].cards[which-1].flipped = True
-            game.log.append(user+" correctly guessed "+game.players[(ind+player)%4]+"'s card "+str(which))
+            game.log.append([user+" correctly guessed "+game.players[(ind+player)%4]+"'s card "+str(which), request.form["time"]]);
         else:
             game.state = 2
-            game.log.append(user+" incorrectly guessed "+game.players[(ind+player)%4]+"'s card "+str(which)+" as "+value)
+            game.log.append([user+" incorrectly guessed "+game.players[(ind+player)%4]+"'s card "+str(which)+" as "+value, request.form["time"]]);
         insert(game)
         return redirect(url_for("views.game", name = name))
     return render_template("game-guess.html", name = name, user = user, game = game)
@@ -179,7 +181,7 @@ def gameReveal(name, game, user, ind):
         game.state = 0
         game.current = (game.current+3)%4
         game.hands[ind].cards[which-1].flipped = True
-        game.log.append(user+" revealed card "+str(which))
+        game.log.append([user+" revealed card "+str(which), request.form["time"]]);
         insert(game)
         return redirect(url_for("views.game", name = name))
     return render_template("game-reveal.html", name = name, user = user, game = game)
@@ -195,13 +197,13 @@ def gameCall(name, game, user, ind):
             success = True
         if success:
             game.hands[(ind+player)%4].cards[which-1].flipped = True
-            game.log.append(user+" correctly guessed "+game.players[(ind+player)%4]+"'s card "+str(which))
+            game.log.append([user+" correctly guessed "+game.players[(ind+player)%4]+"'s card "+str(which), request.form["time"]]);
         else:
             game.state = 4
             game.players+=[game.players[(ind+1)%4],game.players[(ind+3)%4]]
-            game.log.append(user+" incorrectly guessed "+game.players[(ind+player)%4]+"'s card "+str(which)+" as "+value)
-            game.log.append(user+" made a mistake while declaring!")
-            game.log.append(game.players[(ind+1)%4]+" and "+game.players[(ind+3)%4]+" win!")
+            game.log.append([user+" incorrectly guessed "+game.players[(ind+player)%4]+"'s card "+str(which)+" as "+value, request.form["time"]]);
+            game.log.append([user+" made a mistake while declaring!", request.form["time"]]);
+            game.log.append([game.players[(ind+1)%4]+" and "+game.players[(ind+3)%4]+" win!", request.form["time"]]);
         insert(game)
         return redirect(url_for("views.game", name = name))
     done = True
@@ -213,8 +215,8 @@ def gameCall(name, game, user, ind):
         game = refresh(game)
         game.state = 4
         game.players+=[game.players[ind],game.players[(ind+2)%4]]
-        game.log.append(user+" has successfully named every card!")
-        game.log.append(user+" and "+game.players[(ind+2)%4]+" win!")
+        game.log.append([user+" has successfully named every card!", request.form["time"]]);
+        game.log.append([user+" and "+game.players[(ind+2)%4]+" win!", request.form["time"]]);
         insert(game)
         return redirect(url_for("views.game", name = name))
     return render_template("game-call.html", name = name, user = user, game = game)
@@ -262,7 +264,7 @@ def game(name):
         game.current = ind
         for i in range(6):
             game.hands[ind].cards[i].flipped = True
-        game.log.append(user+" declared!")
+        game.log.append([user+" declared!", request.form["time"]]);
         insert(game)
         return redirect(url_for("views.game",name = name))
 

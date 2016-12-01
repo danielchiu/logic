@@ -31,6 +31,7 @@ $("#content").on("click", "#order", function() {
     var form = $("<form></form>");
     form.attr("method","post");
     form.append(makeField("type","order"));
+    form.append(makeField("time",(new Date()).toString()));
     
     form.append(makeField("swapped",swapped));
 

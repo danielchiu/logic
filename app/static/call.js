@@ -24,6 +24,7 @@ $("#content").on("click", "#call", function() {
     var form = $("<form></form>");
     form.attr("method","post");
     form.append(makeField("type","call"));
+    form.append(makeField("time",(new Date()).toString()));
     
     form.append(makeField("player",player));
     form.append(makeField("index",which));

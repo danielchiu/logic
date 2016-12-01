@@ -9,6 +9,7 @@ $("#content").on("click", "#pass", function() {
     var form = $("<form></form>");
     form.attr("method","post");
     form.append(makeField("type","pass"));
+    form.append(makeField("time",(new Date()).toString()));
     
     form.append(makeField("index",which));
 

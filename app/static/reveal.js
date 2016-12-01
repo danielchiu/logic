@@ -12,6 +12,7 @@ $("#content").on("click", "#reveal", function() {
     var form = $("<form></form>");
     form.attr("method","post");
     form.append(makeField("type","reveal"));
+    form.append(makeField("time",(new Date()).toString()));
 
     form.append(makeField("index",which));
 

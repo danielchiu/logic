@@ -23,6 +23,7 @@ $("#content").on("click", "#guess", function() {
     var form = $("<form></form>");
     form.attr("method","post");
     form.append(makeField("type","guess"));
+    form.append(makeField("time",(new Date()).toString()));
     
     form.append(makeField("player",player));
     form.append(makeField("index",which));
