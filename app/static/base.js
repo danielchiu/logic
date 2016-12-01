@@ -155,7 +155,7 @@ function makeField(from, to) {
 }
 
 function getLogLen() {
-    return makeField("loglen",$("#logtitle ~ div").length);
+    return makeField("loglen",$(".action").length);
 }
 
 // makes sure an input is a valid possible card
