@@ -236,3 +236,35 @@ input[type=submit] {
     margin-top: 605px;
     margin-left: 525px;
 }
+
+.tabbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+.tabbar li {
+    float: left;
+}
+.tab {
+    display: inline-block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+.tab:hover {
+    background-color: #ddd;
+}
+.active {
+    background-color: #ccc;
+}
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}

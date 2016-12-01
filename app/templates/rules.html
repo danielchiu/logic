@@ -112,4 +112,39 @@
 
     To toggle between the action log and the chat log, click on it.
 
+<<<<<<< HEAD
+=======
+    <ul id="rulelist" class="tabbar">
+        <li><a href="javascript:void(0)" class="tab">Overview</a></li>
+        <li><a href="javascript:void(0)" class="tab">Setup</a></li>
+        <li><a href="javascript:void(0)" class="tab">Gameplay</a></li>
+        <li><a href="javascript:void(0)" class="tab">Strategies</a></li>
+        <li><a href="javascript:void(0)" class="tab">Legend</a></li>
+    </ul>
+
+    <div id="Overview" class="tabcontent">
+        Overview
+        {# insert info #}
+    </div>
+    <div id="Setup" class="tabcontent">
+        Setup
+        {# insert info #}
+    </div>
+    <div id="Gameplay" class="tabcontent">
+        Gameplay
+        {# insert info #}
+    </div>
+    <div id="Strategies" class="tabcontent">
+        Strategies
+        {# insert info #}
+    </div>
+    <div id="Legend" class="tabcontent">
+        Legend
+        {# insert info #}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src={{ url_for("static", filename = "tabs.js") }}></script>
+>>>>>>> 2bbab7aa40fbd66eefa344ac7d68abe94516cb21
 {% endblock %}

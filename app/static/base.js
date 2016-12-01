@@ -34,8 +34,9 @@ $("#chatbox").click(function() {
 });
 
 // autoreloads chat on an increasing time delay
+// scrolls to bottom if scrollbar is close enough to bottom
 function reloadchat(data) {
-    var bottom = ($("#chatbox").scrollTop()+$("#chatbox").height()==$("#chatbox")[0].scrollHeight);
+    var bottom = ($("#chatbox")[0].scrollHeight - $("#chatbox")[0].scrollTop <= $("#chatbox")[0].clientHeight + 50)
     $.get(location.href, function(data) {
         var curLen = $(".message").length;
         var newLen = $(data).find(".message").length;
@@ -53,11 +54,11 @@ var current = 8;
 $(document).ready(function() {
     setInterval(function() {
         current-=1;
-        if (reloadchat()) countdown = 1;
-        else if (countdown<8) countdown*=2;
-        if (current == 0) current = countdown;
-        if ($("#chatbox")[0].scrollHeight - $("#chatbox")[0].scrollTop <= $("#chatbox")[0].clientHeight + 50)
-           $("$chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+        if (current == 0) {
+            if (reloadchat()) countdown = 1;
+            else if (countdown<8) countdown*=2;
+            current = countdown;
+        }
     }, 500);
 });
 
@@ -76,13 +77,19 @@ $("#chatline").keypress(function(event) {
     }
 });
 
-/* helper functions */
-
-// clicks cards
+// clicks cards (only one at a time)
 $("#content").on("click", ".card", function() {
-    $(this).toggleClass("clicked_card");
+    if ($(this).hasClass("clicked_card")) {
+        $(this).removeClass("clicked_card");
+    } else {
+        for (var i=0;i<64;i++) {
+            $(".ind"+i).removeClass("clicked_card");
+        }
+        $(this).addClass("clicked_card");
+    }
 });
 
+/* helper functions */
 
 // finds the index of a 64-based id in a hand
 function south(num) {
