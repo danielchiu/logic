@@ -4,113 +4,7 @@
 
 {% block content %}
     <h1>Logic Game Rules</h1>
-    <h2>Overview</h2>
-    <p>Logic is a card game focused on logic, deduction, guesswork, and psychology. It involves four players with two teams. Ultimately, the goal of the game is for one player to determine and announce the values of all 24 cards, by learning information through passed, guessed, and revealed cards, as well as from the actions of the other players.</p>
-    <h2>Setup</h2>
-    <p>The four players sit in a square formation facing inward. The two teams consist of players sitting opposite each other.</p>
-    <img src="{{ url_for("static", filename = "rulesimages/setup.PNG") }}" alt="setup" style="width:900px">
 
-    <p>There are 24 cards in play - {A, 2, 3, 4, 5, 6, 7, 8, 9, T, J, Q} of both Hearts (red backs) and Spades (black backs). Six cards are randomly dealt to each of the four players. These cards must be then set up face-down, in increasing order by value from left to right. If there is a pair, the player may place them in either order - for example, both of the following two orderings are allowed.</p>
-
-    <img src="{{ url_for("static", filename="rulesimages/order1.PNG") }}" alt="order1" style="width:600px">       
-    <img src="{{ url_for("static", filename="rulesimages/order2.PNG") }}" alt="order2" style="width:585px">
-
-    <p>Once all players have finished ordering their cards, play begins. The starting player is chosen randomly.</p>
-    <h2>Gameplay</h2>
-
-    <p>The game consists of turns, which involve both players on one team and one player on the other team (not predetermined). The direction of play flows counterclockwise.</p>
-
-    <p>Let's call the current player Wheatley. A single turn consists of three actions. The first action is the pass.</p>
-    <h3>Pass</h3>
-    <p>Wheatley's teammate selects a hidden card of their own, if there exists one, to reveal to only Wheatley.</p>
-
-    <img src="{{ url_for("static", filename="rulesimages/pass1.PNG") }}" alt="pass1" style="width:600px">
-    <p>Note: It is legal to pass a card multiple times.</p>
-
-    <img src="{{ url_for("static", filename="rulesimages/pass2.PNG") }}" alt="pass2" style="width:900px">
-    <h3>Guess</h3>
-
-    <p>Then, Wheatley selects a hidden card from one of his opponents hands (on either side of him). Wheatley must guess that card's value - note that everyone already knows the card's suit.</p>
-
-    <img src="{{ url_for("static", filename="rulesimages/guess.PNG") }}" alt="guess" style="width:900px">
-
-    <h2>Reveal</h2>
-
-    <p>If the guess is correct, then Wheatley's opponent must flip over that card, revealing it to all players.</p>
-
-    <p>However, if the guess is incorrect, Wheatley must choose a hidden card of his own to flip over.</p>
-
-    <img src="{{ url_for("static", filename="rulesimages/reveal.PNG") }}" alt="reveal" style="width:900px">
-
-    <p>Note: If during any step, there are no legal face-down cards to choose from, the step is skipped. </p>
-    <p>Note: Once a card is flipped face-up, it remains that way permanently. </p>
-
-    <h2>Declaration</h2>
-
-    <p>Let GLaDOS be another player in the game. At any point, even in the middle of an action and regardless of whose turn it is, GLaDOS can declare (unless someone has already declared). This immediately terminates the current state of the game and begins the final phase.</h2>
-
-    <img src="{{ url_for("static", filename="rulesimages/declare1.PNG") }}" alt="declare1" style="width:900px">
-
-    <p>GLaDOS begins by flipping all of her cards face-up. GLaDOS proceeds by repeatedly guessing the value of any face-down card - including those of her partner - which is then flipped face up. The game will end during this process, in one of two scenarios:</p>
-
-    <p>     1. If GLaDOS incorrectly guesses any card, including those which have been revealed to her through passing, then GLaDOS's team immediately loses.</p>
-    
-    <img src="{{ url_for("static", filename="rulesimages/declare2.PNG") }}" alt="declare2" style="width:900px">
-
-    <p>     2. If at some point all cards are face-up, meaning GLaDOS correctly guessed every face-down card, then GLaDOSs team wins the game.</p>
-
-    <img src="{{ url_for("static", filename="rulesimages/declare3.PNG") }}" alt="declare3" style="width:900px">
-
-    <h2>Unwritten rules</h2>
-
-    <p>While conversation is okay, about the game or any other subject, try to avoid conveying any information that others do not know.</p>
-    <p>As a courtesy, give others time to think about their decisions. For instance, GLaDOS may want to declare between Wheatleys unsuccessful guess and his reveal.</p>
-    <p>Do not rush players. It is not uncommon for turns to take many minutes, potentially even to half an hour or longer. </p>
-
-
-    <h2>Starting Tips</h2>
-    <h3>Basic</h3>
-
-    <p>     1. If you are able to determine a card for certain, it may not be worth taking a turn guessing it. Turns are rare, so use them wisely!</p>
-    <p>     2. Double-check: often a card could possibly be in many places, not just the most obvious.</p>
-    <p>     3. A wrong guess is not bad! You now know that your guessed card must be somewhere else, and if you were choosing between two possibilities, you've gotten it right for the purpose of declaration.
-
-
-    <h3>Intermediate</h3>
-
-    <p>     1. Try to glean information from the actions of others. For example, if a your opponent guesses one of your cards as the 5, they are not likely to have the 5 themselves.</p>
-    <p>     2. Before making an uncertain guess, prepare to be wrong. Figure out which of your cards you would reveal (and if there isnt any good card to reveal, perhaps making this guess is not a good idea!)</p>
-    <p>     3. Order your cards wisely. Some arrangements of cards may be easier or harder than others to crack. This may be a good thing, if you pass your partner the key cards quickly, but it may also be a bad thing, since your opponents might find those cards.</p>
-
-    <h3>Advanced</h3>
-
-    <p>     1. Play the metagame. Figure out what your partner could have deduced through the gameplay. If your partner also does this, passing evolves as both of you may be able to see who has the better position to declare, and funnel information accordingly.</p>
-    <p>     2. Play the metagame #2.  Figure out what your opponents could have deduced through the gameplay. It's better to take a 25% declaration if you know that your opponents are about to declare with 100% certainty.</p>
-    <p>     3. Play the metagame #3. Try to figure out why your opponents may have passed certain cards. This may not help you determine a 50-50, but it may make it a 60-40.</p>
-
-
-    <h2>Legend</h2>
-
-
-    <p>Red = Heart, Black = Spade</p>
-
-    <p>If a card has a golden external border, it has been passed (both that player, and that player's partner, know the cards value).</p>
-
-    <p>If a card has a cyan external border, it has been flipped over (all four players know the cards value).</p>
-
-    <p>Note that a card can have both a golden and a cyan external border, meaning it has been passed, and also has been flipped.</p>
-
-    <img src="{{ url_for("static", filename="rulesimages/secret.PNG") }}" alt="secret" style="width:220px">
-    <img src="{{ url_for("static", filename="rulesimages/secret1.PNG") }}" alt="secret1" style="width:230px">
-    <img src="{{ url_for("static", filename="rulesimages/public.PNG") }}" alt="public" style="width:200px">
-    <img src="{{ url_for("static", filename="rulesimages/secretpublic.PNG") }}" alt="secretpublic" style="width:200px">
-
-
-    <p>If a card has a green internal border, it has been selected by the user. To toggle selection, click on a card.</p>
-    
-    <img src="{{ url_for("static", filename="rulesimages/selected.PNG") }}" alt="selected" style="width:500px">
-
-    <p>To toggle between the action log and the chat log, click on it.</p>
     <ul id="rulelist" class="tabbar">
         <li><a href="javascript:void(0)" class="tab">Overview</a></li>
         <li><a href="javascript:void(0)" class="tab">Setup</a></li>
@@ -120,24 +14,106 @@
     </ul>
 
     <div id="Overview" class="tabcontent">
-        Overview
-        {# insert info #}
+        <p>Logic is a card game focused on logic, deduction, guesswork, and psychology. It involves four players with two teams. Ultimately, the goal of the game is for one player to determine and announce the values of all 24 cards, by learning information through passed, guessed, and revealed cards, as well as from the actions of the other players.</p>
     </div>
+    
     <div id="Setup" class="tabcontent">
-        Setup
-        {# insert info #}
+        <p>The four players sit in a square formation facing inward. The two teams consist of players sitting opposite each other.</p>
+        
+        <img src="{{ url_for("static", filename = "rulesimages/setup.PNG") }}" alt="setup" style="width:900px">
+
+        <p>There are 24 cards in play - {A, 2, 3, 4, 5, 6, 7, 8, 9, T, J, Q} of both Hearts (red backs) and Spades (black backs). Six cards are randomly dealt to each of the four players. These cards must be then set up face-down, in increasing order by value from left to right. If there is a pair, the player may place them in either order - for example, both of the following two orderings are allowed.</p>
+
+        <img src="{{ url_for("static", filename="rulesimages/order1.PNG") }}" alt="order1" style="width:600px">       
+        <img src="{{ url_for("static", filename="rulesimages/order2.PNG") }}" alt="order2" style="width:585px">
+
+        <p>Once all players have finished ordering their cards, play begins. The starting player is chosen randomly.</p>
     </div>
+    
     <div id="Gameplay" class="tabcontent">
-        Gameplay
-        {# insert info #}
+        <p>The game consists of turns, which involve both players on one team and one player on the other team (not predetermined). The direction of play flows counterclockwise.</p>
+        <p>Let's call the current player Wheatley. A single turn consists of three actions. The first action is the pass.</p>
+
+        <h2>Pass</h2>
+        <p>Wheatley's teammate selects a hidden card of their own, if there exists one, to reveal to only Wheatley.</p>
+
+        <img src="{{ url_for("static", filename="rulesimages/pass1.PNG") }}" alt="pass1" style="width:600px">
+        <p>Note: It is legal to pass a card multiple times.</p>
+
+        <img src="{{ url_for("static", filename="rulesimages/pass2.PNG") }}" alt="pass2" style="width:900px">
+        
+        <h2>Guess</h2>
+        <p>Then, Wheatley selects a hidden card from one of his opponents' hands (on either side of him). Wheatley must guess that card's value - note that everyone already knows the card's suit.</p>
+
+        <img src="{{ url_for("static", filename="rulesimages/guess.PNG") }}" alt="guess" style="width:900px">
+
+        <h2>Reveal</h2>
+        <p>If the guess is correct, then Wheatley's opponent must flip over that card, revealing it to all players.</p>
+        <p>However, if the guess is incorrect, Wheatley must choose a hidden card of his own to flip over.</p>
+
+        <img src="{{ url_for("static", filename="rulesimages/reveal.PNG") }}" alt="reveal" style="width:900px">
+
+        <p>Note: If during any step, there are no legal face-down cards to choose from, the step is skipped. </p>
+        <p>Note: Once a card is flipped face-up, it remains that way permanently. </p>
+
+        <h2>Declare</h2>
+        <p>Let GLaDOS be another player in the game. At any point, even in the middle of an action and regardless of whose turn it is, GLaDOS can declare (unless someone has already declared). This immediately terminates the current state of the game and begins the final phase.</h2>
+
+        <img src="{{ url_for("static", filename="rulesimages/declare1.PNG") }}" alt="declare1" style="width:900px">
+
+        <p>GLaDOS begins by flipping all of her cards face-up. GLaDOS proceeds by repeatedly guessing the value of any face-down card - including those of her partner - which is then flipped face up. The game will end during this process, in one of two scenarios:</p>
+        <p>     1. If GLaDOS incorrectly guesses any card, including those which have been revealed to her through passing, then GLaDOS's team immediately loses.</p>
+        
+        <img src="{{ url_for("static", filename="rulesimages/declare2.PNG") }}" alt="declare2" style="width:900px">
+
+        <p>     2. If at some point all cards are face-up, meaning GLaDOS correctly guessed every face-down card, then GLaDOS's team wins the game.</p>
+
+        <img src="{{ url_for("static", filename="rulesimages/declare3.PNG") }}" alt="declare3" style="width:900px">
+
+        <h2>Unwritten rules</h2>
+        <p>While conversation is okay, about the game or any other subject, try to avoid conveying any information that others do not know.</p>
+        <p>As a courtesy, give others time to think about their decisions. For instance, GLaDOS may want to declare between Wheatleys unsuccessful guess and his reveal.</p>
+        <p>Do not rush players. It is not uncommon for turns to take many minutes, potentially even half an hour or longer. </p>
     </div>
+    
     <div id="Strategies" class="tabcontent">
-        Strategies
-        {# insert info #}
+        <h3>Basic</h3>
+        <p>     1. If you are able to determine a card for certain, it may not be worth taking a turn guessing it. Turns are rare, so use them wisely!</p>
+        <p>     2. Double-check: often a card could possibly be in many places, not just the most obvious.</p>
+        <p>     3. A wrong guess is not bad! You now know that your guessed card must be somewhere else, and if you were choosing between two possibilities, you've gotten it right for the purpose of declaration.
+
+
+        <h3>Intermediate</h3>
+        <p>     1. Try to glean information from the actions of others. For example, if a your opponent guesses one of your cards as the 5, they are not likely to have the 5 themselves.</p>
+        <p>     2. Before making an uncertain guess, prepare to be wrong. Figure out which of your cards you would reveal (and if there isn't any good card to reveal, perhaps making this guess is not a good idea!)</p>
+        <p>     3. Order your cards wisely. Some arrangements of cards may be easier or harder than others to crack. This may be a good thing, if you pass your partner the key cards quickly, but it may also be a bad thing, since your opponents might find those cards.</p>
+
+        <h3>Advanced</h3>
+        <p>     1. Play the metagame. Figure out what your partner could have deduced through the gameplay. If your partner also does this, passing evolves as both of you may be able to see who has the better position to declare, and funnel information accordingly.</p>
+        <p>     2. Play the metagame #2.  Figure out what your opponents could have deduced through the gameplay. It's better to take a 25% declaration if you know that your opponents are about to declare with 100% certainty.</p>
+        <p>     3. Play the metagame #3. Try to figure out why your opponents may have passed certain cards. This may not help you determine a 50-50, but it may make it a 60-40.</p>
     </div>
+    
     <div id="Legend" class="tabcontent">
-        Legend
-        {# insert info #}
+        <p>Red = Heart, Black = Spade</p>
+
+        <p>If a card has a golden external border, it has been passed (both that player, and that player's partner, know the card's value).</p>
+
+        <p>If a card has a cyan external border, it has been flipped over (all four players know the card's value).</p>
+
+        <p>Note that a card can have both a golden and a cyan external border, meaning it has been passed, and also has been flipped.</p>
+
+        <img src="{{ url_for("static", filename="rulesimages/secret.PNG") }}" alt="secret" style="width:220px">
+        <img src="{{ url_for("static", filename="rulesimages/secret1.PNG") }}" alt="secret1" style="width:230px">
+        <img src="{{ url_for("static", filename="rulesimages/public.PNG") }}" alt="public" style="width:200px">
+        <img src="{{ url_for("static", filename="rulesimages/secretpublic.PNG") }}" alt="secretpublic" style="width:200px">
+
+
+        <p>If a card has a green internal border, it has been selected by the user. To toggle selection, click on a card.</p>
+        
+        <img src="{{ url_for("static", filename="rulesimages/selected.PNG") }}" alt="selected" style="width:500px">
+
+        <p>To toggle between the action log and the chat log, click on it.</p>
     </div>
 {% endblock %}
 
