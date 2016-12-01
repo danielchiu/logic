@@ -25,6 +25,7 @@ $("#logbox").click(function() {
     $("#log").css("display", "none");
     $("#chat").css("display", "inline");
     $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+    $("#chatline").focus();
 });
 $("#chatbox").click(function() {
     $("#chat").css("display", "none");
