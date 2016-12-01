@@ -56,7 +56,7 @@ $(document).ready(function() {
         current-=1;
         if (current == 0) {
             if (reloadchat()) countdown = 1;
-            else if (countdown<8) countdown*=2;
+            else if (countdown<8) countdown+=1;
             current = countdown;
         }
     }, 500);
@@ -67,7 +67,9 @@ $("#chatline").keypress(function(event) {
     if (event.keyCode == 13) {
         var request = new XMLHttpRequest();
         
-        request.open("POST", "?message="+$("#chatline").val());
+        var now = new Date();
+
+        request.open("POST", "?message="+$("#chatline").val()+"&time="+now.toUTCString());
         request.send();
 
         $("#chatline").val("");

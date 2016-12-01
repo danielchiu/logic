@@ -13,7 +13,7 @@ except IOError:
 def updateDatabase():
     for game in Game.query.all():
         game = refresh(game)
-        game.chat = []
+        game.chat = [[x, "12/1/2016 12:00:00 PM UTC"] for x in game.chat]
         insert(game)
 
 @views.route("/")
@@ -228,7 +228,7 @@ def gamechat(name, game, user):
         return redirect(url_for("views.homepage")) # TODO give some error message
 
     game = refresh(game)
-    game.chat.append(user+": "+request.args.get("message"))
+    game.chat.append([user+": "+request.args.get("message"), request.args.get("time")])
     insert(game)
     return redirect(url_for("views.homepage")) # TODO is there a way to do this without any return value
 
