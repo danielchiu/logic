@@ -77,13 +77,19 @@ $("#chatline").keypress(function(event) {
     }
 });
 
-/* helper functions */
-
-// clicks cards
+// clicks cards (only one at a time)
 $("#content").on("click", ".card", function() {
-    $(this).toggleClass("clicked_card");
+    if ($(this).hasClass("clicked_card")) {
+        $(this).removeClass("clicked_card");
+    } else {
+        for (var i=0;i<64;i++) {
+            $(".ind"+i).removeClass("clicked_card");
+        }
+        $(this).addClass("clicked_card");
+    }
 });
 
+/* helper functions */
 
 // finds the index of a 64-based id in a hand
 function south(num) {
