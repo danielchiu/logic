@@ -79,6 +79,11 @@ $("#chatline").keypress(function(event) {
     }
 });
 
+// converts all the GMT times to client local time
+$(document).ready(function() {
+    $(".message").
+});
+
 // clicks cards (only one at a time)
 $("#content").on("click", ".card", function() {
     if ($(this).hasClass("clicked_card")) {
