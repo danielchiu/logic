@@ -34,8 +34,9 @@ $("#chatbox").click(function() {
 });
 
 // autoreloads chat on an increasing time delay
+// scrolls to bottom if scrollbar is close enough to bottom
 function reloadchat(data) {
-    var bottom = ($("#chatbox").scrollTop()+$("#chatbox").height()==$("#chatbox")[0].scrollHeight);
+    var bottom = ($("#chatbox")[0].scrollHeight - $("#chatbox")[0].scrollTop <= $("#chatbox")[0].clientHeight + 50)
     $.get(location.href, function(data) {
         var curLen = $(".message").length;
         var newLen = $(data).find(".message").length;
@@ -53,11 +54,11 @@ var current = 8;
 $(document).ready(function() {
     setInterval(function() {
         current-=1;
-        if (reloadchat()) countdown = 1;
-        else if (countdown<8) countdown*=2;
-        if (current == 0) current = countdown;
-        if ($("#chatbox")[0].scrollHeight - $("#chatbox")[0].scrollTop <= $("#chatbox")[0].clientHeight + 50)
-           $("$chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+        if (current == 0) {
+            if (reloadchat()) countdown = 1;
+            else if (countdown<8) countdown*=2;
+            current = countdown;
+        }
     }, 500);
 });
 
