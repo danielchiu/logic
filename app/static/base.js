@@ -6,11 +6,16 @@ $(document).ready(function() {
 // change times to client local time
 // TODO with latency this also takes a little bit to update
 function fixTimes() {
-    $(".action").each(function() {
-        $(this).attr("title", (new Date(this.title)).toString());
-    });
-    $(".message").each(function() {
-        $(this).attr("title", (new Date(this.title)).toString());
+    $(".timestamp").each(function() {
+        var date = new Date($(this).text());
+        var now = new Date()
+        if (date.toDateString()==now.toDateString()) {
+            var min = "";
+            if (date.getMinutes()<10) min = "0"
+            $(this).text(date.getHours()+":"+min+date.getMinutes());
+        } else {
+            $(this).text((date.getMonth()+1)+"/"+date.getDate());
+        }
     });
 }
 $(document).ready(function() {
