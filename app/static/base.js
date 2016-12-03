@@ -92,6 +92,15 @@ $("#chatline").keypress(function(event) {
 
         request.open("POST", "?message="+$("#chatline").val()+"&time="+now.toUTCString());
         request.send();
+    
+        var fake = "<div class=\"fakemessage\">";
+        fake+="<div class=\"textstamp\">"+$("#username").text()+": "+$("#chatline").val()+"</div>"
+        var min = "";
+        if (now.getMinutes()<10) min = "0"
+        fake+="<div class=\"timestamp\">"+now.getHours()+":"+min+now.getMinutes()+"</div>";
+        fake+="</div>";
+        $("#chatbox").append(fake);
+
 
         $("#chatline").val("");
         $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
