@@ -100,23 +100,25 @@ $("#chatline").keypress(function(event) {
 
         request.open("POST", "?message="+$("#chatline").val()+"&time="+now.toUTCString());
         request.send();
-        
-        var fake = "<div class=\"fakemessage\">";
-        fake+="<div class=\"textstamp\">"+$("#username").text()+": "+$("#chatline").val()+"</div>"
-        var min = "";
+	/*        
+	var min = "";
         var hr = "12";
         var mr = "am";
         if (now.getMinutes()<10) min = "0"
         if (now.getHours()%12!=0) hr = now.getHours()%12
         if (now.getHours()>11) mr = "pm"
-        fake+="<div class=\"timestamp\">";
+        var faketime ="<div class=\"timestamp\">";
         var time = hr+":"+min+now.getMinutes()+mr;
-        if (time!=lasttime) fake+=time;
+        if (time!=lasttime) {
+	    faketime+=time;
+	    faketime+="</div>";
+	    $("#chatbox").append(faketime);
+	}
         lasttime = time;
-        fake+="</div>";
-        fake+="</div>";
+	*/
+        var fake = "";
+        fake+="<div class=\"message\">"+$("#username").text()+": "+$("#chatline").val()+"</div>"
         $("#chatbox").append(fake);
-
 
         $("#chatline").val("");
         $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);

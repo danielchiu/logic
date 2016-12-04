@@ -178,17 +178,16 @@ body {
     margin-left: 20px;
 }
 
-.action, .message, .fakemessage {
+.action, .message, .fakemessage, .textstamp, .timestamp {
     margin-left: 20px;
     margin-right: 20px;
     margin-bottom: 20px;
     display: flex;
 }
-.textstamp {
-    width: 330px;
-}
+
 .timestamp {
-    margin-left: 15px;
+    margin-top: 20px;
+    justify-content: center;
 }
 
 #chat {
