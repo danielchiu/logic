@@ -20,9 +20,12 @@ function fixTimes() {
             $(this).text(hr+":"+min+date.getMinutes()+mr);
         } else {
             $(this).text((date.getMonth()+1)+"/"+date.getDate()+", "+hr+":"+min+date.getMinutes()+mr);
-            $(this).css("font-size","9px");
         }
-        if ($(this).text()==lasttime) $(this).text("");
+        if ($(this).text()==lasttime) {
+            $(this).text("");
+            $(this).css("margin-top", "0px");
+            $(this).css("margin-bottom", "0px");
+        }
         else lasttime = $(this).text();
     });
 }
@@ -100,8 +103,8 @@ $("#chatline").keypress(function(event) {
 
         request.open("POST", "?message="+$("#chatline").val()+"&time="+now.toUTCString());
         request.send();
-	/*        
-	var min = "";
+	        
+	    var min = "";
         var hr = "12";
         var mr = "am";
         if (now.getMinutes()<10) min = "0"
@@ -110,14 +113,13 @@ $("#chatline").keypress(function(event) {
         var faketime ="<div class=\"timestamp\">";
         var time = hr+":"+min+now.getMinutes()+mr;
         if (time!=lasttime) {
-	    faketime+=time;
-	    faketime+="</div>";
-	    $("#chatbox").append(faketime);
-	}
+	        faketime+=time;
+	        faketime+="</div>";
+	        $("#chatbox").append(faketime);
+	    }
         lasttime = time;
-	*/
         var fake = "";
-        fake+="<div class=\"message\">"+$("#username").text()+": "+$("#chatline").val()+"</div>"
+        fake+="<div class=\"fakemessage\">"+$("#username").text()+": "+$("#chatline").val()+"</div>"
         $("#chatbox").append(fake);
 
         $("#chatline").val("");

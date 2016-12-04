@@ -44,9 +44,7 @@
             <h2 id="chattitle">Chat:</h2>
             <div id="chatbox"><div id="reload_chatbox">
                 {% for message in game.chat %}
-		    {% if message[1]!="" %}
-			<div class="timestamp">{{ message[1] }}</div>
-		    {% endif %}
+			        <div class="timestamp">{{ message[1] }}</div>
                     <div class="message">{{ message[0] }}</div>
                 {% endfor %}
             </div></div>
