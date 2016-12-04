@@ -3,7 +3,7 @@ $(document).ready(function() {
     $("#logbox").scrollTop($("#logbox")[0].scrollHeight);
 });
 
-var lasttime = new Date();
+var lasttime = new Date(0);
 // change times to client local time
 // TODO with latency this also takes a little bit to update
 function fixTimes() {
@@ -44,6 +44,7 @@ $(document).ready(function() {
                 $("#above").html($(data).find("#reload_above").html());
                 $("#below").html($(data).find("#reload_below").html());
                 $("#logbox").scrollTop($("#logbox")[0].scrollHeight);
+                lasttime = new Date(0);
                 fixTimes();
             }
         });
