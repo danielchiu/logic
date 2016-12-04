@@ -186,9 +186,8 @@ body {
 }
 
 .timestamp {
-    margin-top: 20px;
-    position:absolute;
-    left: 200px;
+    justify-content: center;
+    margin-right: 0px;
 }
 
 #chat {
