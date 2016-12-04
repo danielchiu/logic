@@ -4,29 +4,26 @@ $(document).ready(function() {
 });
 
 // change times to client local time
-// TODO with latency this also takes a little bit to update
-var lasttime = 0;
+var lasttime = "";
 function fixTimes() {
-    lasttime = 0;
+    lasttime = "";
     $(".timestamp").each(function() {
         var date = new Date($(this).text());
         var now = new Date();
+        var min = "";
+        var hr = "12";
+        var mr = "am";
+        if (date.getHours()>11) mr = "pm";
+        if (date.getHours()%12!=0) hr = date.getHours()%12;
+        if (date.getMinutes()<10) min = "0";
         if (date.toDateString()==now.toDateString()) {
-            var min = "";
-            var hr = "12";
-            var mr = "am"; 
-            if (date.getHours()>11) mr = "pm"
-            if (date.getHours()%12!=0) hr = date.getHours()%12 
-            if (date.getMinutes()<10) min = "0"
-            if (lasttime!=0 && lasttime.getHours()==date.getHours() && lasttime.getMinutes()==date.getMinutes()) {
-                $(this).text("");
-            } else {
-                $(this).text(hr+":"+min+date.getMinutes()+mr);
-            }
+            $(this).text(hr+":"+min+date.getMinutes()+mr);
         } else {
-            $(this).text((date.getMonth()+1)+"/"+date.getDate());
+            $(this).text((date.getMonth()+1)+"/"+date.getDate()+", "+hr+":"+min+date.getMinutes()+mr);
+            $(this).css("font-size","9px");
         }
-        lasttime = date;
+        if ($(this).text()==lasttime) $(this).text("");
+        else lasttime = $(this).text();
     });
 }
 $(document).ready(function() {
@@ -113,7 +110,9 @@ $("#chatline").keypress(function(event) {
         if (now.getHours()%12!=0) hr = now.getHours()%12
         if (now.getHours()>11) mr = "pm"
         fake+="<div class=\"timestamp\">";
-        if (lasttime==0 || now.getHours()!=lasttime.getHours() || now.getMinutes()!=lasttime.getMinutes()) fake+=hr+":"+min+now.getMinutes()+mr;
+        var time = hr+":"+min+now.getMinutes()+mr;
+        if (time!=lasttime) fake+=time;
+        lasttime = time;
         fake+="</div>";
         fake+="</div>";
         $("#chatbox").append(fake);
