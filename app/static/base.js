@@ -3,10 +3,11 @@ $(document).ready(function() {
     $("#logbox").scrollTop($("#logbox")[0].scrollHeight);
 });
 
-var lasttime = new Date(0);
 // change times to client local time
 // TODO with latency this also takes a little bit to update
+var lasttime = 0;
 function fixTimes() {
+    lasttime = 0;
     $(".timestamp").each(function() {
         var date = new Date($(this).text());
         var now = new Date();
@@ -17,11 +18,11 @@ function fixTimes() {
             if (date.getHours()>11) mr = "pm"
             if (date.getHours()%12!=0) hr = date.getHours()%12 
             if (date.getMinutes()<10) min = "0"
-            if (lasttime.getHours()==date.getHours() && lasttime.getMinutes()==date.getMinutes()) {
+            if (lasttime!=0 && lasttime.getHours()==date.getHours() && lasttime.getMinutes()==date.getMinutes()) {
                 $(this).text("");
-            }
-            else
+            } else {
                 $(this).text(hr+":"+min+date.getMinutes()+mr);
+            }
         } else {
             $(this).text((date.getMonth()+1)+"/"+date.getDate());
         }
@@ -44,7 +45,6 @@ $(document).ready(function() {
                 $("#above").html($(data).find("#reload_above").html());
                 $("#below").html($(data).find("#reload_below").html());
                 $("#logbox").scrollTop($("#logbox")[0].scrollHeight);
-                lasttime = new Date(0);
                 fixTimes();
             }
         });
@@ -112,7 +112,9 @@ $("#chatline").keypress(function(event) {
         if (now.getMinutes()<10) min = "0"
         if (now.getHours()%12!=0) hr = now.getHours()%12
         if (now.getHours()>11) mr = "pm"
-        if (now.getHours()!=lasttime.getHours() || now.getMinutes()!=lasttime.getMinutes()) fake+="<div class=\"timestamp\">"+hr+":"+min+now.getMinutes()+mr+"</div>";
+        fake+="<div class=\"timestamp\">";
+        if (lasttime==0 || now.getHours()!=lasttime.getHours() || now.getMinutes()!=lasttime.getMinutes()) fake+=hr+":"+min+now.getMinutes()+mr;
+        fake+="</div>";
         fake+="</div>";
         $("#chatbox").append(fake);
 
