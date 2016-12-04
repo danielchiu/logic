@@ -32,10 +32,8 @@
             <h2 id="logtitle">Actions:</h2>
             <div id="logbox"><div id="reload_logbox">
                 {% for action in game.log %}
-                    <div class="action">
-                        <div class="textstamp">{{ action[0] }}</div>
-                        <div class="timestamp">{{ action[1] }}</div>
-                    </div>
+                    <div class="timestamp">{{ action[1] }}</div>
+                    <div class="action">{{ action[0] }}</div>
                 {% endfor %}
             </div></div>
         </div>
