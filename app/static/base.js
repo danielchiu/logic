@@ -3,19 +3,29 @@ $(document).ready(function() {
     $("#logbox").scrollTop($("#logbox")[0].scrollHeight);
 });
 
+var lasttime = new Date();
 // change times to client local time
 // TODO with latency this also takes a little bit to update
 function fixTimes() {
     $(".timestamp").each(function() {
         var date = new Date($(this).text());
-        var now = new Date()
+        var now = new Date();
         if (date.toDateString()==now.toDateString()) {
             var min = "";
+            var hr = "12";
+            var mr = "am"; 
+            if (date.getHours()>11) mr = "pm"
+            if (date.getHours()%12!=0) hr = date.getHours()%12 
             if (date.getMinutes()<10) min = "0"
-            $(this).text(date.getHours()+":"+min+date.getMinutes());
+            if (lasttime.getHours()==date.getHours() && lasttime.getMinutes()==date.getMinutes()) {
+                $(this).text("");
+            }
+            else
+                $(this).text(hr+":"+min+date.getMinutes()+mr);
         } else {
             $(this).text((date.getMonth()+1)+"/"+date.getDate());
         }
+        lasttime = date;
     });
 }
 $(document).ready(function() {
@@ -92,12 +102,16 @@ $("#chatline").keypress(function(event) {
 
         request.open("POST", "?message="+$("#chatline").val()+"&time="+now.toUTCString());
         request.send();
-    
+        
         var fake = "<div class=\"fakemessage\">";
         fake+="<div class=\"textstamp\">"+$("#username").text()+": "+$("#chatline").val()+"</div>"
         var min = "";
+        var hr = "12";
+        var mr = "am";
         if (now.getMinutes()<10) min = "0"
-        fake+="<div class=\"timestamp\">"+now.getHours()+":"+min+now.getMinutes()+"</div>";
+        if (now.getHours()%12!=0) hr = now.getHours()%12
+        if (now.getHours()>11) mr = "pm"
+        if (now.getHours()!=lasttime.getHours() || now.getMinutes()!=lasttime.getMinutes()) fake+="<div class=\"timestamp\">"+hr+":"+min+now.getMinutes()+mr+"</div>";
         fake+="</div>";
         $("#chatbox").append(fake);
 

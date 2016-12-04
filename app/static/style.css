@@ -172,6 +172,7 @@ body {
 #logbox, #chatbox {
     width: 395px;
     overflow: auto;
+    font-size: 14px;
 }
 #logtitle, #chattitle {
     margin-left: 20px;
@@ -187,7 +188,7 @@ body {
     width: 330px;
 }
 .timestamp {
-    margin-left: 20px;
+    margin-left: 15px;
 }
 
 #chat {
