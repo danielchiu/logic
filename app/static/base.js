@@ -22,7 +22,9 @@ function fixTimes() {
             $(this).text((date.getMonth()+1)+"/"+date.getDate()+", "+hr+":"+min+date.getMinutes()+mr);
         }
         if ($(this).text()==lasttime) {
-            $(this).remove();
+            $(this).text("");
+            $(this).css("margin-top", "0px");
+            $(this).css("margin-bottom", "0px");
         }
         else lasttime = $(this).text();
     });
