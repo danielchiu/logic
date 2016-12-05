@@ -17,6 +17,7 @@ function fixTimes() {
         }
         lastdate = getDate(when);
     });
+    lastdate = "";
     lasttime = "";
     $(".timestamp").each(function() {
         var when = new Date($(this).text());
@@ -25,6 +26,7 @@ function fixTimes() {
         } else {
             $(this).text(getTime(when));
         }
+        lastdate = getDate(when);
         lasttime = getTime(when);
     });
 }
@@ -109,7 +111,6 @@ $("#chatline").keypress(function(event) {
             fakedate+="</div>";
             $("#chatbox").append(fakedate);
         }
-        lastdate = getDate(now);
         var fakemessage = "<div class=\"fakemessage\">";
         fakemessage+="<div class=\"textstamp\">"+$("#username").text()+": "+$("#chatline").val()+"</div>"
         if (getDate(now)!=lastdate || getTime(now)!=lasttime) {
@@ -118,6 +119,7 @@ $("#chatline").keypress(function(event) {
 	        faketime+="</div>";
             fakemessage+=faketime;
 	    }
+        lastdate = getDate(now);
         lasttime = getTime(now);
         fakemessage+="</div>";
         $("#chatbox").append(fakemessage);
