@@ -4,27 +4,28 @@ $(document).ready(function() {
 });
 
 // change times to client local time
+var lastdate = "";
 var lasttime = "";
 function fixTimes() {
+    lastdate = "";
+    $(".datestamp").each(function() {
+        var when = new Date($(this).text());
+        if (getDate(when)==lastdate) {
+            $(this).remove();
+        } else {
+            $(this).text(getDate(when));
+        }
+        lastdate = getDate(when);
+    });
     lasttime = "";
     $(".timestamp").each(function() {
-        var date = new Date($(this).text());
-        var now = new Date();
-        var min = "";
-        var hr = "12";
-        var mr = "am";
-        if (date.getHours()>11) mr = "pm";
-        if (date.getHours()%12!=0) hr = date.getHours()%12;
-        if (date.getMinutes()<10) min = "0";
-        if (date.toDateString()==now.toDateString()) {
-            $(this).text(hr+":"+min+date.getMinutes()+mr);
-        } else {
-            $(this).text((date.getMonth()+1)+"/"+date.getDate()+", "+hr+":"+min+date.getMinutes()+mr);
-        }
-        if ($(this).text()==lasttime) {
+        var when = new Date($(this).text());
+        if (getTime(when)==lasttime && getDate(when)==lastdate) {
             $(this).remove();
+        } else {
+            $(this).text(getTime(when));
         }
-        else lasttime = $(this).text();
+        lasttime = getTime(when);
     });
 }
 $(document).ready(function() {
@@ -102,23 +103,24 @@ $("#chatline").keypress(function(event) {
         request.open("POST", "?message="+$("#chatline").val()+"&time="+now.toUTCString());
         request.send();
 	        
-	    var min = "";
-        var hr = "12";
-        var mr = "am";
-        if (now.getMinutes()<10) min = "0"
-        if (now.getHours()%12!=0) hr = now.getHours()%12
-        if (now.getHours()>11) mr = "pm"
-        var faketime ="<div class=\"timestamp\">";
-        var time = hr+":"+min+now.getMinutes()+mr;
-        if (time!=lasttime) {
-	        faketime+=time;
+        if (getDate(now)!=lastdate) {
+            var fakedate = "<div class=\"datestamp\">";
+            fakedate+=getDate(now);
+            fakedate+="</div>";
+            $("#chatbox").append(fakedate);
+        }
+        lastdate = getDate(now);
+        var fakemessage = "<div class=\"fakemessage\">";
+        fakemessage+="<div class=\"textstamp\">"+$("#username").text()+": "+$("#chatline").val()+"</div>"
+        if (getDate(now)!=lastdate || getTime(now)!=lasttime) {
+            var faketime ="<div class=\"timestamp\">";
+	        faketime+=getTime(now);
 	        faketime+="</div>";
-	        $("#chatbox").append(faketime);
+            fakemessage+=faketime;
 	    }
-        lasttime = time;
-        var fake = "";
-        fake+="<div class=\"fakemessage\">"+$("#username").text()+": "+$("#chatline").val()+"</div>"
-        $("#chatbox").append(fake);
+        lasttime = getTime(now);
+        fakemessage+="</div>";
+        $("#chatbox").append(fakemessage);
 
         $("#chatline").val("");
         $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
@@ -140,6 +142,20 @@ $("#content").on("click", ".card", function() {
 });
 
 /* helper functions */
+
+// get time/date out of a Date object
+function getTime(date) {
+    var min = "";
+    var hr = "12";
+    var mr = "am";
+    if (date.getHours()>11) mr = "pm";
+    if (date.getHours()%12!=0) hr = date.getHours()%12;
+    if (date.getMinutes()<10) min = "0";
+    return hr+":"+min+date.getMinutes()+mr;
+}
+function getDate(date) {
+    return (date.getMonth()+1)+"/"+date.getDate();
+}
 
 // finds the index of a 64-based id in a hand
 function south(num) {

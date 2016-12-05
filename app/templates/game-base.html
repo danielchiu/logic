@@ -32,8 +32,11 @@
             <h2 id="logtitle">Actions:</h2>
             <div id="logbox"><div id="reload_logbox">
                 {% for action in game.log %}
-                    <div class="timestamp">{{ action[1] }}</div>
-                    <div class="action">{{ action[0] }}</div>
+                    <div class="datestamp">{{ action[1] }}</div>
+                    <div class="action">
+                        <div class="textstamp">{{ action[0] }}</div>
+                        <div class="timestamp">{{ action[1] }}</div>
+                    </div>
                 {% endfor %}
             </div></div>
         </div>
@@ -42,8 +45,11 @@
             <h2 id="chattitle">Chat:</h2>
             <div id="chatbox"><div id="reload_chatbox">
                 {% for message in game.chat %}
-			        <div class="timestamp">{{ message[1] }}</div>
-                    <div class="message">{{ message[0] }}</div>
+                    <div class="datestamp">{{ message[1] }}</div>
+                    <div class="message">
+                        <div class="textstamp">{{ message[0] }}</div>
+                        <div class="timestamp">{{ message[1] }}</div>
+                    </div>
                 {% endfor %}
             </div></div>
             {% if user %}
