@@ -28,48 +28,52 @@
             {% endblock %}
         </div></div>
         
-        <ul id="userbox" class="tabbox">
-            <li><a href="javascript:void(0)" class="tab">Actions</a></li>
-            <li><a href="javascript:void(0)" class="tab">Chat</a></li>
-            <li><a href="javascript:void(0)" class="tab">Notes</a></li>
-        </ul>
+        <div id="userbox">
+            <ul id="boxtabs" class="tabbox">
+                <li><a href="javascript:void(0)" class="tab log">Actions</a></li>
+                <li><a href="javascript:void(0)" class="tab chat">Chat</a></li>
+                <li><a href="javascript:void(0)" class="tab notes">Notes</a></li>
+            </ul>
 
-        <div id="log">
-            <h2 id="logtitle">Actions:</h2>
-            <div id="logbox"><div id="reload_logbox">
-                {% for action in game.log %}
-                    <div class="datestamp">{{ action[1] }}</div>
-                    <div class="action">
-                        <div class="textstamp">{{ action[0] }}</div>
-                        <div class="timestamp">{{ action[1] }}</div>
-                    </div>
+            <div id="log" class="tabcontent">
+                <h2 id="logtitle">Actions:</h2>
+                <div id="logbox"><div id="reload_logbox">
+                    {% for action in game.log %}
+                        <div class="datestamp">{{ action[1] }}</div>
+                        <div class="action">
+                            <div class="textstamp">{{ action[0] }}</div>
+                            <div class="timestamp">{{ action[1] }}</div>
+                        </div>
+                    {% endfor %}
+                </div></div>
+            </div>
+
+            <div id="chat" class="tabcontent">
+                <h2 id="chattitle">Chat:</h2>
+                <div id="chatbox"><div id="reload_chatbox">
+                    {% for message in game.chat %}
+                        <div class="datestamp">{{ message[1] }}</div>
+                        <div class="message">
+                            <div class="textstamp">{{ message[0] }}</div>
+                            <div class="timestamp">{{ message[1] }}</div>
+                        </div>
+                    {% endfor %}
+                </div></div>
+                {% if user %}
+                    <input id="chatline" type=text name="message">
+                {% endif %}
+            </div>
+
+            <div id="notes" class="tabcontent">
+                <h2 id="notestitle">Notes:</h2>
+                <textarea id="notesbox" placeholder="write something down!"></textarea>
+                {% for note in game.notes %}
+                {# hacky solution: remove notebox and put in new one with next message matching current user #}
                 {% endfor %}
-            </div></div>
+                <input type=submit name="save" id="save" value="Save">
+            </div>
         </div>
 
-        <div id="chat">
-            <h2 id="chattitle">Chat:</h2>
-            <div id="chatbox"><div id="reload_chatbox">
-                {% for message in game.chat %}
-                    <div class="datestamp">{{ message[1] }}</div>
-                    <div class="message">
-                        <div class="textstamp">{{ message[0] }}</div>
-                        <div class="timestamp">{{ message[1] }}</div>
-                    </div>
-                {% endfor %}
-            </div></div>
-            {% if user %}
-                <input id="chatline" type=text name="message">
-            {% endif %}
-        </div>
-	<div id="notes">
-	    <h2 id="notetitle">Notes:</h2>
-	    <textarea id="notebox" placeholder="write something down!"></textarea>
-        {% for note in game.notes %}
-        {# hacky solution: remove notebox and put in new one with next message matching current user #}
-        {% endfor %}
-	    <input type=submit name="save" id="save" value="Save">
-	</div>
         <div id="below"><div id="reload_below">
             {% block game_below %}
                 {%  if game.index(user)>=0 and game.state<3 %}
@@ -83,6 +87,7 @@
 
 {% block scripts %}
     <script type="text/javascript" src="{{ url_for("static", filename = "base.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename = "tabs.js") }}"></script>
     <script type="text/javascript" src="{{ url_for("static", filename = "declare.js") }}"></script>
 
     <script type="text/javascript" src="{{ url_for("static", filename = "call.js") }}"></script> {# TODO is there a way to reload scripts too? #}
@@ -91,5 +96,4 @@
     <script type="text/javascript" src="{{ url_for("static", filename = "pass.js") }}"></script>
     <script type="text/javascript" src="{{ url_for("static", filename = "reveal.js") }}"></script>
     <script type="text/javascript" src="{{ url_for("static", filename = "save.js") }}"></script>
-    <script type="text/javascript" src="{{ url_for("static", filename = "boxtabs.js") }}"></script>
 {% endblock %}

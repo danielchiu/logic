@@ -161,7 +161,7 @@ body {
     transform: rotate(90deg)
 }
 
-#log, #chat, #notes {
+#userbox .tabcontent {
     height: 600px;
     width: 400px;
     margin-left: 50px;
@@ -205,9 +205,6 @@ body {
     margin-left: 20px;
 }
 
-#chat, #notes {
-    display: none;
-}
 #logbox {
     height: 520px;
 }
@@ -295,11 +292,11 @@ input[type=submit] {
 .tab:hover {
     background-color: #ddd;
 }
-.active {
-    background-color: #ccc;
-}
 .tabcontent {
     display: none;
+}
+
+#rules .tabcontent {
     padding: 6px 12px;
     border: 1px solid #ccc;
     border-top: none;

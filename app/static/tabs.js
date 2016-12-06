@@ -1,7 +1,7 @@
 $(document).ready(function() {
-    openTab("Overview");
+    openTab(getClass($(".tab").first(),2));
     $(".tab").click(function() {
-        openTab($(this).text());
+        openTab(getClass($(this),2));
     });
 });
 
@@ -9,5 +9,5 @@ function openTab(tab) {
     $(".tabcontent").css("display", "none");
     $("#"+tab).css("display", "block");
     $(".tab").removeClass("active");
-    $(".tab:contains("+tab+")").addClass("active");
+    $("#"+tab).addClass("active");
 }
