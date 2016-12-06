@@ -11,4 +11,5 @@ function openTab(tab) {
     $(".tab").removeClass("active");
     $("#"+tab).addClass("active");
     $(".active .focus").focus();
+    $(".active .box").scrollTop($(".active .box")[0].scrollHeight);
 }

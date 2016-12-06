@@ -16,7 +16,7 @@ def updateDatabase():
         game = refresh(game)
         # game.chat = [[x[0], "12/1/2016 12:00:00 PM UTC"] for x in game.chat]
         # game.log = [[x[0], "12/1/2016 12:00:00 PM UTC"] for x in game.log]
-        # game.notes = []
+        # game.notes = {} 
         insert(game)
 
 @views.route("/")
@@ -72,7 +72,7 @@ def register():
 def refresh(game):
     db.session.delete(game)
     db.session.commit()
-    return Game(game.name, game.players, game.hands, game.log, game.current, game.state, game.chat) # TODO really hacky way to get around the pickletype issue
+    return Game(game.name, game.players, game.hands, game.log, game.current, game.state, game.chat, game.notes) # TODO really hacky way to get around the pickletype issue
 
 # inserts a game into the database and adds the game to each user's gamelist
 def insert(game):
@@ -231,16 +231,17 @@ def gamechat(name, game, user):
         return redirect(url_for("views.homepage")) # TODO give some error message
 
     game = refresh(game)
-    game.chat.append([request.args.get("message"), request.args.get("time")])
+    game.chat.append([user+": "+request.args.get("message"), request.args.get("time")])
     insert(game)
     return redirect(url_for("views.homepage")) # TODO is there a way to do this without any return value
 
+#view to handle saving notes, not actually visible
 def gamenote(name, game, user):
     if user is None:
-        return redirect(url_for("views.homepage"))
+        return redirect(url_for("views.homepage")) # TODO give some error message
 
     game = refresh(game)
-    game.notes.append([user,request.args.get("note")])
+    game.notes[user] = request.args.get("note")
     insert(game)
     return redirect(url_for("views.homepage"))
 

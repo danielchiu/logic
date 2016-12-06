@@ -36,8 +36,8 @@
             </ul>
 
             <div id="log" class="tabcontent">
-                <h2 id="logtitle">Actions:</h2>
-                <div id="logbox"><div id="reload_logbox">
+                <h2 class="title">Actions:</h2>
+                <div class="box"><div class="reload_box">
                     {% for action in game.log %}
                         <div class="datestamp">{{ action[1] }}</div>
                         <div class="action">
@@ -49,8 +49,8 @@
             </div>
 
             <div id="chat" class="tabcontent">
-                <h2 id="chattitle">Chat:</h2>
-                <div id="chatbox"><div id="reload_chatbox">
+                <h2 class="title">Chat:</h2>
+                <div class="box"><div class="reload_box">
                     {% for message in game.chat %}
                         <div class="datestamp">{{ message[1] }}</div>
                         <div class="message">
@@ -65,12 +65,17 @@
             </div>
 
             <div id="notes" class="tabcontent">
-                <h2 id="notestitle">Notes:</h2>
-                <textarea id="notesbox" class="focus" placeholder="write something down!"></textarea>
-                {% for note in game.notes %}
-                {# hacky solution: remove notebox and put in new one with next message matching current user #}
-                {% endfor %}
-                <input type=submit name="save" id="save" value="Save">
+                <h2 class="title">Notes:</h2>
+                <textarea class="box" class="focus">
+                    {% if user in game.notes %}
+                        {{ game.notes[user] }}
+                    {% else %}
+                       write something down!
+                    {% endif %}
+                </textarea>
+                {% if user %}
+                    <input type=submit name="save" id="save" value="Save">
+                {% endif %}
             </div>
         </div>
 

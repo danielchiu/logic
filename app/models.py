@@ -51,7 +51,7 @@ class Game(db.Model):
     notes = db.Column(db.PickleType)
 
     # needs constructor to be able to "refresh" a game
-    def __init__(self, name, players, hands = None, log = [], current = random.randint(0,3), state = -15, chat = [], notes = []):
+    def __init__(self, name, players, hands = None, log = [], current = random.randint(0,3), state = -15, chat = [], notes = {}):
         self.name = name
 
         self.players = players

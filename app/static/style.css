@@ -169,19 +169,19 @@ body {
     outline-offset: -5px;
     float: left;
 }
-#logbox, #chatbox, #notebox {
+#userbox .box {
     width: 395px;
     overflow: auto;
     font-size: 14px;
 }
-#notebox {
+#notes .box {
     width: 355px;
     margin-left: 20px;
     margin-right: 20px;
     background-color: snow;
     height: 450px;
 }
-#logtitle, #chattitle, #notetitle {
+#userbox .title {
     margin-left: 20px;
 }
 .note {
@@ -205,10 +205,10 @@ body {
     margin-left: 20px;
 }
 
-#logbox {
+#log .box {
     height: 520px;
 }
-#chatbox {
+#chat .box {
     height: 490px;
 }
 #chatline {

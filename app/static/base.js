@@ -1,6 +1,6 @@
 // defaults scrollbars to bottom
 $(document).ready(function() {
-    $("#logbox").scrollTop($("#logbox")[0].scrollHeight);
+    $("#log .box").scrollTop($("#log .box")[0].scrollHeight);
 });
 
 // change times to client local time
@@ -42,10 +42,10 @@ $(document).ready(function() {
             var newLen = $(data).find(".action").length;
             if (newLen>curLen) {
                 $("#grid").html($(data).find("#reload_grid").html());
-                $("#logbox").html($(data).find("#reload_logbox").html());
+                $("#log .box").html($(data).find("#log .reload_box").html());
                 $("#above").html($(data).find("#reload_above").html());
                 $("#below").html($(data).find("#reload_below").html());
-                $("#logbox").scrollTop($("#logbox")[0].scrollHeight);
+                $("#log .box").scrollTop($("#log .box")[0].scrollHeight);
                 fixTimes();
             }
         });
@@ -55,13 +55,13 @@ $(document).ready(function() {
 // autoreloads chat on an increasing time delay
 // scrolls to bottom if scrollbar is close enough to bottom
 function reloadchat(data) {
-    var bottom = ($("#chatbox")[0].scrollHeight - $("#chatbox")[0].scrollTop <= $("#chatbox")[0].clientHeight + 50)
+    var bottom = ($("#chat .box")[0].scrollHeight - $("#chat .box")[0].scrollTop <= $("#chat .box")[0].clientHeight + 50)
     $.get(location.href, function(data) {
         var curLen = $(".message").length;
         var newLen = $(data).find(".message").length;
         if (newLen>curLen) {
-            $("#chatbox").html($(data).find("#reload_chatbox").html());
-            if (bottom) $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+            $("#chat .box").html($(data).find("#chat .reload_box").html());
+            if (bottom) $("#chat .box").scrollTop($("#chat .box")[0].scrollHeight);
             fixTimes();
             return true;
         }
@@ -89,14 +89,14 @@ $("#chatline").keypress(function(event) {
         
         var now = new Date();
 
-        request.open("POST", "?message="+$("#chatline").val()+"&time="+now.toUTCString());
+        request.open("POST", "?type=chat&message="+$("#chatline").val()+"&time="+now.toUTCString());
         request.send();
         
         if (getDate(now)!=lastdate) {
             var fakedate = "<div class=\"datestamp\">";
             fakedate+=getDate(now);
             fakedate+="</div>";
-            $("#chatbox").append(fakedate);
+            $("#chat .box").append(fakedate);
         }
         var fakemessage = "<div class=\"fakemessage\">";
         fakemessage+="<div class=\"textstamp\">"+$("#username").text()+": "+$("#chatline").val()+"</div>"
@@ -109,10 +109,10 @@ $("#chatline").keypress(function(event) {
         lastdate = getDate(now);
         lasttime = getTime(now);
         fakemessage+="</div>";
-        $("#chatbox").append(fakemessage);
+        $("#chat .box").append(fakemessage);
 
         $("#chatline").val("");
-        $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+        $("#chat .box").scrollTop($("#chat .box")[0].scrollHeight);
         reloadchat();
         countdown = 1;
     }
