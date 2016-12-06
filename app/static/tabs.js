@@ -1,15 +1,22 @@
 $(document).ready(function() {
-    openTab(getClass($(".tab").first(),2));
+    openTab($(".tab").first());
     $(".tab").click(function() {
-        openTab(getClass($(this),2));
+        openTab($(this));
     });
 });
 
 function openTab(tab) {
-    $(".tabcontent").css("display", "none");
-    $("#"+tab).css("display", "block");
+    var name = getClass(tab,2);
+    
     $(".tab").removeClass("active");
-    $("#"+tab).addClass("active");
-    $(".active .focus").focus();
-    $(".active .box").scrollTop($(".active .box")[0].scrollHeight);
+    tab.addClass("active");
+
+    $(".tabcontent").css("display", "none");
+    $("#"+name).css("display", "block");
+    $(".tabcontent").removeClass("active");
+    $("#"+name).addClass("active");
+    $(".tabcontent.active .focus").focus();
+    if ($(".tabcontent.active .box").length>0) {
+        $(".active .box").scrollTop($(".active .box")[0].scrollHeight);
+    }
 }
