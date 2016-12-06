@@ -66,13 +66,7 @@
 
             <div id="notes" class="tabcontent">
                 <h2 class="title">Notes:</h2>
-                <textarea class="box focus">
-                    {% if user in game.notes %}
-                        {{ game.notes[user] }}
-                    {% else %}
-                       write something down!
-                    {% endif %}
-                </textarea>
+                <textarea class="box focus">{% if user in game.notes %}{{ game.notes[user] }}{% else %}write something down!{% endif %}</textarea>
                 {% if user %}
                     <input type=submit name="save" id="save" value="Save">
                 {% endif %}
