@@ -52,19 +52,6 @@ $(document).ready(function() {
     }, 5000);
 });
 
-// toggles between log and chat
-$("#logbox").click(function() {
-    $("#log").css("display", "none");
-    $("#chat").css("display", "inline");
-    $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
-    $("#chatline").focus();
-});
-$("#chatbox").click(function() {
-    $("#chat").css("display", "none");
-    $("#log").css("display", "inline");
-    $("#logbox").scrollTop($("#logbox")[0].scrollHeight);
-});
-
 // autoreloads chat on an increasing time delay
 // scrolls to bottom if scrollbar is close enough to bottom
 function reloadchat(data) {
@@ -142,6 +129,3 @@ $("#content").on("click", ".card", function() {
         $(this).addClass("clicked_card");
     }
 });
-
-/* helper functions */
-

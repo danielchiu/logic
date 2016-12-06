@@ -60,13 +60,13 @@
                     {% endfor %}
                 </div></div>
                 {% if user %}
-                    <input id="chatline" type=text name="message">
+                    <input id="chatline" class="focus" type=text name="message">
                 {% endif %}
             </div>
 
             <div id="notes" class="tabcontent">
                 <h2 id="notestitle">Notes:</h2>
-                <textarea id="notesbox" placeholder="write something down!"></textarea>
+                <textarea id="notesbox" class="focus" placeholder="write something down!"></textarea>
                 {% for note in game.notes %}
                 {# hacky solution: remove notebox and put in new one with next message matching current user #}
                 {% endfor %}

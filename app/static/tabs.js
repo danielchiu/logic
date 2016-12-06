@@ -10,4 +10,5 @@ function openTab(tab) {
     $("#"+tab).css("display", "block");
     $(".tab").removeClass("active");
     $("#"+tab).addClass("active");
+    $(".active .focus").focus();
 }
