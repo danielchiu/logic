@@ -161,13 +161,19 @@ body {
     transform: rotate(90deg)
 }
 
-#userbox .tabcontent {
+#userbox {
     height: 600px;
     width: 400px;
     margin-left: 50px;
     outline: 5px solid;
     outline-offset: -5px;
     float: left;
+}
+#userbox .tabbar {
+    margin-bottom: 15px;
+}
+#userbox .tabbar .tab {
+    width: 100px;
 }
 #userbox .box {
     width: 395px;
@@ -180,9 +186,6 @@ body {
     margin-right: 20px;
     background-color: snow;
     height: 450px;
-}
-#userbox .title {
-    margin-left: 20px;
 }
 .note {
     font: normal 14px "Courier New", Courier, monospace;
@@ -266,7 +269,7 @@ input[type=submit] {
     margin-left: 525px;
 }
 
-.tabbar, .tabbox {
+.tabbar {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -274,11 +277,7 @@ input[type=submit] {
     border: 1px solid #ccc;
     background-color: #f1f1f1;
 }
-.tabbox {
-    float: left;
-    margin-left: 120px;
-}
-.tabbar li, .tabbox li {
+.tabbar li {
     float: left;
 }
 .tab {
