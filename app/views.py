@@ -14,8 +14,9 @@ except IOError:
 def updateDatabase():
     for game in Game.query.all():
         game = refresh(game)
-        game.chat = [[x, "12/1/2016 12:00:00 PM UTC"] for x in game.chat]
-        game.log = [[x, "12/1/2016 12:00:00 PM UTC"] for x in game.log]
+        # game.chat = [[x[0], "12/1/2016 12:00:00 PM UTC"] for x in game.chat]
+        # game.log = [[x[0], "12/1/2016 12:00:00 PM UTC"] for x in game.log]
+        # game.notes = []
         insert(game)
 
 @views.route("/")
@@ -230,9 +231,18 @@ def gamechat(name, game, user):
         return redirect(url_for("views.homepage")) # TODO give some error message
 
     game = refresh(game)
-    game.chat.append([user+": "+request.args.get("message"), request.args.get("time")])
+    game.chat.append([request.args.get("message"), request.args.get("time")])
     insert(game)
     return redirect(url_for("views.homepage")) # TODO is there a way to do this without any return value
+
+def gamenote(name, game, user):
+    if user is None:
+        return redirect(url_for("views.homepage"))
+
+    game = refresh(game)
+    game.notes.append([user,request.args.get("note")])
+    insert(game)
+    return redirect(url_for("views.homepage"))
 
 # handles viewing a game (in all states), and chatting
 @views.route("/game/<name>", methods = ["GET", "POST"])
@@ -245,8 +255,11 @@ def game(name):
         user = session["user"]
     ind = game.index(user)
 
-    if request.method == "POST" and "type" not in request.form:
+    if request.method == "POST" and request.args.get("type")=="chat":
         return gamechat(name, game, user)
+
+    if request.method== "POST" and request.args.get("type")=="savenote":
+        return gamenote(name, game, user)
 
     # if someone has performed an action since the user loaded the page
     if request.method == "POST":

@@ -27,7 +27,13 @@
                 {% endfor %}
             {% endblock %}
         </div></div>
-            
+        
+        <ul id="userbox" class="tabbox">
+            <li><a href="javascript:void(0)" class="tab">Actions</a></li>
+            <li><a href="javascript:void(0)" class="tab">Chat</a></li>
+            <li><a href="javascript:void(0)" class="tab">Notes</a></li>
+        </ul>
+
         <div id="log">
             <h2 id="logtitle">Actions:</h2>
             <div id="logbox"><div id="reload_logbox">
@@ -50,7 +56,14 @@
                 <input id="chatline" type=text name="message">
             {% endif %}
         </div>
-
+	<div id="notes">
+	    <h2 id="notetitle">Notes:</h2>
+	    <textarea id="notebox" placeholder="write something down!"></textarea>
+        {% for note in game.notes %}
+        {# hacky solution: remove notebox and put in new one with next message matching current user #}
+        {% endfor %}
+	    <input type=submit name="save" id="save" value="Save">
+	</div>
         <div id="below"><div id="reload_below">
             {% block game_below %}
                 {%  if game.index(user)>=0 and game.state<3 %}
@@ -71,4 +84,6 @@
     <script type="text/javascript" src="{{ url_for("static", filename = "order.js") }}"></script>
     <script type="text/javascript" src="{{ url_for("static", filename = "pass.js") }}"></script>
     <script type="text/javascript" src="{{ url_for("static", filename = "reveal.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename = "save.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename = "boxtabs.js") }}"></script>
 {% endblock %}

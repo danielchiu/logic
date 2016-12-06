@@ -48,9 +48,10 @@ class Game(db.Model):
     current = db.Column(db.Integer)
     state = db.Column(db.Integer)
     chat = db.Column(db.PickleType)
+    notes = db.Column(db.PickleType)
 
     # needs constructor to be able to "refresh" a game
-    def __init__(self, name, players, hands = None, log = [], current = random.randint(0,3), state = -15, chat = []):
+    def __init__(self, name, players, hands = None, log = [], current = random.randint(0,3), state = -15, chat = [], notes = []):
         self.name = name
 
         self.players = players
@@ -72,6 +73,7 @@ class Game(db.Model):
         self.current = current
         self.state = state
         self.chat = chat
+        self.notes = notes
 
     def __str__(self):
         return '<Game %s: %s %s %s %s>' % (self.name, str(self.players))

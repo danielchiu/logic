@@ -58,6 +58,11 @@ $("#logbox").click(function() {
 });
 $("#chatbox").click(function() {
     $("#chat").css("display", "none");
+    $("#notes").css("display", "inline");
+    $("#notebox").scrollTop($("#notebox")[0].scrollHeight);
+});
+$("#notetitle").click(function() {
+    $("#notes").css("display", "none");
     $("#log").css("display", "inline");
     $("#logbox").scrollTop($("#logbox")[0].scrollHeight);
 });
@@ -99,10 +104,10 @@ $("#chatline").keypress(function(event) {
         
         var now = new Date();
 
-        request.open("POST", "?message="+$("#chatline").val()+"&time="+now.toUTCString());
+        request.open("POST", "?type=chat&message="+$("#chatline").val()+"&time="+now.toUTCString());
         request.send();
 	        
-	    var min = "";
+	var min = "";
         var hr = "12";
         var mr = "am";
         if (now.getMinutes()<10) min = "0"

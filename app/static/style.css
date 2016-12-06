@@ -161,7 +161,7 @@ body {
     transform: rotate(90deg)
 }
 
-#log, #chat {
+#log, #chat, #notes {
     height: 600px;
     width: 400px;
     margin-left: 50px;
@@ -169,15 +169,24 @@ body {
     outline-offset: -5px;
     float: left;
 }
-#logbox, #chatbox {
+#logbox, #chatbox, #notebox {
     width: 395px;
     overflow: auto;
     font-size: 14px;
 }
-#logtitle, #chattitle {
+#notebox {
+    width: 355px;
+    margin-left: 20px;
+    margin-right: 20px;
+    background-color: snow;
+    height: 450px;
+}
+#logtitle, #chattitle, #notetitle {
     margin-left: 20px;
 }
-
+.note {
+    font: normal 14px "Courier New", Courier, monospace;
+}
 .action, .message, .fakemessage, .textstamp, .timestamp {
     margin-left: 20px;
     margin-right: 20px;
@@ -190,7 +199,7 @@ body {
     margin-right: 0px;
 }
 
-#chat {
+#chat, #notes {
     display: none;
 }
 #logbox {
@@ -241,6 +250,12 @@ input[type=submit] {
     margin-right: 10px;
     font-size: 14px;
 }
+
+#save {
+    float: right;
+    margin-right: 20px;
+}
+
 #declare {
     display: block;
     position: absolute;
@@ -248,7 +263,7 @@ input[type=submit] {
     margin-left: 525px;
 }
 
-.tabbar {
+.tabbar, .tabbox {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -256,7 +271,11 @@ input[type=submit] {
     border: 1px solid #ccc;
     background-color: #f1f1f1;
 }
-.tabbar li {
+.tabbox {
+    float: left;
+    margin-left: 120px;
+}
+.tabbar li, .tabbox li {
     float: left;
 }
 .tab {
