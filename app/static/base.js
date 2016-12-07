@@ -6,9 +6,9 @@ $(document).ready(function() {
 // change times to client local time
 var lastdate = "";
 var lasttime = "";
-function fixTimes() {
+function fixTimes(section) {
     lastdate = "";
-    $(".datestamp").each(function() {
+    $(section+" .datestamp").each(function() {
         var when = new Date($(this).text());
         if (getDate(when)==lastdate) {
             $(this).remove();
@@ -19,7 +19,7 @@ function fixTimes() {
     });
     lastdate = "";
     lasttime = "";
-    $(".timestamp").each(function() {
+    $(section+" .timestamp").each(function() {
         var when = new Date($(this).text());
         if (getTime(when)==lasttime && getDate(when)==lastdate) {
             $(this).remove();
@@ -31,7 +31,8 @@ function fixTimes() {
     });
 }
 $(document).ready(function() {
-    fixTimes();
+    fixTimes("#log");
+    fixTimes("#chat");
 });
 
 // autoreloads the game and log
@@ -46,7 +47,7 @@ $(document).ready(function() {
                 $("#above").html($(data).find("#reload_above").html());
                 $("#below").html($(data).find("#reload_below").html());
                 $("#log .box").scrollTop($("#log .box")[0].scrollHeight);
-                fixTimes();
+                fixTimes("#log");
             }
         });
     }, 5000);
@@ -62,7 +63,7 @@ function reloadchat(data) {
         if (newLen>curLen) {
             $("#chat .box").html($(data).find("#chat .reload_box").html());
             if (bottom) $("#chat .box").scrollTop($("#chat .box")[0].scrollHeight);
-            fixTimes();
+            fixTimes("#chat");
             return true;
         }
         return false;
