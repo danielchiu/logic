@@ -11,7 +11,7 @@
                     <li><a class="game_active" href="{{ url_for("views.game", name = game.name) }}">{{ game.name }}</a></li>
                 {% endfor %}
             {% else %}
-                <li><a class="game_active">--</a></li>
+                <li>--</li>
             {% endif %}
         </ul>
         <h2>Current</h2>
@@ -21,7 +21,7 @@
                     <li><a class="game_current" href="{{ url_for("views.game", name = game.name) }}">{{ game.name }}</a></li>
                 {% endfor %}
             {% else %}
-                <li><a class="game_current">--</a></li>
+                <li>--</li>
             {% endif %}
         </ul>
         <h2>Completed</h2>
@@ -31,7 +31,7 @@
                     <li><a class="game_complete" href="{{ url_for("views.game", name = game.name) }}">{{ game.name }}</a></li>
                 {% endfor %}
             {% else %}
-                <li><a class="game_complete">--</a></li>
+                <li>--</li>
             {% endif %}
         </ul>
     </div></div>
