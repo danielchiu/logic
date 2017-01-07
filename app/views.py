@@ -11,17 +11,21 @@ except IOError:
 
 # use after ALTER'ing the database to fix entries
 # or after changing what a database column stores
-def updateDatabase():
+@views.route("/update")
+def update():
+    '''
     for game in Game.query.all():
         game = refresh(game)
         # game.chat = [[x[0], "12/1/2016 12:00:00 PM UTC"] for x in game.chat]
         # game.log = [[x[0], "12/1/2016 12:00:00 PM UTC"] for x in game.log]
         # game.notes = {} 
-        insert(game)
+        if '/' not in game.name:
+            insert(game)
+    '''
+    return redirect(url_for("views.homepage"))
 
 @views.route("/")
 def homepage():
-    # updateDatabase()
     # logging.error("this is an error")
     user = None
     if "user" in session:
