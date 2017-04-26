@@ -35,3 +35,4 @@ TODO list:
 - store times server side
 - add secret nonrandom hands game maker
 - add accounts
+- maybe stick out passed cards?
