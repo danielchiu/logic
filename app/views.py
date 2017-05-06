@@ -187,6 +187,20 @@ def gameReveal(name, game, user, ind):
         return redirect(url_for("views.game", name = name))
     return render_template("game-reveal.html", name = name, user = user, game = game)
 
+def maybeAddContinuationGame(name, players):
+    number = ""
+    while len(name) > 0 and '0' <= name[-1] <= '9':
+        number += name[-1]
+        name = name[:-1]
+    if number == "":
+        return
+    while len(number) > 1 and number[0] == '0':
+        name = '0' + name
+        number = number[1:]
+    number = str(int(number)+1)
+    name += number
+    insert(Game(name,players))
+
 def gameCall(name, game, user, ind):
     if request.method == "POST":
         player = int(request.form["player"])
@@ -209,12 +223,14 @@ def gameCall(name, game, user, ind):
                 game.players+=[game.players[ind],game.players[(ind+2)%4]]
                 game.log.append([user+" has successfully named every card!", request.form["time"]]);
                 game.log.append([user+" and "+game.players[(ind+2)%4]+" win!", request.form["time"]]);
+                maybeAddContinuationGame(game.name, game.players)
         else:
             game.state = 4
             game.players+=[game.players[(ind+1)%4],game.players[(ind+3)%4]]
             game.log.append([user+" incorrectly guessed "+game.players[(ind+player)%4]+"'s card "+str(which)+" as "+value, request.form["time"]]);
             game.log.append([user+" made a mistake while declaring!", request.form["time"]]);
             game.log.append([game.players[(ind+1)%4]+" and "+game.players[(ind+3)%4]+" win!", request.form["time"]]);
+            maybeAddContinuationGame(game.name, game.players)
         insert(game)
         return redirect(url_for("views.game", name = name))
     return render_template("game-call.html", name = name, user = user, game = game)
