@@ -35,4 +35,7 @@ TODO list:
 - store times server side
 - add secret nonrandom hands game maker
 - add accounts
+- disallow games with names that won't work
+- add ability to follow games
 - maybe stick out passed cards?
+
