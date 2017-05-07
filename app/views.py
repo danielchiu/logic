@@ -190,7 +190,7 @@ def gameReveal(name, game, user, ind):
 def maybeAddContinuationGame(name, players):
     number = ""
     while len(name) > 0 and '0' <= name[-1] <= '9':
-        number += name[-1]
+        number = name[-1] + number
         name = name[:-1]
     if number == "":
         return
@@ -199,7 +199,9 @@ def maybeAddContinuationGame(name, players):
         number = number[1:]
     number = str(int(number)+1)
     name += number
-    insert(Game(name,players))
+    game = Game.query.filter_by(name = name).first()
+    if game is None:
+        insert(Game(name,players))
 
 def gameCall(name, game, user, ind):
     if request.method == "POST":
