@@ -226,17 +226,17 @@ def gameCall(name, game, user, ind):
                         done = False
             if done:
                 game.state = 4
+                maybeAddContinuationGame(game.name, game.players)
                 game.players+=[game.players[ind],game.players[(ind+2)%4]]
                 game.log.append([user+" has successfully named every card!", request.form["time"]]);
                 game.log.append([user+" and "+game.players[(ind+2)%4]+" win!", request.form["time"]]);
-                maybeAddContinuationGame(game.name, game.players)
         else:
             game.state = 4
+            maybeAddContinuationGame(game.name, game.players)
             game.players+=[game.players[(ind+1)%4],game.players[(ind+3)%4]]
             game.log.append([user+" incorrectly guessed "+game.players[(ind+player)%4]+"'s card "+str(which)+" as "+value, request.form["time"]]);
             game.log.append([user+" made a mistake while declaring!", request.form["time"]]);
             game.log.append([game.players[(ind+1)%4]+" and "+game.players[(ind+3)%4]+" win!", request.form["time"]]);
-            maybeAddContinuationGame(game.name, game.players)
         insert(game)
         return redirect(url_for("views.game", name = name))
     return render_template("game-call.html", name = name, user = user, game = game)
