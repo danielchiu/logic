@@ -22,6 +22,7 @@ def update():
         if '/' not in game.name:
             insert(game)
     '''
+    # WHEN UPDATING MAKE SURE TO REINSERT THE GAME/OBJECT SO IT DOESN'T DISAPPEAR PERMANENTLY
     return redirect(url_for("views.homepage"))
 
 @views.route("/")
