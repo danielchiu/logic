@@ -1,4 +1,4 @@
-random notes:
+Notes:
 
 app.run(debug = True) => set debug mode
 
