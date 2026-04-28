@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: logic-game
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn logic:application --bind 0.0.0.0:$PORT
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: PYTHON_VERSION
+        value: "3.12"

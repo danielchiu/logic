@@ -1,5 +1,5 @@
 from app import db
-from game import Card, Hand, values, suits
+from .game import Card, Hand, values, suits
 import random
 
 # keeps track of which games a user is playing (and which users are playing a game)
@@ -51,32 +51,32 @@ class Game(db.Model):
     notes = db.Column(db.PickleType)
 
     # needs constructor to be able to "refresh" a game
-    def __init__(self, name, players, hands = None, log = [], current = random.randint(0,3), state = -15, chat = [], notes = {}):
+    def __init__(self, name, players, hands=None, log=None, current=None, state=-15, chat=None, notes=None):
         self.name = name
 
         self.players = players
 
         self.hands = hands
-        if hands == None:
+        if hands is None:
             # randomly shuffles a deck and makes hands
             deck = []
             for val in values:
                 for suit in suits:
-                    deck.append(Card(val,suit))
+                    deck.append(Card(val, suit))
             random.shuffle(deck)
 
             self.hands = []
             for i in range(4):
                 self.hands.append(Hand(deck[i*6:i*6+6]))
 
-        self.log = log
-        self.current = current
+        self.log = log if log is not None else []
+        self.current = current if current is not None else random.randint(0, 3)
         self.state = state
-        self.chat = chat
-        self.notes = notes
+        self.chat = chat if chat is not None else []
+        self.notes = notes if notes is not None else {}
 
     def __str__(self):
-        return '<Game %s: %s %s %s %s>' % (self.name, str(self.players))
+        return '<Game %s: %s>' % (self.name, str(self.players))
 
     # returns the index of a player, or -1 if the player is not in the game
     def index(self, player):

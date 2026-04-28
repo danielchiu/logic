@@ -42,7 +42,7 @@ function getind(card) {
 }
 
 function select() {
-    if ($(".clicked_card").size()!=1) return false;
+    if ($(".clicked_card").length!=1) return false;
     return getind($(".clicked_card"));
 }
 
