@@ -4,8 +4,8 @@ import random
 
 # keeps track of which games a user is playing (and which users are playing a game)
 status = db.Table('status',
-    db.Column('user_id', db.Integer, db.ForeignKey('game.id')),
-    db.Column('game_id', db.Integer, db.ForeignKey('user.id'))
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('game_id', db.Integer, db.ForeignKey('game.id')),
 )
 
 '''

@@ -205,7 +205,9 @@ def maybeAddContinuationGame(name, players):
     name += number
     game = Game.query.filter_by(name = name).first()
     if game is None:
-        insert(Game(name,players))
+        # copy players so later mutations to the original game's player list
+        # (e.g. appending winners) don't leak into the continuation game
+        insert(Game(name, list(players)))
 
 def gameCall(name, game, user, ind):
     if request.method == "POST":
