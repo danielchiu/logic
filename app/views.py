@@ -1,13 +1,14 @@
-from flask import * # TODO actually look at imports
-from models import User, Game
-from app import db
 import logging
 
-views = Blueprint("views",__name__)
-try:
-    logging.basicConfig(filename = "/home/chiud/logic/debug/error.log")
-except IOError:
-    pass
+from flask import (
+    Blueprint, redirect, render_template, request, session, url_for
+)
+from .models import User, Game
+from app import db
+
+views = Blueprint("views", __name__)
+
+logging.basicConfig()
 
 # use after ALTER'ing the database to fix entries
 # or after changing what a database column stores
@@ -27,7 +28,6 @@ def update():
 
 @views.route("/")
 def homepage():
-    # logging.error("this is an error")
     user = None
     if "user" in session:
         user = session["user"]
@@ -48,8 +48,7 @@ def login():
         if user is None:
             error = "No such user \"%s\" exists" % request.form["username"]
         else:
-            # TODO check username for length
-            session["user"] = user.username # TODO is there a way to make it whole User class
+            session["user"] = user.username
             return redirect(url_for("views.homepage"))
     return render_template("login.html", error = error)
 
@@ -77,7 +76,7 @@ def register():
 def refresh(game):
     db.session.delete(game)
     db.session.commit()
-    return Game(game.name, game.players, game.hands, game.log, game.current, game.state, game.chat, game.notes) # TODO really hacky way to get around the pickletype issue
+    return Game(game.name, game.players, game.hands, game.log, game.current, game.state, game.chat, game.notes)
 
 # inserts a game into the database and adds the game to each user's gamelist
 def insert(game):
@@ -85,7 +84,7 @@ def insert(game):
     for player in game.players:
         user = User.query.filter_by(username = player).first()
         if user is None:
-            pass # TODO will only happen with old games that don't have 4 registered users as players 
+            pass
         else:
             game.users.append(user)
     db.session.commit()
@@ -118,7 +117,7 @@ def games():
         user = session["user"]
 
     if user is None:
-        return redirect(url_for("views.homepage")) # TODO give some error message
+        return redirect(url_for("views.homepage"))
 
     # determines which games are active, current, and completed
     games = User.query.filter_by(username = user).first().games
@@ -206,7 +205,9 @@ def maybeAddContinuationGame(name, players):
     name += number
     game = Game.query.filter_by(name = name).first()
     if game is None:
-        insert(Game(name,players))
+        # copy players so later mutations to the original game's player list
+        # (e.g. appending winners) don't leak into the continuation game
+        insert(Game(name, list(players)))
 
 def gameCall(name, game, user, ind):
     if request.method == "POST":
@@ -248,17 +249,17 @@ def gameOver(name, game, user, ind):
 # view to handle a chat message, not actually visible
 def gamechat(name, game, user):
     if user is None:
-        return redirect(url_for("views.homepage")) # TODO give some error message
+        return redirect(url_for("views.homepage"))
 
     game = refresh(game)
     game.chat.append([user+": "+request.args.get("message"), request.args.get("time")])
     insert(game)
-    return redirect(url_for("views.homepage")) # TODO is there a way to do this without any return value
+    return redirect(url_for("views.homepage"))
 
 #view to handle saving notes, not actually visible
 def gamenote(name, game, user):
     if user is None:
-        return redirect(url_for("views.homepage")) # TODO give some error message
+        return redirect(url_for("views.homepage"))
 
     game = refresh(game)
     game.notes[user] = request.args.get("note")
@@ -270,7 +271,7 @@ def gamenote(name, game, user):
 def game(name):
     game = Game.query.filter_by(name = name).first()
     if game is None:
-        return redirect(url_for("views.homepage")) # TODO give some error message
+        return redirect(url_for("views.homepage"))
     user = None
     if "user" in session:
         user = session["user"]
@@ -314,7 +315,7 @@ def game(name):
 
     # if it isn't the user's turn
     if request.method == "POST":
-        return redirect(url_for("views.homepage")) # TODO give some error message
+        return redirect(url_for("views.homepage"))
 
     return gameBase(name, game, user, ind)
 
@@ -323,7 +324,7 @@ def game(name):
 def spec(name):
     game = Game.query.filter_by(name = name).first()
     if game is None:
-        return redirect(url_for("views.homepage")) # TODO give some error message
+        return redirect(url_for("views.homepage"))
     if game.state==4:
         return gameOver(name, game, None, -1)
     if game.state<0:

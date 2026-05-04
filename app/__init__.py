@@ -1,5 +1,6 @@
-from flask import * # TODO actually look at imports 
+import os
 
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -7,4 +8,4 @@ app.config.from_object('config')
 
 db = SQLAlchemy(app)
 
-app.secret_key = "JILFEfjwioje234fe#$DE(" # TODO add an actually random string
+app.secret_key = os.environ.get('SECRET_KEY', 'dev-fallback-key-change-in-production')

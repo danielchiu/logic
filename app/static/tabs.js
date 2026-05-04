@@ -1,6 +1,6 @@
 $(document).ready(function() {
     openTab($(".tab").first());
-    $(".tab").click(function() {
+    $(".tab").on("click", function() {
         openTab($(this));
     });
 });

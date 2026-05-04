@@ -84,8 +84,8 @@ $(document).ready(function() {
 });
 
 // handles the chat input with the enter key
-$("#chatline").keypress(function(event) {
-    if (event.keyCode == 13) {
+$("#chatline").on("keypress", function(event) {
+    if (event.key === "Enter") {
         var request = new XMLHttpRequest();
         
         var now = new Date();
