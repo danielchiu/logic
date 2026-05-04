@@ -1,3 +1,9 @@
+databases:
+  - name: logic-db
+    plan: free
+    databaseName: logic
+    user: logic
+
 services:
   - type: web
     name: logic-game
@@ -9,3 +15,7 @@ services:
         generateValue: true
       - key: PYTHON_VERSION
         value: "3.12"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: logic-db
+          property: connectionString
