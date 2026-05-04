@@ -134,8 +134,10 @@ def migrate(sqlite_path="db/app.db"):
             max_game = dst.execute(
                 text("SELECT COALESCE(MAX(id), 0) FROM game")
             ).scalar()
-            dst.execute(text(f"SELECT setval('user_id_seq', {max_user}, true)"))
-            dst.execute(text(f"SELECT setval('game_id_seq', {max_game}, true)"))
+            if max_user > 0:
+                dst.execute(text(f"SELECT setval('user_id_seq', {max_user}, true)"))
+            if max_game > 0:
+                dst.execute(text(f"SELECT setval('game_id_seq', {max_game}, true)"))
 
     print(f"\nMigration complete: {len(users)} users, {len(games)} games, "
           f"{len(statuses)} status links")
