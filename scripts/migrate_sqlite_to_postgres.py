@@ -43,8 +43,14 @@ def migrate(sqlite_path="db/app.db"):
             "SELECT id, name, hands, players, log, current, state, chat, notes "
             "FROM game"
         )).fetchall()
+        # The original schema had the FK references swapped:
+        #   Column 'user_id' -> ForeignKey('game.id')
+        #   Column 'game_id' -> ForeignKey('user.id')
+        # So in the SQLite file, 'user_id' actually stores game IDs and
+        # vice versa. Read them swapped so they map correctly to the
+        # fixed schema.
         statuses = src.execute(text(
-            "SELECT user_id, game_id FROM status"
+            "SELECT game_id AS user_id, user_id AS game_id FROM status"
         )).fetchall()
 
     print(f"Read from SQLite: {len(users)} users, {len(games)} games, "
