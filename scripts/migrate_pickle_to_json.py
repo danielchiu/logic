@@ -6,10 +6,10 @@ Usage:
 This script reads existing pickle-serialized data from the hands, players,
 log, chat, and notes columns, deserializes them, and writes back JSON.
 
-It also ALTERs the column types from BYTEA (pickle) to JSONB.
+It also ALTERs the column types from BYTEA (pickle) to JSON.
 
 Run this ONCE after deploying the code that switches from PickleType to JSON.
-The script is idempotent — it detects whether columns are already JSONB and
+The script is idempotent — it detects whether columns are already JSON and
 skips the ALTER if so.
 """
 import json
@@ -51,9 +51,13 @@ def migrate():
 
         print(f"Current column types: {col_types}")
 
-        # If all columns are already jsonb, nothing to do
-        if all(t == 'jsonb' for t in col_types.values()):
-            print("All columns are already JSONB. Nothing to do.")
+        # Treat both json and jsonb as "already converted" — only BYTEA
+        # columns hold pickle data that needs to be deserialized.
+        json_types = {'jsonb', 'json'}
+
+        # If all columns are already json/jsonb, nothing to do
+        if all(t in json_types for t in col_types.values()):
+            print("All columns are already JSON/JSONB. Nothing to do.")
             return
 
         # Read all games
@@ -63,27 +67,29 @@ def migrate():
         if len(games) == 0:
             # No data — just ALTER the columns
             for col in ['hands', 'players', 'log', 'chat', 'notes']:
-                if col_types.get(col) != 'jsonb':
+                if col_types.get(col) not in json_types:
                     conn.execute(text(
-                        f'ALTER TABLE game ALTER COLUMN "{col}" TYPE JSONB '
-                        f'USING "{col}"::text::jsonb'
+                        f'ALTER TABLE game ALTER COLUMN "{col}" TYPE JSON '
+                        f'USING "{col}"::text::json'
                     ))
-                    print(f"  ALTERed {col} to JSONB (no data)")
+                    print(f"  ALTERed {col} to JSON (no data)")
             print("Migration complete (no data to convert).")
             return
 
-        # For each game, deserialize pickle data and prepare JSON
-        for game in games:
-            game_id = game[0]
+        # For each game, deserialize pickle data and prepare JSON.
+        # Use 'game_row' to avoid shadowing the 'game' compatibility-shim
+        # module imported above for pickle class resolution.
+        for game_row in games:
+            game_id = game_row[0]
             updates = {}
 
             for i, col in enumerate(['hands', 'players', 'log', 'chat', 'notes'], start=1):
-                raw = game[i]
+                raw = game_row[i]
                 if raw is None:
                     updates[col] = None
                     continue
 
-                if col_types.get(col) == 'jsonb':
+                if col_types.get(col) in json_types:
                     # Already JSON, skip
                     continue
 
@@ -121,7 +127,7 @@ def migrate():
                 set_clauses = []
                 params = {"gid": game_id}
                 for col, val in updates.items():
-                    if col_types.get(col) == 'jsonb':
+                    if col_types.get(col) in json_types:
                         continue
                     set_clauses.append(f'"{col}" = :{col}')
                     params[col] = val.encode('utf-8') if val is not None else None
@@ -132,16 +138,16 @@ def migrate():
                     )
                     print(f"  Converted game {game_id} pickle → JSON bytes")
 
-        # Now ALTER columns from BYTEA to JSONB
+        # Now ALTER columns from BYTEA to JSON
         for col in ['hands', 'players', 'log', 'chat', 'notes']:
-            if col_types.get(col) != 'jsonb':
+            if col_types.get(col) not in json_types:
                 conn.execute(text(
-                    f'ALTER TABLE game ALTER COLUMN "{col}" TYPE JSONB '
-                    f'USING convert_from("{col}", \'UTF8\')::jsonb'
+                    f'ALTER TABLE game ALTER COLUMN "{col}" TYPE JSON '
+                    f'USING convert_from("{col}", \'UTF8\')::json'
                 ))
-                print(f"  ALTERed {col} from {col_types.get(col, 'unknown')} to JSONB")
+                print(f"  ALTERed {col} from {col_types.get(col, 'unknown')} to JSON")
 
-    print("\nMigration complete! All pickle columns are now JSONB.")
+    print("\nMigration complete! All pickle columns are now JSON.")
 
 
 if __name__ == "__main__":

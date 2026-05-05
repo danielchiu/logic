@@ -65,6 +65,13 @@ class for a logic game
 class Game(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, index=True, unique=True)
+    # NOTE: db.JSON does NOT auto-detect in-place mutations the way
+    # PickleType did. All mutation paths in app/views.py follow a
+    # refresh() -> modify -> insert() pattern, which re-assigns the column
+    # and triggers a proper UPDATE. If you add a code path that mutates a
+    # persisted Game in place (e.g. game.log.append(...) + commit without
+    # refresh/insert), wrap these columns with MutableList/MutableDict or
+    # the change will silently not persist.
     hands = db.Column(HandsJSON)
     players = db.Column(db.JSON)
     log = db.Column(db.JSON)
