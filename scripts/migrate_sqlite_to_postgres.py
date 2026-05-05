@@ -108,24 +108,42 @@ def migrate(sqlite_path="db/app.db"):
                 )
                 print(f"  Migrated game: {game[1]}")
 
-            # Insert status links (skip duplicates)
+            # Insert status links (skip duplicates and orphaned references)
             migrated_links = 0
+            skipped_orphans = 0
             for status in statuses:
+                uid, gid = status[0], status[1]
+                # Skip orphaned references — SQLite doesn't enforce FKs, so
+                # deleted users/games may still have dangling status rows.
+                user_exists = dst.execute(
+                    text('SELECT 1 FROM "user" WHERE id = :id'),
+                    {"id": uid}
+                ).fetchone()
+                game_exists = dst.execute(
+                    text("SELECT 1 FROM game WHERE id = :id"),
+                    {"id": gid}
+                ).fetchone()
+                if not user_exists or not game_exists:
+                    skipped_orphans += 1
+                    continue
                 existing = dst.execute(
                     text(
                         "SELECT 1 FROM status "
                         "WHERE user_id = :uid AND game_id = :gid"
                     ),
-                    {"uid": status[0], "gid": status[1]}
+                    {"uid": uid, "gid": gid}
                 ).fetchone()
                 if existing:
                     continue
                 dst.execute(
                     text("INSERT INTO status (user_id, game_id) VALUES (:uid, :gid)"),
-                    {"uid": status[0], "gid": status[1]}
+                    {"uid": uid, "gid": gid}
                 )
                 migrated_links += 1
             print(f"  Migrated {migrated_links} status links")
+            if skipped_orphans:
+                print(f"  Skipped {skipped_orphans} orphaned status links "
+                      f"(referenced non-existent users or games)")
 
             # Reset PostgreSQL sequences so new inserts get correct IDs
             max_user = dst.execute(
