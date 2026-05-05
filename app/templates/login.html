@@ -8,12 +8,10 @@
     {% endif %}
     
     <form method=post>
-        <dl>
-            <dt>Username:
-            <dd><input type=text name="username">
-            {#<dt>Password:
-            <dd><input type=password name="password">#}
-            <dd><input type=submit name="login" value="Login">
-        </dl>
+        <div style="display: flex; align-items: center; gap: 10px; margin: 20px 0;">
+            <label for="username" style="font-size: 18px;">Username:</label>
+            <input type=text name="username" id="username-input" autofocus>
+            <input type=submit name="login" value="Login">
+        </div>
     </form>
 {% endblock %}
