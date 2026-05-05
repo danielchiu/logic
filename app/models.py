@@ -14,7 +14,7 @@ class for a user
 '''
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), index=True, unique=True)
+    username = db.Column(db.String, index=True, unique=True)
 
     games = db.relationship('Game', secondary=status, backref='users')
     
