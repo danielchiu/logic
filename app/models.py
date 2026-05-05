@@ -1,6 +1,29 @@
+import random
+
+from sqlalchemy import types
+
 from app import db
 from .game import Card, Hand, values, suits
-import random
+
+
+class HandsJSON(types.TypeDecorator):
+    """Store a list of Hand objects as JSON.
+
+    DB representation: [[{val, suit, flipped, secret, private}, ...], ...]
+    Python representation: [Hand, Hand, Hand, Hand]
+    """
+    impl = types.JSON
+    cache_ok = True
+
+    def process_bind_param(self, value, dialect):
+        if value is None:
+            return None
+        return [hand.to_dict() for hand in value]
+
+    def process_result_value(self, value, dialect):
+        if value is None:
+            return None
+        return [Hand.from_dict(card_list) for card_list in value]
 
 # keeps track of which games a user is playing (and which users are playing a game)
 status = db.Table('status',
@@ -42,13 +65,20 @@ class for a logic game
 class Game(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, index=True, unique=True)
-    hands = db.Column(db.PickleType)
-    players = db.Column(db.PickleType)
-    log = db.Column(db.PickleType)
+    # NOTE: db.JSON does NOT auto-detect in-place mutations the way
+    # PickleType did. All mutation paths in app/views.py follow a
+    # refresh() -> modify -> insert() pattern, which re-assigns the column
+    # and triggers a proper UPDATE. If you add a code path that mutates a
+    # persisted Game in place (e.g. game.log.append(...) + commit without
+    # refresh/insert), wrap these columns with MutableList/MutableDict or
+    # the change will silently not persist.
+    hands = db.Column(HandsJSON)
+    players = db.Column(db.JSON)
+    log = db.Column(db.JSON)
     current = db.Column(db.Integer)
     state = db.Column(db.Integer)
-    chat = db.Column(db.PickleType)
-    notes = db.Column(db.PickleType)
+    chat = db.Column(db.JSON)
+    notes = db.Column(db.JSON)
 
     # needs constructor to be able to "refresh" a game
     def __init__(self, name, players, hands=None, log=None, current=None, state=-15, chat=None, notes=None):
