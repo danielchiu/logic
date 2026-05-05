@@ -129,8 +129,8 @@ def migrate(sqlite_path="db/app.db"):
                     text(
                         'INSERT INTO game (id, name, hands, players, log, '
                         '"current", state, chat, notes) '
-                        'VALUES (:id, :name, :hands::json, :players::json, :log::json, '
-                        ':current, :state, :chat::json, :notes::json)'
+                        'VALUES (:id, :name, CAST(:hands AS json), CAST(:players AS json), CAST(:log AS json), '
+                        ':current, :state, CAST(:chat AS json), CAST(:notes AS json))'
                     ),
                     {
                         "id": game_row[0],
