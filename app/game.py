@@ -10,13 +10,13 @@ class for a card in a player's hand
     secret = visible to self and partner
 '''
 class Card:
-    def __init__(self, val, suit):
+    def __init__(self, val, suit, flipped=False, secret=False, private=False):
         self.val = val
         self.suit = suit
         self.name = val+suit
-        self.private = False
-        self.flipped = False 
-        self.secret = False
+        self.private = private
+        self.flipped = flipped
+        self.secret = secret
 
     def __str__(self):
         if self.flipped:
@@ -24,14 +24,37 @@ class Card:
         else:
             return '_'+self.suit
 
+    def to_dict(self):
+        return {
+            'val': self.val,
+            'suit': self.suit,
+            'flipped': self.flipped,
+            'secret': self.secret,
+            'private': self.private,
+        }
+
+    @classmethod
+    def from_dict(cls, d):
+        return cls(d['val'], d['suit'], d.get('flipped', False),
+                   d.get('secret', False), d.get('private', False))
+
 '''
 class for a player's hand
 sorts cards by value, breaking ties by original order (stable)
 '''
 class Hand:
-    def __init__(self, cards):
+    def __init__(self, cards, sort=True):
         self.cards = cards
-        self.cards.sort(key = lambda card: values.index(card.val)) 
+        if sort:
+            self.cards.sort(key = lambda card: values.index(card.val))
 
     def __str__(self):
         return ' '.join(map(str,self.cards))
+
+    def to_dict(self):
+        return [card.to_dict() for card in self.cards]
+
+    @classmethod
+    def from_dict(cls, card_list):
+        cards = [Card.from_dict(d) for d in card_list]
+        return cls(cards, sort=False)

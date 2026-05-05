@@ -14,10 +14,16 @@ This script is idempotent for users (skips duplicates by username) and
 games (skips duplicates by name). Run it once after deploying to Render
 to backfill your existing game data.
 """
+import json
 import os
+import pickle
 import sys
 
 from sqlalchemy import create_engine, text
+
+# The old SQLite data was pickled when Card/Hand lived at the top-level
+# 'game' module. Ensure that module path is importable for unpickling.
+import game  # noqa: F401
 
 
 def migrate(sqlite_path="db/app.db"):
@@ -91,25 +97,47 @@ def migrate(sqlite_path="db/app.db"):
                 if existing:
                     print(f"  Skipping existing game: {game[1]}")
                     continue
-                # PickleType columns: SQLite stores them as raw pickle bytes.
-                # PostgreSQL's BYTEA column accepts the same bytes directly.
+                # SQLite stores pickle bytes; PostgreSQL now uses JSONB.
+                # Deserialize pickle and convert to JSON.
+                def pickle_to_json(raw, col_name):
+                    if raw is None:
+                        return None
+                    obj = pickle.loads(raw)
+                    if col_name == 'hands':
+                        # List of Hand objects → list of lists of card dicts
+                        result = []
+                        for hand in obj:
+                            cards = []
+                            for card in hand.cards:
+                                cards.append({
+                                    'val': card.val,
+                                    'suit': card.suit,
+                                    'flipped': card.flipped,
+                                    'secret': card.secret,
+                                    'private': card.private,
+                                })
+                            result.append(cards)
+                        return json.dumps(result)
+                    # players, log, chat, notes are plain Python lists/dicts
+                    return json.dumps(obj)
+
                 dst.execute(
                     text(
                         'INSERT INTO game (id, name, hands, players, log, '
                         '"current", state, chat, notes) '
-                        'VALUES (:id, :name, :hands, :players, :log, '
-                        ':current, :state, :chat, :notes)'
+                        'VALUES (:id, :name, :hands::jsonb, :players::jsonb, :log::jsonb, '
+                        ':current, :state, :chat::jsonb, :notes::jsonb)'
                     ),
                     {
                         "id": game[0],
                         "name": game[1],
-                        "hands": game[2],
-                        "players": game[3],
-                        "log": game[4],
+                        "hands": pickle_to_json(game[2], 'hands'),
+                        "players": pickle_to_json(game[3], 'players'),
+                        "log": pickle_to_json(game[4], 'log'),
                         "current": game[5],
                         "state": game[6],
-                        "chat": game[7],
-                        "notes": game[8],
+                        "chat": pickle_to_json(game[7], 'chat'),
+                        "notes": pickle_to_json(game[8], 'notes'),
                     }
                 )
                 print(f"  Migrated game: {game[1]}")
